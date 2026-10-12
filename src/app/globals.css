@@ -140,16 +140,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
     transition: transform 360ms cubic-bezier(.2,.75,.25,1);
   }
   .profile-tabs.open > .container { transform: translate3d(0, 0, 0); }
-  .profile-tabs > .container::before {
-    content: "PORTFOLIO MENU";
-    display: block;
-    padding: 0 0 17px;
-    color: var(--muted);
-    border-bottom: 1px solid var(--line);
-    font-size: 9px;
-    font-weight: 650;
-    letter-spacing: 1.6px;
-  }
   .profile-tabs a {
     width: 100%;
     min-height: 58px;
