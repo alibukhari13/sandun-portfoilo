@@ -1,8 +1,6 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import PortfolioPage from "@/components/PortfolioPage";
+import ExperiencePage from "@/components/pages/experience";
 
 export default function Page() {
-  const markup = readFileSync(join(process.cwd(), "src/content/pages/experience.html"), "utf8");
-  return <PortfolioPage markup={markup} />;
+  return <PortfolioPage><ExperiencePage /></PortfolioPage>;
 }

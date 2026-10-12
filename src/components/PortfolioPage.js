@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react";
 
-export default function PortfolioPage({ markup }) {
+
+export default function PortfolioPage({ children }) {
   const root = useRef(null);
   useEffect(() => {
     const scope = root.current;
@@ -10,14 +11,21 @@ export default function PortfolioPage({ markup }) {
     scope.classList.add("motion-ready");
     const menuButton = scope.querySelector(".mobile-menu");
     const nav = scope.querySelector(".profile-tabs");
+    const header = scope.querySelector(".header");
+    const bodyOverflowBeforeMenu = document.body.style.overflow;
+    const setMenuOpen = (open, returnFocus = false) => {
+      nav?.classList.toggle("open", open);
+      header?.classList.toggle("menu-open", open);
+      menuButton?.setAttribute("aria-expanded", String(open));
+      menuButton?.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+      document.body.style.overflow = open ? "hidden" : bodyOverflowBeforeMenu;
+      if (open) requestAnimationFrame(() => nav?.querySelector("a")?.focus());
+      else if (returnFocus) menuButton?.focus();
+    };
     const themeButton = scope.querySelector(".header .icon-button:not(.mobile-menu)");
     const initialTheme = localStorage.getItem("sandun-theme");
     if (initialTheme === "dark") document.documentElement.dataset.theme = "dark";
-    const onMenu = () => {
-      const open = nav?.classList.toggle("open") ?? false;
-      menuButton?.setAttribute("aria-expanded", String(open));
-      menuButton?.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-    };
+    const onMenu = () => setMenuOpen(!nav?.classList.contains("open"));
     const onTheme = () => {
       const dark = document.documentElement.dataset.theme !== "dark";
       document.documentElement.dataset.theme = dark ? "dark" : "light";
@@ -63,9 +71,25 @@ export default function PortfolioPage({ markup }) {
       if (count) count.textContent = `${shown} project${shown === 1 ? "" : "s"}`;
     };
     const onNav = (event) => {
-      if (event.target.closest(".profile-tabs a")) {
-        nav?.classList.remove("open");
-        menuButton?.setAttribute("aria-expanded", "false");
+      if (event.target === nav) setMenuOpen(false, true);
+      else if (event.target.closest(".profile-tabs a")) setMenuOpen(false);
+    };
+    const onEscape = (event) => {
+      if (event.key === "Escape" && nav?.classList.contains("open")) {
+        event.preventDefault();
+        setMenuOpen(false, true);
+      }
+      if (event.key === "Tab" && nav?.classList.contains("open")) {
+        const links = [...nav.querySelectorAll("a[href]")];
+        const first = links[0];
+        const last = links[links.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
       }
     };
     draftForm?.addEventListener("submit", onDraftSave);
@@ -73,6 +97,7 @@ export default function PortfolioPage({ markup }) {
     themeButton?.addEventListener("click", onTheme);
     scope.addEventListener("click", onFilter);
     scope.addEventListener("click", onNav);
+    document.addEventListener("keydown", onEscape);
     let observer;
     const sections = [...scope.querySelectorAll("#main > section, .portfolio-footer")];
     if ("IntersectionObserver" in window) {
@@ -94,8 +119,10 @@ export default function PortfolioPage({ markup }) {
       themeButton?.removeEventListener("click", onTheme);
       scope.removeEventListener("click", onFilter);
       scope.removeEventListener("click", onNav);
+      document.removeEventListener("keydown", onEscape);
+      document.body.style.overflow = bodyOverflowBeforeMenu;
       observer?.disconnect();
     };
   }, []);
-  return <div ref={root} dangerouslySetInnerHTML={{ __html: markup }} />;
+  return <div ref={root}>{children}</div>;
 }
