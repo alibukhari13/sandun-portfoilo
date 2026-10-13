@@ -1513,7 +1513,7 @@ body, .subpage, .page-content { background-color: var(--surface); color: var(--i
 
 /* Resume-based experience entries: clearer dates, readable accomplishments, and separated sections. */
 #main .experience-list { padding-top: 12px; padding-bottom: 48px; }
-#main .experience-group + .experience-group { margin-top: 27px; padding-top: 19px; border-top: 1px solid var(--line); }
+#main .experience-group + .experience-group { margin-top: 0; padding-top: 19px; }
 #main .experience-group > .section-kicker { display: block; margin-bottom: 4px; }
 #main .experience-list .experience-entry { display: grid; grid-template-columns: 128px 18px minmax(0, 1fr); gap: 12px; padding: 18px 0; border-bottom: 1px solid var(--line); }
 #main .experience-list .experience-entry > time { padding-top: 4px; color: #6f777d; font-size: 13px; line-height: 1.5; }
