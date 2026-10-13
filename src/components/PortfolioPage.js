@@ -15,12 +15,24 @@ function Arrow({ diagonal = true }) {
   return <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={diagonal ? "M5 19 19 5M5 5h14v14" : "M5 12h14m-6-6 6 6-6 6"} /></svg>;
 }
 
+function readThemePreference() {
+  try {
+    const saved = window.localStorage.getItem("sandun-theme");
+    if (saved === "dark" || saved === "light") return saved;
+  } catch {}
+  return document.cookie.split(";").map((part) => part.trim()).find((part) => part.startsWith("sandun-theme="))?.split("=")[1] || "light";
+}
+
+function saveThemePreference(theme) {
+  try { window.localStorage.setItem("sandun-theme", theme); } catch {}
+  document.cookie = `sandun-theme=${theme}; Path=/; Max-Age=31536000; SameSite=Lax`;
+}
+
 function Header({ path }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(false);
   useEffect(() => {
-    let saved = false;
-    try { saved = localStorage.getItem("sandun-theme") === "dark"; } catch {}
+    const saved = readThemePreference() === "dark";
     setDark(saved);
     document.documentElement.dataset.theme = saved ? "dark" : "light";
   }, []);
@@ -28,7 +40,7 @@ function Header({ path }) {
     const next = !dark;
     setDark(next);
     document.documentElement.dataset.theme = next ? "dark" : "light";
-    try { localStorage.setItem("sandun-theme", next ? "dark" : "light"); } catch {}
+    saveThemePreference(next ? "dark" : "light");
   }
   const visiblePages = pages;
   return <>

@@ -1060,3 +1060,27 @@ body, .subpage, .page-content { background-color: var(--surface); color: var(--i
 :root[data-theme="dark"] .home-hero,
 :root[data-theme="dark"] .site-footer,
 :root[data-theme="dark"] .credential-strip { color: #f6f8f2; }
+
+/* Keep button text and fills paired when a saved dark theme is active. */
+:root[data-theme="dark"] #main .button.secondary:not(.dark-outline),
+:root[data-theme="dark"] .footer-resume-button {
+  color: #edf2ef;
+  border-color: #43515a;
+  background: #1b2730;
+}
+:root[data-theme="dark"] #main .button.secondary:not(.dark-outline):hover,
+:root[data-theme="dark"] .footer-resume-button:hover { background: #26343d; }
+:root[data-theme="dark"] #main .button.dark-outline {
+  color: #edf2ef;
+  border-color: #718087;
+  background: #0c1821;
+}
+:root[data-theme="dark"] #main .button.dark-outline:hover { background: #1b2a34; }
+:root[data-theme="dark"] .featured-filters button:not(.active),
+:root[data-theme="dark"] .project-filter-bar button:not(.active) {
+  color: #edf2ef;
+  border-color: #43515a;
+  background: #1b2730;
+}
+:root[data-theme="dark"] .contact-profiles a { color: #edf2ef; border-color: #43515a; background: #1b2730; }
+:root[data-theme="dark"] .contact-profiles a:hover { background: #26343d; }
