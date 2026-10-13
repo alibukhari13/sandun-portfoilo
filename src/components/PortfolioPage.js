@@ -19,7 +19,8 @@ function Header({ path }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(false);
   useEffect(() => {
-    const saved = localStorage.getItem("sandun-theme") === "dark";
+    let saved = false;
+    try { saved = localStorage.getItem("sandun-theme") === "dark"; } catch {}
     setDark(saved);
     document.documentElement.dataset.theme = saved ? "dark" : "light";
   }, []);
@@ -27,7 +28,7 @@ function Header({ path }) {
     const next = !dark;
     setDark(next);
     document.documentElement.dataset.theme = next ? "dark" : "light";
-    localStorage.setItem("sandun-theme", next ? "dark" : "light");
+    try { localStorage.setItem("sandun-theme", next ? "dark" : "light"); } catch {}
   }
   const visiblePages = pages;
   return <>
@@ -38,7 +39,7 @@ function Header({ path }) {
         {visiblePages.map(([label, href]) => <Link key={href} className={path === href ? "active" : ""} aria-current={path === href ? "page" : undefined} href={href}>{label}</Link>)}
       </nav>
       <div className="nav-actions">
-        <button className="icon-button theme-toggle" onClick={toggleTheme} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}>{dark ? "☀" : "☾"}</button>
+        <button className="icon-button theme-toggle" onClick={toggleTheme} aria-pressed={dark} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"} title={dark ? "Switch to light mode" : "Switch to dark mode"}>{dark ? "☀" : "☾"}</button>
         <Link className="nav-contact" href="/contact">Let’s talk <Arrow /></Link>
         <button className="icon-button mobile-menu" aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? "×" : "☰"}</button>
       </div>

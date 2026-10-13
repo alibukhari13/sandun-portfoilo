@@ -974,3 +974,89 @@ body { background: var(--surface); color: var(--ink); }
 .landing-reveal .contact-subfooter { animation-delay:.18s; }
 @keyframes landing-reveal { from{opacity:0;transform:translateY(12px);filter:blur(3px)}to{opacity:1;transform:translateY(0);filter:blur(0)} }
 @media(prefers-reduced-motion:reduce) { .landing-reveal .site-header,.landing-reveal .route-stage,.landing-reveal .site-footer,.landing-reveal .contact-subfooter{animation:none} }
+
+/* Theme tokens and surface overrides */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #111820;
+  --ink: #edf2ef;
+  --muted: #a5afb5;
+  --line: #303b42;
+  --card: #19232b;
+  --subtle: #1b282e;
+  --lime: #c9ff54;
+}
+:root[data-theme="light"] { color-scheme: light; }
+body, .subpage, .page-content { background-color: var(--surface); color: var(--ink); }
+.site-root, .home-focus, .home-featured, .contact-subfooter,
+.page-intro, .coursework-section, .education-content, .contact-extras,
+.experience-list, .about-records, .about-skills, .skills-in-action {
+  transition: background-color .24s ease, color .24s ease, border-color .24s ease;
+}
+:root[data-theme="dark"] .home-focus,
+:root[data-theme="dark"] .home-featured,
+:root[data-theme="dark"] .contact-subfooter { background: var(--surface); color: var(--ink); }
+:root[data-theme="dark"] .focus-inner h2 span,
+:root[data-theme="dark"] .focus-inner > div:nth-child(2) p,
+:root[data-theme="dark"] .about-copy h2 span,
+:root[data-theme="dark"] .about-copy > p,
+:root[data-theme="dark"] .about-pillars p,
+:root[data-theme="dark"] .about-skills p,
+:root[data-theme="dark"] .page-intro p,
+:root[data-theme="dark"] .page-description,
+:root[data-theme="dark"] .record-row p small,
+:root[data-theme="dark"] .record-row time,
+:root[data-theme="dark"] .stats-strip small,
+:root[data-theme="dark"] .skill-detail-heading p,
+:root[data-theme="dark"] .contact-lede,
+:root[data-theme="dark"] .contact-method p,
+:root[data-theme="dark"] .topic-grid p,
+:root[data-theme="dark"] .faq-block p,
+:root[data-theme="dark"] .faq-block summary,
+:root[data-theme="dark"] .education-slogan + p,
+:root[data-theme="dark"] .degree-card p,
+:root[data-theme="dark"] .beyond-row p,
+:root[data-theme="dark"] .upcoming-card > p { color: var(--muted); }
+:root[data-theme="dark"] .featured-watermark { color: #202a2d; }
+:root[data-theme="dark"] .featured-filters button,
+:root[data-theme="dark"] .project-filter-bar button { color: var(--ink); border-color: var(--line); background: var(--card); }
+:root[data-theme="dark"] .featured-filters button.active,
+:root[data-theme="dark"] .project-filter-bar button.active { color: #101521; border-color: var(--lime); background: var(--lime); }
+:root[data-theme="dark"] .about-pillars article,
+:root[data-theme="dark"] .about-record-grid > article,
+:root[data-theme="dark"] .degree-card,
+:root[data-theme="dark"] .coursework-grid > article,
+:root[data-theme="dark"] .topic-grid article,
+:root[data-theme="dark"] .message-card,
+:root[data-theme="dark"] .beyond-row,
+:root[data-theme="dark"] .upcoming-card,
+:root[data-theme="dark"] .skills-in-action { color: var(--ink); border-color: var(--line); background: var(--card); }
+:root[data-theme="dark"] .stats-strip { background: var(--subtle); }
+:root[data-theme="dark"] .stats-strip > div + div,
+:root[data-theme="dark"] .record-row,
+:root[data-theme="dark"] .faq-block details { border-color: var(--line); }
+:root[data-theme="dark"] .stats-strip > div > b,
+:root[data-theme="dark"] .field-control input,
+:root[data-theme="dark"] .field-control select,
+:root[data-theme="dark"] .field-control textarea,
+:root[data-theme="dark"] .skill-detail-card .skill-pills span,
+:root[data-theme="dark"] .course-pills span,
+:root[data-theme="dark"] .skill-pills span { color: var(--ink); border-color: var(--line); background: #202c32; }
+:root[data-theme="dark"] .skill-detail-card { border-color: #3b4b46; background: #18231f; }
+:root[data-theme="dark"] .skill-detail-card.teal,
+:root[data-theme="dark"] .skill-detail-card.mint { border-color: #31534b; background: #172723; }
+:root[data-theme="dark"] .skill-detail-card.blue { border-color: #354961; background: #192431; }
+:root[data-theme="dark"] .skill-detail-card.violet { border-color: #514164; background: #241f2e; }
+:root[data-theme="dark"] .contact-subfooter nav a { color: var(--muted); }
+:root[data-theme="dark"] .contact-subfooter nav a[aria-current="page"] { color: var(--ink); }
+:root[data-theme="dark"] .message-card input,
+:root[data-theme="dark"] .message-card select,
+:root[data-theme="dark"] .message-card textarea { color: var(--ink); border-color: var(--line); background: #111820; }
+:root[data-theme="dark"] .contact-icon,
+:root[data-theme="dark"] .pillar-icon { filter: brightness(.82) saturate(.9); }
+:root[data-theme="dark"] .degree-status { color: #d5efaa; background: #293923; }
+:root[data-theme="dark"] .diploma-link { color: var(--ink); border-color: #55643b; background: #202b22; }
+:root[data-theme="dark"] .site-header,
+:root[data-theme="dark"] .home-hero,
+:root[data-theme="dark"] .site-footer,
+:root[data-theme="dark"] .credential-strip { color: #f6f8f2; }
