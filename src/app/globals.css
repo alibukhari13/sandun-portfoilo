@@ -1151,3 +1151,314 @@ body, .subpage, .page-content { background-color: var(--surface); color: var(--i
 :root[data-theme="dark"] .lens-art path { stroke: #c3a6eb; }
 :root[data-theme="dark"] .pillar-icon .about-icon,
 :root[data-theme="dark"] .coursework-grid > article > b { color: #20392f; }
+
+/* Portfolio polish: clearer type, quieter decoration, and consistent credential marks. */
+.site-header .wordmark { font-size: 17px; }
+.site-header .main-nav { gap: clamp(12px, 1.6vw, 23px); }
+.site-header .main-nav a { font-size: 13px; }
+.site-header .nav-contact { font-size: 13px; }
+.home-hero { background: radial-gradient(ellipse at 68% 42%, #172c2b 0%, #0a1720 48%, #08111b 100%); }
+.home-hero::after { background: linear-gradient(90deg, #07111bea 0%, #07111bbd 34%, #07111b66 62%, #07111bc7 100%); }
+.hero-network { opacity: .24; }
+.portrait-neural { opacity: .2; }
+.home-hero-grid { min-height: 570px; gap: 30px; }
+.hero-location { font-size: 14px; }
+.home-hero h1 { font-size: clamp(46px, 4.35vw, 62px); letter-spacing: -2.8px; }
+.home-hero h2 { font-size: clamp(22px, 2vw, 28px); line-height: 1.35; }
+.hero-description { max-width: 520px; font-size: 16px; line-height: 1.7; }
+.hero-skills { font-size: 14px; }
+.home-hero .hero-buttons .button { min-height: 48px; padding-inline: 21px; font-size: 13px; }
+.hero-metrics { gap: 12px; }
+.hero-metrics > div { min-height: 78px; padding: 12px 14px; border-color: #ffffff2b; border-radius: 15px; background: #111e28d9; box-shadow: 0 12px 26px #02070a28; }
+.hero-metrics strong { font-size: 20px; }
+.hero-metrics small { font-size: 12px; line-height: 1.45; }
+.credential-strip { padding: 22px 0; color: #17202a; background: #f2f3ef; border-block: 1px solid #e1e4dd; }
+.credential-inner { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.credential-item.credential-link { min-width: 0; min-height: 154px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 14px; padding: 18px 20px; border: 1px solid #e3e5df; border-radius: 14px; background: #fff; box-shadow: 0 8px 22px #1015210a; transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease; }
+.credential-item.credential-link + .credential-item.credential-link { border-left: 1px solid #e3e5df; }
+.credential-item.credential-link:hover { transform: translateY(-2px); border-color: #c8d0c3; box-shadow: 0 14px 28px #10152112; }
+.credential-logo { height: 74px; width: min(100%, 250px); display: flex; align-items: center; justify-content: center; }
+.credential-logo img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+.stevens-logo img { width: 210px; max-height: 74px; }
+.rutgers-smlr-logo { width: min(100%, 290px); }
+.rutgers-smlr-logo img { width: 100%; max-height: 58px; object-fit: contain; }
+.ecai-logo { width: min(100%, 270px); height: 74px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; color: #152b38; }
+.ecai-overline { font-size: 9px; line-height: 1.2; letter-spacing: .2em; color: #47535a; }
+.ecai-name { display: flex; align-items: baseline; font-size: 40px; line-height: 1; letter-spacing: -.07em; }
+.ecai-name b { color: #17485f; font-weight: 650; }
+.ecai-name > span { margin-left: 9px; color: #25282b; font-weight: 300; letter-spacing: -.05em; }
+.ecai-description { margin-top: 5px; font-size: 13px; line-height: 1.2; letter-spacing: -.02em; }
+.credential-copy { display: grid; gap: 4px; text-align: center; }
+.credential-copy strong { color: #1a222b; font-size: 14px; font-weight: 650; }
+.credential-copy small { color: #626b73; font-size: 12px; line-height: 1.4; }
+.credential-link:focus-visible { outline: 3px solid #688b3a; outline-offset: 3px; }
+.credential-strip .credential-item.credential-link { color: #17202a; }
+.home-focus { background: #fbfcfa; }
+.focus-inner { min-height: 290px; gap: 84px; }
+.focus-inner > div:nth-child(2) p { font-size: 15px; line-height: 1.75; }
+.focus-inner .button { min-height: 44px; padding-inline: 19px; font-size: 13px; }
+.home-featured { padding-top: 48px; padding-bottom: 48px; background: #f3f4f0; }
+.featured-heading h2 { font-size: 22px; letter-spacing: .06em; }
+.featured-watermark { color: #e8eae5; font-size: 82px; }
+.featured-filters button { min-height: 40px; padding: 10px 17px; font-size: 12px; }
+.home-project-grid { gap: 18px; }
+.home-project-card { border-color: #dce1dc; border-radius: 14px; color: #17232b; background: #fff; box-shadow: 0 9px 26px #1015210a; }
+.home-project-card:hover { border-color: #c7d0c3; box-shadow: 0 18px 36px #10152114; }
+.home-project-art { height: 164px; margin: 11px 0 8px; border-radius: 9px; background: #102722; }
+.project-art-agents .home-project-art { background: #112b37; }
+.project-art-atom .home-project-art { background: #242335; }
+.home-project-category { font-size: 11px; color: #485650; }
+.home-project-index { color: #68736e; font-size: 12px; }
+.home-project-body { padding: 18px; }
+.home-project-body h3 { min-height: 55px; margin: 12px 0 9px; color: #17232b; font-size: 19px; line-height: 1.35; }
+.home-project-body > p { min-height: 104px; color: #59646b; font-size: 14px; line-height: 1.65; }
+.home-project-tags { min-height: 44px; gap: 6px; }
+.home-project-tags span { padding: 5px 8px; border-color: #e1e5e1; border-radius: 999px; color: #45514d; background: #f7f8f5; font-size: 10px; }
+.home-project-body > a { margin-top: 12px; padding-top: 12px; color: #476b24; border-color: #e5e8e3; font-size: 13px; }
+.home-project-card .mini-chart { color: #e7efe8; }
+.home-project-card .mini-chart b { font-size: 9px; }
+.home-project-card .mini-chart em { font-size: 8px; }
+.home-project-card .mini-chart > small { font-size: 10px; }
+.site-footer .footer-invitation > p, .site-footer .footer-contact p { font-size: 13px; line-height: 1.6; }
+.site-footer .footer-label { font-size: 10px; }
+.site-footer .footer-contact > a { font-size: 15px; }
+.site-footer .footer-bottom p, .site-footer .footer-back-top { font-size: 12px; }
+
+/* Raise the small default copy sizes across the interior pages for comfortable reading. */
+#main .page-intro h1 { font-size: clamp(36px, 4vw, 50px); }
+#main .page-intro p { font-size: 17px; line-height: 1.6; }
+#main .page-intro .page-description { font-size: 15px; line-height: 1.7; }
+#main .section-kicker { font-size: 10px; letter-spacing: .16em; }
+#main .experience-list time, #main .experience-list h3, #main .experience-list p { font-size: 14px; line-height: 1.7; }
+#main .experience-list h2 { font-size: 22px; }
+#main .experience-list .skill-pills span, #main .about-skills .skill-pills span { font-size: 12px; }
+#main .degree-card > p, #main .coursework-grid p, #main .beyond-copy p, #main .skills-in-action p, #main .contact-lede { font-size: 15px; line-height: 1.7; }
+#main .degree-card h3, #main .coursework-grid h3, #main .beyond-copy h3 { font-size: 20px; }
+#main .degree-meta small, #main .record-row p small, #main .record-row time { font-size: 13px; line-height: 1.55; }
+#main .skill-badge, #main .skill-pills span { font-size: 12px; }
+#main .contact-method small { font-size: 12px; }
+#main .contact-method a, #main .contact-method p > span { font-size: 14px; }
+#main .message-card label { font-size: 13px; }
+#main .message-card input, #main .message-card select, #main .message-card textarea { min-height: 44px; font-size: 14px; }
+#main .message-card textarea { min-height: 120px; }
+#main .message-heading h3 { font-size: 19px; }
+#main .message-heading p, #main .form-privacy { font-size: 12px; }
+#main .contact-profiles a { min-height: 44px; font-size: 13px; }
+#main .contact-extras > div > p, #main .topic-grid p, #main .faq-block > p, #main .faq-block details p { font-size: 13px; line-height: 1.6; }
+#main .topic-grid b, #main .faq-block summary { font-size: 14px; line-height: 1.5; }
+#main .topic-grid article { min-height: 82px; padding: 12px; }
+#main .skills-in-action a, #main .featured-filters button, #main .project-filter-bar button { font-size: 13px; }
+#main .detailed-project-list p, #main .project-card p, #main .project-card li { font-size: 15px; line-height: 1.7; }
+#main .detailed-project-list h2 { font-size: 24px; }
+#main .detailed-project-list .project-tags span { font-size: 12px; }
+#main .upcoming-card > p { font-size: 15px; line-height: 1.65; }
+#main .coming-label { font-size: 12px; }
+
+@media (max-width: 1000px) and (min-width: 701px) {
+  .site-header .main-nav { gap: 7px; }
+  .site-header .main-nav a { font-size: 11px; }
+  .home-hero-grid { grid-template-columns: minmax(0, 1.1fr) minmax(210px, .8fr) minmax(130px, .6fr); gap: 16px; }
+  .hero-description { font-size: 14px; }
+  .credential-inner { gap: 10px; }
+  .credential-item.credential-link { padding-inline: 12px; }
+  .home-project-body { padding: 14px; }
+  .home-project-body h3 { font-size: 17px; }
+  .home-project-body > p { font-size: 13px; }
+}
+@media (max-width: 700px) {
+  .home-hero { background: radial-gradient(ellipse at 50% 28%, #172c2b 0%, #0a1720 52%, #08111b 100%); }
+  .home-hero::after { background: linear-gradient(180deg, #07111b88 0%, #07111b17 38%, #07111b99 100%); }
+  .hero-network { inset: 0; opacity: .2; }
+  .home-hero-grid { min-height: 0; padding-top: 34px; padding-bottom: 28px; gap: 10px; }
+  .home-hero h1 { font-size: clamp(40px, 10vw, 54px); }
+  .home-hero h2 { font-size: 21px; }
+  .hero-description { font-size: 15px; }
+  .hero-skills { font-size: 13px; line-height: 1.8; }
+  .hero-metrics { gap: 9px; }
+  .hero-metrics > div { min-height: 68px; }
+  .hero-metrics strong { font-size: 18px; }
+  .hero-metrics small { font-size: 11px; }
+  .credential-strip { padding: 16px 0; }
+  .credential-inner { grid-template-columns: 1fr; gap: 10px; }
+  .credential-item.credential-link { min-height: 112px; flex-direction: row; justify-content: flex-start; gap: 18px; padding: 13px 18px; }
+  .credential-logo { flex: 0 0 40%; height: 70px; }
+  .stevens-logo img { width: 165px; max-height: 68px; }
+  .rutgers-smlr-logo img { max-height: 48px; }
+  .ecai-logo { height: 70px; }
+  .credential-copy { flex: 1; text-align: left; }
+  .credential-copy strong { font-size: 13px; }
+  .credential-copy small { font-size: 12px; }
+  .focus-inner { min-height: 0; gap: 22px; padding-top: 36px; padding-bottom: 36px; }
+  .focus-inner > div:nth-child(2) p { font-size: 15px; }
+  .home-featured { padding: 35px 18px; }
+  .featured-heading h2 { font-size: 19px; }
+  .featured-filters button { min-height: 38px; font-size: 11px; }
+  .home-project-grid { gap: 14px; }
+  .home-project-body h3 { font-size: 18px; }
+  .home-project-body > p { font-size: 14px; }
+  #main .page-intro p { font-size: 16px; }
+  #main .page-intro .page-description { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .credential-item.credential-link { transition: none; }
+}
+
+/* Keep the original compact affiliation band and the portfolio's dark cards. */
+.credential-strip { padding: 0; color: #f4f6f3; background: #09111c; border-block: 1px solid #ffffff1b; }
+.credential-inner { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
+.credential-item { min-width: 0; min-height: 73px; display: flex; align-items: center; gap: 14px; padding: 9px 17px; color: inherit; text-decoration: none; }
+.credential-item + .credential-item { border-left: 1px solid #ffffff20; }
+.credential-item:hover .credential-copy strong { color: #c9ed8a; }
+.credential-item:focus-visible { outline: 2px solid #c9ed8a; outline-offset: -3px; }
+.school-mark.mark-image { width: 26px; height: 46px; overflow: hidden; display: block; flex: 0 0 26px; position: relative; }
+.school-mark.mark-image img { position: absolute; top: 0; left: 0; display: block; width: 94px; max-width: none; height: 46px; object-fit: fill; }
+.school-mark.stevens-mark { filter: none; }
+.school-mark.rutgers-mark img { height: 44px; margin-top: 1px; }
+.school-mark.ecai-mark { display: grid; place-items: center; width: 38px; height: 38px; flex-basis: 38px; border-radius: 50%; background: #fff; color: #5948b8; font: 700 24px Sora, sans-serif; }
+.credential-copy { min-width: 0; display: grid; gap: 4px; text-align: left; }
+.credential-copy strong { color: #f4f6f3; font-size: 12px; font-weight: 600; }
+.credential-copy small { color: #bcc3cc; font-size: 10px; line-height: 1.45; }
+.home-project-card { border: 1px solid #263442; border-radius: 10px; color: #eff4f4; background: #071a17; box-shadow: none; }
+.home-project-card:hover { border-color: #526a57; box-shadow: 0 14px 30px #07120e2e; }
+.project-art-agents { background: #071b28; }
+.project-art-atom { background: #19192b; }
+.home-project-category { color: #d3e0d4; }
+.home-project-index { color: #dde3e1; }
+.home-project-body h3 { color: #eff4f4; }
+.home-project-body > p { color: #c0c8c7; }
+.home-project-tags span { border-color: #ffffff27; color: #d0d8d4; background: transparent; }
+.home-project-body > a { color: var(--lime); border-color: #ffffff24; }
+.home-project-art, .project-art-agents .home-project-art, .project-art-atom .home-project-art { background: transparent; border-radius: 0; }
+@media (max-width: 700px) {
+  .credential-inner { grid-template-columns: 1fr; }
+  .credential-item { min-height: 60px; padding-inline: 4px; }
+  .credential-item + .credential-item { border-left: 0; border-top: 1px solid #ffffff20; }
+  .school-mark.mark-image { width: 26px; height: 42px; flex-basis: 26px; }
+  .school-mark.mark-image img { width: 86px; height: 42px; }
+  .school-mark.rutgers-mark img { height: 38px; }
+}
+
+/* More editorial, data-led project artwork replaces the synthetic brain graphic. */
+.detailed-project { border-radius: 16px; box-shadow: 0 10px 30px #08120d20; }
+.detailed-project-head { gap: 24px; }
+.detailed-project-head p { color: #d0dad6; font-size: 14px; line-height: 1.6; }
+.detailed-project .section-kicker { font-size: 10px; }
+.research-art { flex: 0 0 42%; display: grid; grid-template-columns: minmax(104px, .75fr) minmax(0, 1.25fr); align-items: stretch; gap: 18px; min-height: 148px; padding: 17px 19px; overflow: hidden; border: 1px solid #ffffff20; border-radius: 12px; background: linear-gradient(135deg, #12221f 0%, #1a332b 100%); }
+.research-art-summary { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; min-width: 0; }
+.research-art-summary > span { color: #c6d7cc; font-size: 9px; font-weight: 650; letter-spacing: .13em; }
+.research-art-summary > strong { margin-top: 5px; color: #f4f7ef; font: 600 clamp(34px, 4vw, 48px)/1 Sora, sans-serif; letter-spacing: -.06em; }
+.research-art-summary > small { margin-top: 7px; color: #c0cec6; font-size: 11px; line-height: 1.4; }
+.research-art-summary > i { width: 32px; height: 2px; margin-top: 13px; background: #b9ec76; }
+.research-art-chart { display: flex; align-items: flex-end; justify-content: space-around; gap: 10px; min-width: 0; padding-top: 18px; border-bottom: 1px solid #ffffff35; background: repeating-linear-gradient(to top, transparent 0 27px, #ffffff0d 28px 29px); }
+.research-art-chart > div { height: 100%; min-width: 0; display: flex; flex: 1; flex-direction: column; justify-content: flex-end; align-items: center; gap: 5px; }
+.research-art-chart b { color: #f1f5ee; font-size: 10px; font-weight: 600; }
+.research-art-chart i { width: min(100%, 42px); min-height: 8px; border-radius: 4px 4px 0 0; background: linear-gradient(180deg, #c9ed8a 0%, #81b95b 100%); }
+.research-art-chart small { align-self: stretch; min-height: 24px; padding-top: 4px; color: #c7d2ca; font-size: 8px; line-height: 1.25; text-align: center; }
+.project-facts { gap: 20px; }
+.project-facts > div { padding-block: 12px; }
+.project-facts b { font-size: 13px; }
+.project-facts p { color: #d0dad6; font-size: 14px; line-height: 1.7; }
+.results-list span { font-size: 12px; line-height: 1.5; }
+.architecture-box, .technology-box { border-radius: 10px; }
+.architecture-box > span, .technology-box > span { font-size: 12px; }
+.detail-tags small { font-size: 11px; }
+.project-actions .button { min-height: 40px; font-size: 12px; }
+
+/* Readability pass for the small supporting copy called out across pages. */
+#main .course-pills span { padding: 7px 11px; font-size: 14px; line-height: 1.45; }
+#main .beyond-copy small { display: block; font-size: 14px; line-height: 1.65; }
+#main .beyond-row time { font-size: 14px; line-height: 1.5; }
+#main .skill-detail-heading p { font-size: 14px; line-height: 1.65; }
+#main .skill-detail-card .skill-pills span { padding: 6px 9px; font-size: 12px; line-height: 1.4; }
+#main .detailed-project-head p { font-size: 15px; line-height: 1.7; }
+#main .results-chart > span { font-size: 13px; line-height: 1.5; }
+#main .architecture-box > span, #main .technology-box > span { font-size: 13px; }
+#main .architecture-flow b, #main .pipeline-flow > b { font-size: 12px; line-height: 1.4; }
+#main .architecture-flow b small, #main .pipeline-flow > b small { font-size: 11px; line-height: 1.4; }
+#main .about-copy > p { font-size: 16px; line-height: 1.8; }
+#main .about-pillars article > p { font-size: 15px; line-height: 1.7; }
+#main .stats-strip small { font-size: 13px; line-height: 1.5; }
+#main .record-row p small, #main .record-row time { font-size: 13px; line-height: 1.6; }
+#main .home-hero h1 { font-size: clamp(48px, 5vw, 68px); line-height: 1.08; }
+#main .home-hero h2 { font-size: clamp(23px, 2.3vw, 30px); line-height: 1.4; }
+#main .hero-description { font-size: 16px; line-height: 1.75; }
+#main .hero-location, #main .hero-skills { font-size: 14px; line-height: 1.7; }
+#main .hero-metrics small { font-size: 12px; line-height: 1.5; }
+@media (max-width: 700px) {
+  #main .course-pills span { padding: 6px 9px; font-size: 13px; }
+  #main .beyond-copy small, #main .beyond-row time { font-size: 13px; }
+  #main .skill-detail-heading p { font-size: 14px; }
+  #main .detailed-project-head p { font-size: 15px; }
+  #main .results-chart > span { font-size: 13px; }
+  #main .architecture-flow b, #main .pipeline-flow > b { font-size: 11px; }
+  #main .architecture-flow b small, #main .pipeline-flow > b small { font-size: 10px; }
+  #main .about-copy > p, #main .about-pillars article > p { font-size: 15px; line-height: 1.75; }
+  #main .stats-strip small, #main .record-row p small, #main .record-row time { font-size: 12px; }
+  #main .home-hero h1 { font-size: clamp(40px, 10vw, 54px); line-height: 1.1; }
+  #main .home-hero h2 { font-size: 21px; }
+  #main .hero-description { font-size: 15px; line-height: 1.75; }
+  #main .hero-location, #main .hero-skills { font-size: 13px; }
+  #main .hero-metrics small { font-size: 11px; }
+}
+@media (max-width: 700px) {
+  .research-art { flex-basis: 100%; min-height: 140px; gap: 11px; padding: 13px; }
+  .research-art-summary > span { font-size: 8px; }
+  .research-art-summary > strong { font-size: 36px; }
+  .research-art-summary > small { font-size: 10px; }
+  .research-art-chart { gap: 5px; }
+  .research-art-chart b { font-size: 9px; }
+  .research-art-chart small { font-size: 7px; }
+  .project-facts { gap: 8px; }
+  .project-facts b { font-size: 12px; }
+  .project-facts p { font-size: 13px; }
+}
+
+/* Slightly enlarge affiliation marks and keep action labels comfortably readable. */
+.credential-item { min-height: 82px; gap: 17px; padding: 10px 19px; }
+.school-mark.mark-image { width: 35px; height: 56px; flex-basis: 35px; }
+.school-mark.mark-image img { width: 114px; height: 56px; }
+.school-mark.ecai-mark { width: 46px; height: 46px; flex-basis: 46px; font-size: 28px; }
+.school-mark.rutgers-mark { font-size: 48px; }
+.credential-copy strong { font-size: 14px; }
+.credential-copy small { font-size: 11px; }
+.home-hero-grid { padding-bottom: 18px; }
+#main .button, #main button, #main .skills-in-action a, #main .contact-profiles a,
+.site-footer .footer-buttons .button { font-size: 13px; }
+#main .hero-buttons { gap: 14px; margin-bottom: 22px; }
+#main .hero-buttons .button { min-height: 48px; padding: 12px 20px; }
+#main .project-actions .button { font-size: 12px; }
+#main .featured-filters button, #main .project-filter-bar button { min-height: 40px; padding: 9px 14px; }
+@media (max-width: 700px) {
+  .credential-item { min-height: 68px; gap: 15px; padding: 9px 4px; }
+  .school-mark.mark-image { width: 34px; height: 52px; flex-basis: 34px; }
+  .school-mark.mark-image img { width: 106px; height: 52px; }
+  .school-mark.ecai-mark { width: 42px; height: 42px; flex-basis: 42px; font-size: 26px; }
+  .school-mark.rutgers-mark { font-size: 45px; }
+  .credential-copy strong { font-size: 14px; }
+  .credential-copy small { font-size: 12px; }
+  .home-hero-grid { padding-bottom: 26px; }
+  #main .hero-buttons { gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+  #main .hero-buttons .button { min-height: 46px; padding: 12px 17px; font-size: 13px; }
+  #main .project-actions .button { font-size: 12px; }
+}
+.home-project-card { height: 100%; }
+.home-project-body { height: 100%; display: flex; flex-direction: column; }
+.home-project-body > p { flex: 0 0 auto; }
+.home-project-art { flex: 0 0 164px; }
+.home-project-tags { flex: 0 0 auto; }
+.home-project-body > a { margin-top: auto; }
+.mini-chart > div > span { flex: 1 1 0; }
+.mini-chart i { flex: 0 0 auto; }
+.mini-chart > small { margin-bottom: 10px; }
+.featured-filters { margin-top: -5px; margin-bottom: 30px; }
+.home-featured .featured-heading { position: relative; min-height: 36px; margin-bottom: 0; padding: 0; }
+.home-featured .featured-heading h2 { position: relative; z-index: 3; font-size: 22px; line-height: 1.25; }
+.home-featured .featured-watermark { position: absolute; inset: -17px 0 auto; z-index: 0; color: #e8eae5; font-size: 92px; line-height: 1; }
+@media (max-width: 700px) {
+  .home-project-art { flex-basis: 132px; }
+  .featured-filters { margin-bottom: 27px; }
+  .featured-filters { margin-top: -5px; }
+  .home-featured .featured-heading { min-height: 34px; margin-bottom: 0; }
+  .home-featured .featured-heading h2 { font-size: 19px; }
+  .home-featured .featured-watermark { top: -11px; font-size: 48px; }
+}
