@@ -1,128 +1,90 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import NeuralNetwork from "@/components/NeuralNetwork";
 
+const pages = [
+  ["Overview", "/"], ["About", "/about"], ["Experience", "/experience"],
+  ["Projects", "/projects"], ["Skills", "/skills"], ["Education", "/education"],
+  ["Blog", "/blog"], ["Recommendations", "/recommendations"], ["Contact", "/contact"],
+];
+
+function Arrow({ diagonal = true }) {
+  return <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={diagonal ? "M5 19 19 5M5 5h14v14" : "M5 12h14m-6-6 6 6-6 6"} /></svg>;
+}
+
+function Header({ path }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [dark, setDark] = useState(false);
+  useEffect(() => {
+    const saved = localStorage.getItem("sandun-theme") === "dark";
+    setDark(saved);
+    document.documentElement.dataset.theme = saved ? "dark" : "light";
+  }, []);
+  function toggleTheme() {
+    const next = !dark;
+    setDark(next);
+    document.documentElement.dataset.theme = next ? "dark" : "light";
+    localStorage.setItem("sandun-theme", next ? "dark" : "light");
+  }
+  const visiblePages = pages;
+  return <>
+    <a className="skip-link" href="#main">Skip to content</a>
+    <header className={`header site-header ${menuOpen ? "menu-open" : ""}`}>
+      <Link className="wordmark" href="/">Sandun<span>Munasinghe<span className="brand-dot">.</span></span></Link>
+      <nav className="main-nav" aria-label="Main navigation">
+        {visiblePages.map(([label, href]) => <Link key={href} className={path === href ? "active" : ""} aria-current={path === href ? "page" : undefined} href={href}>{label}</Link>)}
+      </nav>
+      <div className="nav-actions">
+        <button className="icon-button theme-toggle" onClick={toggleTheme} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}>{dark ? "☀" : "☾"}</button>
+        <Link className="nav-contact" href="/contact">Let’s talk <Arrow /></Link>
+        <button className="icon-button mobile-menu" aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? "×" : "☰"}</button>
+      </div>
+    </header>
+    <nav className={`profile-tabs ${menuOpen ? "open" : ""}`} aria-label="Portfolio pages">
+      <div className="container">{visiblePages.map(([label, href]) => <Link key={href} className={path === href ? "active" : ""} aria-current={path === href ? "page" : undefined} href={href} onClick={() => setMenuOpen(false)}>{label}</Link>)}</div>
+    </nav>
+  </>;
+}
+
+function Footer({ path }) {
+  return <>
+    <footer className="portfolio-footer site-footer">
+    <div className="footer-network"><NeuralNetwork density="dense" /></div>
+    <div className="container footer-inner">
+      {path === "/" ? <>
+        <div className="footer-top"><div className="footer-invitation"><span className="footer-label">OPEN TO OPPORTUNITIES</span><h2>Let’s build something<br/><span>meaningful.</span></h2><p>Open to opportunities in machine learning, AI, and chemical engineering.</p><div className="footer-buttons"><Link className="button footer-email-button" href="/contact">Email Sandun <Arrow /></Link><a className="button footer-resume-button" href="https://sandun.figma.site/Sandun-Munasinghe-Resume.pdf" target="_blank" rel="noreferrer">Download Resume <span aria-hidden="true">↓</span></a></div></div><div className="footer-contact"><span className="footer-label">START A CONVERSATION</span><a href="mailto:sandunmunasinghe2017@gmail.com">sandunmunasinghe2017@gmail.com <Arrow /></a><p>Great ideas begin with a connection.</p></div></div>
+        <div className="footer-bottom"><div className="footer-socials"><a href="https://github.com/sandunmunasinghe91?tab=repositories" target="_blank" rel="noreferrer" aria-label="Sandun on GitHub"><svg viewBox="0 0 24 24"><path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.56.1.76-.24.76-.54v-2.08c-3.1.67-3.76-1.32-3.76-1.32-.5-1.29-1.24-1.63-1.24-1.63-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 1.7 2.62 1.21 3.26.92.1-.72.39-1.21.71-1.49-2.48-.28-5.09-1.24-5.09-5.51 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.42.11-2.96 0 0 .94-.3 3.05 1.15a10.6 10.6 0 0 1 5.55 0c2.11-1.45 3.05-1.15 3.05-1.15.61 1.54.23 2.68.11 2.96.72.78 1.15 1.03 1.15 3 0 4.28-2.61 5.23-5.1 5.5.4.35.75 1.03.75 2.08v3.08c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/></svg></a><a href="https://www.linkedin.com/in/sandun-munasinghe-268a1a27b" target="_blank" rel="noreferrer" aria-label="Sandun on LinkedIn"><svg viewBox="0 0 24 24"><path d="M5.1 8.3H1.8V22h3.3V8.3ZM3.45 2a1.92 1.92 0 1 0 0 3.84 1.92 1.92 0 0 0 0-3.84ZM22.2 14.15c0-4.12-2.2-6.04-5.14-6.04a4.44 4.44 0 0 0-4 2.2V8.3H9.8V22h3.27v-6.78c0-1.79.34-3.52 2.55-3.52 2.17 0 2.2 2.04 2.2 3.64V22h3.28l1.1-7.85Z"/></svg></a><a href="mailto:sandunmunasinghe2017@gmail.com" aria-label="Email Sandun"><svg viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3.5 6 8.5 7 8.5-7"/></svg></a></div><p>© 2026 Sandun Munasinghe</p><a className="footer-back-top" href="#main">Back to top <span aria-hidden="true">↑</span></a></div>
+      </> : <div className="footer-top inner-footer-top"><div className="footer-invitation"><span className="footer-label">{path === "/contact" ? "04 / LET’S CONNECT" : "LET’S CONNECT"}</span><h2>Let’s build something<br/><span>meaningful.</span></h2><p>Open to opportunities in machine learning, AI, and chemical engineering.</p><div className="footer-buttons"><Link className="button footer-email-button" href="/contact">{path === "/contact" ? "Send a Message" : "Get in Touch"} <Arrow /></Link><a className="button footer-resume-button" href="https://sandun.figma.site/Sandun-Munasinghe-Resume.pdf" target="_blank" rel="noreferrer">View Resume <span aria-hidden="true">↓</span></a></div></div></div>}
+    </div>
+    </footer>
+    {path !== "/" && <div className="contact-subfooter"><Link className="wordmark" href="/">Sandun<span>Munasinghe<span className="brand-dot">.</span></span></Link><nav aria-label="Footer navigation">{pages.map(([label, href]) => <Link key={href} href={href} aria-current={path === href ? "page" : undefined}>{label}</Link>)}</nav><div className="contact-subfooter-socials"><a href="https://github.com/sandunmunasinghe91?tab=repositories" aria-label="Sandun on GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.56.1.76-.24.76-.54v-2.08c-3.1.67-3.76-1.32-3.76-1.32-.5-1.29-1.24-1.63-1.24-1.63-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 1.7 2.62 1.21 3.26.92.1-.72.39-1.21.71-1.49-2.48-.28-5.09-1.24-5.09-5.51 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.42.11-2.96 0 0 .94-.3 3.05 1.15a10.6 10.6 0 0 1 5.55 0c2.11-1.45 3.05-1.15 3.05-1.15.61 1.54.23 2.68.11 2.96.72.78 1.15 1.78 1.15 3 0 4.28-2.61 5.23-5.1 5.5.4.35.75 1.03.75 2.08v3.08c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/></svg></a><a href="https://www.linkedin.com/in/sandun-munasinghe-268a1a27b" aria-label="Sandun on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.1 8.3H1.8V22h3.3V8.3ZM3.45 2a1.92 1.92 0 1 0 0 3.84 1.92 1.92 0 0 0 0-3.84ZM22.2 14.15c0-4.12-2.2-6.04-5.14-6.04a4.44 4.44 0 0 0-4 2.2V8.3H9.8V22h3.27v-6.78c0-1.79.34-3.52 2.55-3.52 2.17 0 2.2 2.04 2.2 3.64V22h3.28l1.1-7.85Z"/></svg></a><a href="mailto:sandunmunasinghe2017@gmail.com" aria-label="Email Sandun"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3.5 6 8.5 7 8.5-7"/></svg></a></div></div>}
+  </>;
+}
 
 export default function PortfolioPage({ children }) {
-  const root = useRef(null);
+  const path = usePathname();
+  const [showIntro, setShowIntro] = useState(path === "/");
+  const [landingReveal, setLandingReveal] = useState(false);
   useEffect(() => {
-    const scope = root.current;
-    if (!scope) return;
-    scope.classList.add("motion-ready");
-    const menuButton = scope.querySelector(".mobile-menu");
-    const nav = scope.querySelector(".profile-tabs");
-    const header = scope.querySelector(".header");
-    const bodyOverflowBeforeMenu = document.body.style.overflow;
-    const setMenuOpen = (open, returnFocus = false) => {
-      nav?.classList.toggle("open", open);
-      header?.classList.toggle("menu-open", open);
-      menuButton?.setAttribute("aria-expanded", String(open));
-      menuButton?.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
-      document.body.style.overflow = open ? "hidden" : bodyOverflowBeforeMenu;
-      if (open) requestAnimationFrame(() => nav?.querySelector("a")?.focus());
-      else if (returnFocus) menuButton?.focus();
-    };
-    const themeButton = scope.querySelector(".header .icon-button:not(.mobile-menu)");
-    const initialTheme = localStorage.getItem("sandun-theme");
-    if (initialTheme === "dark") document.documentElement.dataset.theme = "dark";
-    const onMenu = () => setMenuOpen(!nav?.classList.contains("open"));
-    const onTheme = () => {
-      const dark = document.documentElement.dataset.theme !== "dark";
-      document.documentElement.dataset.theme = dark ? "dark" : "light";
-      localStorage.setItem("sandun-theme", dark ? "dark" : "light");
-      themeButton?.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
-    };
-    const draftForm = scope.querySelector(".reckitt-editor form");
-    const draftFields = draftForm ? [...draftForm.querySelectorAll("input, textarea")] : [];
-    const draftStatus = draftForm?.querySelector('[role="status"]');
-    const draftKey = "sandun-reckitt-experience-draft";
-    try {
-      const saved = JSON.parse(localStorage.getItem(draftKey) || "null");
-      if (saved && draftFields.length) {
-        draftFields.forEach((field, index) => { field.value = saved[index] || ""; });
-        if (draftStatus) draftStatus.textContent = "Saved local draft restored.";
-      }
-    } catch { /* Ignore malformed local-only draft data. */ }
-    const onDraftSave = (event) => {
-      event.preventDefault();
-      const values = draftFields.map((field) => field.value);
-      localStorage.setItem(draftKey, JSON.stringify(values));
-      if (draftStatus) draftStatus.textContent = "Draft saved in this browser.";
-    };
-    const onFilter = (event) => {
-      const button = event.target.closest(".filters button");
-      if (!button || !scope.contains(button)) return;
-      const filters = button.parentElement;
-      filters.querySelectorAll("button").forEach((item) => {
-        const active = item === button;
-        item.classList.toggle("active", active);
-        item.setAttribute("aria-pressed", String(active));
-      });
-      const filter = button.textContent.trim();
-      const cards = [...scope.querySelectorAll(".project-card")];
-      let shown = 0;
-      cards.forEach((card) => {
-        const isChemical = card.classList.contains("showcase-chem") || card.classList.contains("chemical");
-        const visible = filter === "All" || (filter === "Chemical Engineering" ? isChemical : !isChemical);
-        card.hidden = !visible;
-        if (visible) shown++;
-      });
-      const count = scope.querySelector(".work-result-count");
-      if (count) count.textContent = `${shown} project${shown === 1 ? "" : "s"}`;
-    };
-    const onNav = (event) => {
-      if (event.target === nav) setMenuOpen(false, true);
-      else if (event.target.closest(".profile-tabs a")) setMenuOpen(false);
-    };
-    const onEscape = (event) => {
-      if (event.key === "Escape" && nav?.classList.contains("open")) {
-        event.preventDefault();
-        setMenuOpen(false, true);
-      }
-      if (event.key === "Tab" && nav?.classList.contains("open")) {
-        const links = [...nav.querySelectorAll("a[href]")];
-        const first = links[0];
-        const last = links[links.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last?.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first?.focus();
-        }
-      }
-    };
-    draftForm?.addEventListener("submit", onDraftSave);
-    menuButton?.addEventListener("click", onMenu);
-    themeButton?.addEventListener("click", onTheme);
-    scope.addEventListener("click", onFilter);
-    scope.addEventListener("click", onNav);
-    document.addEventListener("keydown", onEscape);
-    let observer;
-    const sections = [...scope.querySelectorAll("#main > section, .portfolio-footer")];
-    if ("IntersectionObserver" in window) {
-      observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.08, rootMargin: "0px 0px -36px 0px" });
-      sections.forEach((section) => observer.observe(section));
-    } else {
-      sections.forEach((section) => section.classList.add("is-visible"));
+    if (path === "/") {
+      setShowIntro(true);
+      setLandingReveal(false);
+      const timer = setTimeout(() => {
+        setShowIntro(false);
+        setLandingReveal(true);
+      }, 2650);
+      return () => clearTimeout(timer);
     }
-    return () => {
-      draftForm?.removeEventListener("submit", onDraftSave);
-      menuButton?.removeEventListener("click", onMenu);
-      themeButton?.removeEventListener("click", onTheme);
-      scope.removeEventListener("click", onFilter);
-      scope.removeEventListener("click", onNav);
-      document.removeEventListener("keydown", onEscape);
-      document.body.style.overflow = bodyOverflowBeforeMenu;
-      observer?.disconnect();
-    };
-  }, []);
-  return <div ref={root}>{children}</div>;
+    setShowIntro(false);
+    setLandingReveal(false);
+  }, [path]);
+  return <div id="root" className={`site-root ${landingReveal ? "landing-reveal" : ""}`}>
+    {showIntro && <div className="neural-intro" aria-hidden="true"><NeuralNetwork density="dense" /><div className="intro-brand"><span className="intro-mark"><svg viewBox="0 0 48 48"><path d="M8 25 19 11l10 7 11-8M8 25l10 12 11-10 11 6M19 11l-1 26M29 18l0 9M8 25l32 6"/><circle cx="8" cy="25" r="3"/><circle cx="19" cy="11" r="3"/><circle cx="29" cy="18" r="3"/><circle cx="40" cy="10" r="3"/><circle cx="18" cy="37" r="3"/><circle cx="29" cy="27" r="3"/><circle cx="40" cy="33" r="3"/></svg></span><span className="intro-wordmark">Sandun<br/>Munasinghe<span>.</span></span></div><span className="intro-caption">CONNECTING IDEAS</span><span className="intro-progress"><i/></span></div>}
+    <Header path={path} />
+    <div className="route-stage" key={path}><main id="main" tabIndex="-1" className="page-content">{children}</main></div>
+    <Footer path={path} />
+  </div>;
 }
