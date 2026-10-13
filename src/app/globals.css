@@ -1147,3 +1147,5 @@ body, .subpage, .page-content { background-color: var(--surface); color: var(--i
 :root[data-theme="dark"] .lens-art > text { fill: #f0e5ff; }
 :root[data-theme="dark"] .lens-art circle { fill: #9b7dc5; fill-opacity: .42; stroke: #c3a6eb; }
 :root[data-theme="dark"] .lens-art path { stroke: #c3a6eb; }
+:root[data-theme="dark"] .pillar-icon .about-icon,
+:root[data-theme="dark"] .coursework-grid > article > b { color: #20392f; }
