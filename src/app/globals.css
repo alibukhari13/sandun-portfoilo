@@ -364,6 +364,8 @@ body { background: var(--surface); color: var(--ink); }
 .degree-card { min-height:199px;padding:14px 16px;border:1px solid var(--line);border-radius:9px;background:#fff; }
 .degree-card-top { display:flex;align-items:center;gap:8px;min-height:46px;margin-bottom:7px; }
 .degree-card-top .school-mark { width:38px;height:36px; }.degree-card-top>strong { color:#d62e48;font:700 14px Sora,sans-serif;letter-spacing:.03em; }.degree-card-top>strong small { display:block;font:600 6px Inter,sans-serif;letter-spacing:.13em; }
+.degree-card-top .school-mark.mark-image { position:relative;display:block;flex:0 0 23px;width:23px;height:36px;overflow:hidden; }
+.degree-card-top .school-mark.mark-image img { position:static;width:100%;height:100%;max-width:none;object-fit:contain; }
 .degree-status { margin-left:auto;padding:5px 9px;border-radius:14px;background:#f1f2f0;text-align:center;color:#8c9297;font-size:8px; }.degree-status i { font-size:7px;font-style:normal; }.degree-status.completed { color:#56883a;background:#eff8e7; }
 .degree-card h3 { font-size:15px;letter-spacing:-.4px; }.degree-card>p { margin-top:6px;color:#70777e;font-size:9px; }.degree-card>p+p { margin-top:9px;line-height:1.5; }
 .degree-meta { min-height:37px;display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:11px;padding-top:8px;border-top:1px solid var(--line); }.degree-meta>div { display:grid;gap:2px; }.degree-meta small { color:#858b90;font-size:7px; }.degree-meta b { font-size:9px; }.diploma-link { padding:7px 9px;border:1px solid #b9dca2;border-radius:6px;color:#23312b;background:#f7fff0;font-size:7px;font-weight:600;white-space:nowrap; }
@@ -1447,6 +1449,7 @@ body, .subpage, .page-content { background-color: var(--surface); color: var(--i
 .home-project-art { flex: 0 0 164px; }
 .home-project-tags { flex: 0 0 auto; }
 .home-project-body > a { margin-top: auto; }
+.home-project-tags { margin-bottom: 16px; }
 .mini-chart > div > span { flex: 1 1 0; }
 .mini-chart i { flex: 0 0 auto; }
 .mini-chart > small { margin-bottom: 10px; }
@@ -1461,4 +1464,78 @@ body, .subpage, .page-content { background-color: var(--surface); color: var(--i
   .home-featured .featured-heading { min-height: 34px; margin-bottom: 0; }
   .home-featured .featured-heading h2 { font-size: 19px; }
   .home-featured .featured-watermark { top: -11px; font-size: 48px; }
+}
+
+/* Tighten the portrait-to-metrics join and give affiliation marks more presence. */
+.school-mark.mark-image { width: 40px; height: 62px; flex-basis: 40px; }
+.school-mark.mark-image img { width: 126px; height: 62px; }
+.school-mark.ecai-mark { width: 50px; height: 50px; flex-basis: 50px; font-size: 30px; }
+.school-mark.rutgers-mark { font-size: 54px; }
+@media (max-width: 700px) {
+  .home-hero-grid { row-gap: 2px; }
+  .school-mark.mark-image { width: 38px; height: 60px; flex-basis: 38px; }
+  .school-mark.mark-image img { width: 122px; height: 60px; }
+  .school-mark.ecai-mark { width: 48px; height: 48px; flex-basis: 48px; font-size: 29px; }
+  .school-mark.rutgers-mark { font-size: 52px; }
+  #main .hero-metrics { margin-top: 0; }
+}
+
+/* Give the hero copy a little more room and make its hierarchy clearer. */
+@media (min-width: 1001px) {
+  .home-hero-grid { grid-template-columns: minmax(0, 1.28fr) minmax(235px, .74fr) minmax(140px, .44fr); }
+  .home-hero-copy { width: 100%; max-width: 680px; }
+  #main .home-hero h1 { width: 100%; font-size: clamp(60px, 5.2vw, 74px); letter-spacing: -2.6px; line-height: 1.03; }
+  #main .home-hero h2 { font-size: clamp(26px, 2.4vw, 32px); }
+  #main .hero-description { max-width: 640px; font-size: 17px; line-height: 1.75; }
+}
+@media (min-width: 701px) and (max-width: 1000px) {
+  .home-hero-grid { grid-template-columns: minmax(0, 1.2fr) minmax(200px, .78fr) minmax(122px, .5fr); }
+  #main .home-hero h1 { width: 100%; font-size: clamp(49px, 5.4vw, 62px); line-height: 1.04; letter-spacing: -2px; }
+  #main .home-hero h2 { font-size: 24px; }
+  #main .hero-description { font-size: 15px; line-height: 1.7; }
+}
+@media (max-width: 700px) {
+  .home-hero-grid { padding-inline: 20px; }
+  .home-hero-copy { width: 100%; max-width: none; }
+  #main .home-hero h1 { width: 100%; max-width: none; font-size: clamp(48px, 11.5vw, 62px); line-height: 1.04; letter-spacing: -1.8px; }
+  #main .home-hero h2 { font-size: clamp(22px, 5.2vw, 25px); line-height: 1.4; }
+  #main .hero-description { width: 100%; max-width: none; font-size: 16px; line-height: 1.72; }
+  #main .hero-metrics { margin-top: 12px; }
+}
+.credential-inner > .credential-item:last-child { justify-content: center; }
+@media (min-width: 701px) {
+  .home-hero-grid { padding-bottom: 0; }
+}
+@media (max-width: 700px) {
+  .home-hero-grid { row-gap: 2px; }
+  #main .hero-metrics { margin-top: 0; }
+}
+
+/* Resume-based experience entries: clearer dates, readable accomplishments, and separated sections. */
+#main .experience-list { padding-top: 12px; padding-bottom: 48px; }
+#main .experience-group + .experience-group { margin-top: 27px; padding-top: 19px; border-top: 1px solid var(--line); }
+#main .experience-group > .section-kicker { display: block; margin-bottom: 4px; }
+#main .experience-list .experience-entry { display: grid; grid-template-columns: 128px 18px minmax(0, 1fr); gap: 12px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+#main .experience-list .experience-entry > time { padding-top: 4px; color: #6f777d; font-size: 13px; line-height: 1.5; }
+#main .experience-list .timeline-mark { padding-top: 5px; font-size: 13px; }
+#main .experience-list .experience-entry h2 { color: var(--ink); font-size: 21px; line-height: 1.35; }
+#main .experience-list .experience-entry h3 { margin-top: 3px; color: #59646b; font-size: 15px; line-height: 1.5; }
+#main .experience-list .experience-focus { margin: 9px 0 7px; color: #55635d; font-size: 14px; font-weight: 600; line-height: 1.55; }
+#main .experience-list .experience-entry ul { display: grid; gap: 7px; margin-top: 11px; list-style: none; }
+#main .experience-list .experience-entry li { position: relative; padding-left: 17px; color: #59646b; font-size: 14px; line-height: 1.65; }
+#main .experience-list .experience-entry li::before { position: absolute; top: .68em; left: 1px; width: 6px; height: 6px; border-radius: 50%; background: #91b94b; content: ""; }
+#main .experience-list .experience-entry .skill-pills { margin-top: 13px; }
+#main .experience-list .experience-entry .skill-pills span { font-size: 12px; }
+#main .experience-list .activity-entry { padding-block: 14px; }
+:root[data-theme="dark"] #main .experience-list .experience-entry > time,
+:root[data-theme="dark"] #main .experience-list .experience-entry h3,
+:root[data-theme="dark"] #main .experience-list .experience-focus,
+:root[data-theme="dark"] #main .experience-list .experience-entry li { color: #b4bec4; }
+@media (max-width: 700px) {
+  #main .experience-group + .experience-group { margin-top: 21px; padding-top: 16px; }
+  #main .experience-list .experience-entry { grid-template-columns: 82px 14px minmax(0, 1fr); gap: 7px; padding: 15px 0; }
+  #main .experience-list .experience-entry > time { font-size: 12px; }
+  #main .experience-list .experience-entry h2 { font-size: 19px; }
+  #main .experience-list .experience-entry h3 { font-size: 14px; }
+  #main .experience-list .experience-entry li { font-size: 14px; }
 }

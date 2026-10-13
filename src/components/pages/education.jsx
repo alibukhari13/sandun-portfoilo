@@ -21,7 +21,7 @@ function Icon({ name, size = 22 }) {
 }
 
 function SchoolMark({ kind }) {
-  return kind === "rutgers" ? <span className="school-mark rutgers-mark" aria-label="Rutgers University">R</span> : <span className="school-mark stevens-mark" aria-label="Stevens Institute of Technology"><svg viewBox="0 0 42 42" aria-hidden="true"><path d="M21 2 37 10v18L21 40 5 28V10L21 2Z"/><path d="M12 27V17l9-6 9 6v10M17 27V20h8v7M9 31h24"/><path d="M19 8h4"/></svg></span>;
+  return kind === "rutgers" ? <span className="school-mark rutgers-mark" aria-label="Rutgers University">R</span> : <span className="school-mark stevens-mark mark-image" aria-label="Stevens Institute of Technology shield"><Image src="/logos/stevens-shield.png" alt="Stevens Institute shield logo" width={370} height={580} /></span>;
 }
 
 export default function EducationPage() {
