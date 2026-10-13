@@ -86,7 +86,7 @@ body { background: var(--surface); color: var(--ink); }
 .site-root { overflow: clip; }
 .skip-link { position: fixed; z-index: 3000; top: 8px; left: 8px; padding: 10px 14px; background: white; transform: translateY(-150%); }
 .skip-link:focus { transform: translateY(0); }
-.site-header { max-width: none; height: 72px; padding: 0 max(5vw, calc((100vw - 1280px) / 2)); background: #07101b; color: #f6f8f2; border-bottom: 1px solid #ffffff17; }
+.site-header { position: sticky; top: 0; z-index: 1000; max-width: none; height: 72px; padding: 0 max(5vw, calc((100vw - 1280px) / 2)); background: #07101b; color: #f6f8f2; border-bottom: 1px solid #ffffff17; }
 .site-header .wordmark { font-size: 15px; line-height: 1.1; min-width: 118px; }
 .site-header .wordmark > span { display: block; }
 .site-header .brand-dot { display: inline; }
