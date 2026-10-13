@@ -1,4 +1,5 @@
 import "./globals.css";
+import Script from "next/script";
 
 export const metadata = {
   title: "Sandun Munasinghe — Machine Learning & AI Researcher",
@@ -6,5 +7,10 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  return <html lang="en"><body>{children}</body></html>;
+  return <html lang="en"><body>
+    <Script id="portfolio-startup-gate" strategy="beforeInteractive">
+      {`try { if (location.pathname === "/" && !sessionStorage.getItem("sandun-startup-seen")) { sessionStorage.setItem("sandun-startup-seen", "1"); document.documentElement.dataset.startup = "play"; } } catch {}`}
+    </Script>
+    {children}
+  </body></html>;
 }

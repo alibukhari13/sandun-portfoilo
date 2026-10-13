@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import NeuralNetwork from "@/components/NeuralNetwork";
@@ -79,16 +79,25 @@ function Footer({ path }) {
 
 export default function PortfolioPage({ children }) {
   const path = usePathname();
-  const [showIntro, setShowIntro] = useState(path === "/");
+  const [showIntro, setShowIntro] = useState(false);
   const [landingReveal, setLandingReveal] = useState(false);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (path === "/") {
-      setShowIntro(true);
-      setLandingReveal(false);
+      let playIntro = document.documentElement.dataset.startup === "play";
+      if (!playIntro) {
+        try {
+          playIntro = !window.sessionStorage.getItem("sandun-startup-seen");
+          if (playIntro) window.sessionStorage.setItem("sandun-startup-seen", "1");
+        } catch {}
+      }
+      delete document.documentElement.dataset.startup;
+      setShowIntro(playIntro);
+      setLandingReveal(!playIntro);
+      if (!playIntro) return;
       const timer = setTimeout(() => {
         setShowIntro(false);
         setLandingReveal(true);
-      }, 2650);
+      }, 2100);
       return () => clearTimeout(timer);
     }
     setShowIntro(false);

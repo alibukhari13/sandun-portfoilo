@@ -963,8 +963,10 @@ body { background: var(--surface); color: var(--ink); }
 @media(prefers-reduced-motion:reduce) { .neural-intro,.neural-intro *{animation-duration:.01ms!important;animation-delay:0ms!important}.neural-intro{display:none} }
 
 /* Keep the page fully covered until the startup sequence is complete. */
-.neural-intro { animation-duration:2.65s; }
-@keyframes intro-exit { 0%,92%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none} }
+html[data-startup="play"] .site-root { visibility:hidden; }
+html[data-startup="play"] .site-root .neural-intro { visibility:visible; }
+.neural-intro { animation-duration:2.1s; }
+@keyframes intro-exit { 0%,76%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none} }
 .landing-reveal .site-header,
 .landing-reveal .route-stage,
 .landing-reveal .site-footer,
