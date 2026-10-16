@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const stats = [["10K+", "Research papers processed"], ["790", "TruthfulQA questions evaluated"], ["2+", "AI projects (research + applied)"], ["5+ years", "Operations & data experience"]];
-const skills = ["Python", "PyTorch", "LLMs", "NLP", "Transformers", "Multi-Agent Systems", "Machine Learning", "Data Analysis", "SQL", "Data Engineering", "Process Systems", "Engineering Analysis", "Optimization", "Statistical Analysis", "Git", "Linux", "LaTeX", "Tools & APIs"];
+const skills = ["Python", "PyTorch", "LLMs", "NLP", "Transformers", "Multi-Agent Systems", "Machine Learning", "Data Analysis", "SQL", "Chemical Engineering", "Process Systems", "Engineering Analysis", "Optimization", "Statistical Analysis", "Git", "Linux", "LaTeX"];
 
 function AboutIcon({ name }) {
   const paths = {
@@ -20,11 +20,48 @@ function AboutIcon({ name }) {
 
 export default function AboutPage() {
   return <div className="subpage about-page">
-    <div className="container page-intro"><div className="section-kicker">SANDUN MUNASINGHE / ABOUT</div><div className="page-intro-row"><div><h1>About</h1><p>An engineering mindset. A curiosity for intelligence.</p></div><span className="intro-aside">ENGINEERING <i>×</i> MACHINE LEARNING <i>×</i> REAL-WORLD IMPACT</span></div></div>
-    <section className="container about-profile"><div className="about-photo"><Image src="/sandun-portrait.png" alt="Sandun Munasinghe seated in a navy suit" fill sizes="(max-width: 700px) 90vw, 36vw" /></div><div className="about-copy"><span className="section-kicker">01 / ABOUT ME</span><h2>An Engineering Mindset.<br /><span>A Passion for Intelligent Systems.</span></h2><p>I’m currently pursuing a Master’s degree in Computer Science with a specialization in Machine Learning at Stevens Institute of Technology. As a Graduate Research Assistant at the ECAI Lab, I research large language model (LLM) truthfulness and interpretability. My work also includes developing multi-agent AI systems and building transformer-based language models from scratch.</p><p>Before focusing on AI, I earned my Bachelor’s degree in Chemical Engineering from Rutgers University and gained more than five years of professional experience in operations. At the United States Postal Service, I applied data-driven analysis to improve staffing decisions, operational efficiency, and automated sorting processes.</p><p>Today, I combine my engineering background with my interest in AI to develop intelligent systems that address real-world challenges. I’m especially interested in Machine Learning, Generative AI, Natural Language Processing, and practical AI applications across engineering and industry.</p><div className="about-actions"><a className="button primary" href="https://sandun.figma.site/Sandun-Munasinghe-Resume.pdf" target="_blank" rel="noreferrer">View Resume <span>↗</span></a><Link className="button secondary" href="/projects">Explore Projects <span>↗</span></Link></div></div></section>
-    <section className="container about-pillars"><article><span className="pillar-icon lime"><AboutIcon name="brain" /></span><span className="section-kicker">01 / RESEARCH</span><h3>AI Research &amp; Development</h3><p>Exploring LLM truthfulness, interpretability, multi-agent systems, and transformer architectures through research and hands-on development.</p></article><article><span className="pillar-icon mint"><AboutIcon name="gear" /></span><span className="section-kicker">02 / FOUNDATION</span><h3>Engineering &amp; Problem-Solving</h3><p>Bringing chemical engineering knowledge, operational experience, and analytical thinking to complex technical challenges.</p></article></section>
-    <section className="container stats-strip">{stats.map(([value, label], i) => <div key={label}><b><AboutIcon name={["document", "database", "flask", "users"][i]} /></b><p><strong>{value}</strong><small>{label}</small></p></div>)}</section>
-    <section className="container about-records"><span className="section-kicker">02 / EDUCATION &amp; EXPERIENCE</span><div className="about-record-grid"><article><h3><AboutIcon name="cap" />Education</h3><div className="record-row"><b className="record-brand stevens-mark">S</b><p><strong>Stevens Institute of Technology</strong><small>M.S. in Computer Science (Machine Learning)<br />Hoboken, NJ</small></p><time>2024 – 2027<br />(Expected)</time></div><div className="record-row"><b className="record-brand rutgers-mark">R</b><p><strong>Rutgers University</strong><small>B.S. in Chemical Engineering<br />New Brunswick, NJ</small></p><time>2018 – 2022</time></div></article><article><h3><AboutIcon name="briefcase" />Professional Experience</h3><div className="record-row"><b className="record-brand usps-mark">USPS</b><p><strong>United States Postal Service</strong><small>Operations &amp; Customer Service Associate Manager<br />Redesigned staffing models for a 200K+ daily-package operation, cutting overtime costs by 20%. Led automated sorting system deployment and trained 20+ staff.</small></p><time>Oct 2018 –<br />Oct 2023</time></div></article></div></section>
-    <section className="container about-skills"><span className="section-kicker">03 / TECHNICAL SKILLS</span><div className="skill-pills">{skills.map((skill) => <span key={skill}>{skill}</span>)}</div></section>
+    <div className="container page-intro"><div className="section-kicker">SANDUN MUNASINGHE / ABOUT</div><div className="page-intro-row"><div><h1>About</h1><p>An engineering mindset. A curiosity for intelligence.</p></div><blockquote className="about-quote">“ Turning complex problems into intelligent systems. ”</blockquote></div></div>
+    <section className="container about-profile">
+      <div className="about-photo">
+        <Image src="/sandun-portrait.png" alt="Sandun Munasinghe seated in a navy suit" fill sizes="(max-width: 700px) 90vw, 36vw" />
+        <div className="about-photo-glow" aria-hidden="true" />
+        <div className="about-photo-caption"><strong>Sandun Munasinghe</strong><span>Graduate Research Assistant &amp; Machine Learning Engineer</span></div>
+      </div>
+      <div className="about-copy">
+        <span className="section-kicker">01 / ME</span>
+        <h2>An Engineering Mindset.<br /><span>A Passion for Intelligent Systems.</span></h2>
+        <p>I’m currently pursuing a Master’s degree in Computer Science with a specialization in Machine Learning at Stevens Institute of Technology. As a Graduate Research Assistant at the ECAI Lab, I research large language model (LLM) truthfulness and interpretability, develop multi-agent AI systems, and build transformer-based language models from scratch using PyTorch.</p>
+        <p>Before focusing on AI, I earned my Bachelor’s degree in Chemical Engineering from Rutgers University and gained more than five years of professional experience in operations. At the United States Postal Service, I applied data-driven analysis to improve staffing decisions, operational efficiency, and automated sorting processes.</p>
+        <p>Today, I combine my engineering problem-solving background with machine learning to build practical, intelligent systems that address real-world challenges across engineering and industry.</p>
+        <div className="about-actions"><a className="button lime-button" href="https://sandun.figma.site/Sandun-Munasinghe-Resume.pdf" target="_blank" rel="noreferrer">View Resume <span>↗</span></a><Link className="button dark-outline" href="/projects">Explore Projects <span>↗</span></Link></div>
+      </div>
+    </section>
+    <section className="container about-drive">
+      <span className="section-kicker">02 / WHAT DRIVES ME</span>
+      <div className="about-pillars">
+        <article className="drive-research"><span className="pillar-icon lime"><AboutIcon name="brain" /></span><h3>AI Research &amp; Development</h3><p>Exploring LLM truthfulness, interpretability, multi-agent systems, and transformer architectures through research and hands-on development.</p></article>
+        <article className="drive-engineering"><span className="pillar-icon mint"><AboutIcon name="gear" /></span><h3>Engineering &amp; Problem-Solving</h3><p>Bringing chemical engineering knowledge, operational experience, and analytical thinking to complex technical challenges.</p></article>
+      </div>
+    </section>
+    <section className="container about-impact">
+      <span className="section-kicker">03 / IMPACT IN NUMBERS</span>
+      <div className="stats-strip">{stats.map(([value, label], i) => <div key={label}><b><AboutIcon name={["document", "database", "users", "flask"][i]} /></b><p><strong>{value}</strong><small>{label}</small></p></div>)}</div>
+    </section>
+    <section className="container about-records">
+      <span className="section-kicker">04 / EDUCATION &amp; EXPERIENCE</span>
+      <div className="about-record-grid">
+        <article>
+          <h3><AboutIcon name="cap" />Education</h3>
+          <div className="record-row"><b className="record-brand stevens-mark">S</b><p><strong>Stevens Institute of Technology</strong><small>M.S. in Computer Science (Machine Learning)<br />Hoboken, NJ</small></p><time>2024 – 2027<br />(Expected)</time></div>
+          <div className="record-row"><b className="record-brand rutgers-mark">R</b><p><strong>Rutgers University</strong><small>B.S. in Chemical Engineering<br />New Brunswick, NJ</small></p><time>2018 – 2022</time></div>
+        </article>
+        <article>
+          <h3><AboutIcon name="briefcase" />Professional Experience</h3>
+          <div className="record-row"><b className="record-brand usps-mark">USPS</b><p><strong>United States Postal Service</strong><small>Data Analyst<br />Analyzed operational data to improve staffing decisions and processing efficiency. Supported automated sorting systems through data-driven insights and analysis.</small></p><time>2022 – 2024</time></div>
+          <div className="record-row"><b className="record-brand reckitt-mark">R</b><p><strong>Reckitt Benckiser</strong><small>Process &amp; Quality Engineering Associate<br />Supported process improvement and quality initiatives. Worked on operational efficiency and process optimization projects.</small></p><time>2021</time></div>
+        </article>
+      </div>
+    </section>
+    <section className="container about-skills"><span className="section-kicker">05 / CORE TECHNICAL SKILLS</span><div className="skill-pills">{skills.map((skill) => <span key={skill}>{skill}</span>)}</div></section>
   </div>;
 }

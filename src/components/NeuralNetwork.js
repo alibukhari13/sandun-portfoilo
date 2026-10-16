@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export default function NeuralNetwork({ density = "normal" }) {
+export default function NeuralNetwork({ density = "normal", variant = "field" }) {
   const canvasRef = useRef(null);
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -13,7 +13,9 @@ export default function NeuralNetwork({ density = "normal" }) {
     let height = 0;
     let nodes = [];
     let dpr = 1;
-    const count = density === "dense" ? 76 : 50;
+    const portrait = variant === "portrait";
+    const count = portrait ? 84 : density === "dense" ? 76 : 50;
+    const reach = portrait ? 118 : 140;
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
       width = rect.width;
@@ -24,12 +26,28 @@ export default function NeuralNetwork({ density = "normal" }) {
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
       let seed = 831;
       const random = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
-      nodes = Array.from({ length: count }, (_, i) => ({
-        x: random() * width, y: random() * height,
-        phase: random() * Math.PI * 2,
-        radius: i % 11 === 0 ? 2.8 : 1.25 + random() * 1.1,
-        speed: .0003 + random() * .0006,
-      }));
+      const spot = () => {
+        if (!portrait) return { x: random() * width, y: random() * height };
+        for (let attempt = 0; attempt < 10; attempt += 1) {
+          const x = random() * width;
+          const y = random() * height;
+          const nx = (x / width - 0.5) / 0.22;
+          const ny = (y / height - 0.5) / 0.3;
+          if (nx * nx + ny * ny > 1 || y / height < 0.16) return { x, y };
+        }
+        const angle = random() * Math.PI * 2;
+        const radius = 0.34 + random() * 0.16;
+        return { x: width * (0.5 + Math.cos(angle) * radius), y: height * (0.5 + Math.sin(angle) * radius * 1.15) };
+      };
+      nodes = Array.from({ length: count }, (_, i) => {
+        const point = spot();
+        return {
+          x: point.x, y: point.y,
+          phase: random() * Math.PI * 2,
+          radius: i % 9 === 0 ? 3.1 : 1.2 + random() * 1.15,
+          speed: .00035 + random() * .0007,
+        };
+      });
     };
     resize();
     const observer = new ResizeObserver(resize);
@@ -48,8 +66,8 @@ export default function NeuralNetwork({ density = "normal" }) {
           const a = points[i]; const b = points[j];
           const dx = b.x - a.x; const dy = b.y - a.y;
           const distance = Math.hypot(dx, dy);
-          if (distance < 140) {
-            const opacity = (1 - distance / 140) * .36;
+          if (distance < reach) {
+            const opacity = (1 - distance / reach) * (portrait ? .55 : .36);
             context.beginPath(); context.moveTo(a.x, a.y); context.lineTo(b.x, b.y);
             context.strokeStyle = `rgba(166,255,78,${opacity})`; context.lineWidth = .7; context.stroke();
             connections.push({ a, b, phase: (i * 13 + j * 7) % 1900 });
@@ -73,6 +91,6 @@ export default function NeuralNetwork({ density = "normal" }) {
     };
     frame = requestAnimationFrame(draw);
     return () => { cancelAnimationFrame(frame); observer.disconnect(); };
-  }, [density]);
+  }, [density, variant]);
   return <canvas ref={canvasRef} className="neural-canvas" aria-hidden="true" />;
 }

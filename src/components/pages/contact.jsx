@@ -55,10 +55,10 @@ export default function ContactPage() {
     <section className="container contact-main">
       <div className="contact-copy">
         <h2>Let’s build something<br/><span>meaningful.</span></h2>
-        <p className="contact-lede">I enjoy working on research, applied machine learning, and engineering problems that create real impact. Whether you want to discuss a potential collaboration, an opportunity, or just share an interesting idea, feel free to reach out.</p>
+        <p className="contact-lede">I’m open to machine learning and AI opportunities, research collaborations, project discussions, and technical conversations at the intersection of computer science and chemical engineering.</p>
         <div className="contact-method"><ContactIcon name="email"/><p><small>Email</small><a href="mailto:sandunmunasinghe2017@gmail.com">sandunmunasinghe2017@gmail.com ↗</a></p></div>
         <div className="contact-method"><ContactIcon name="location"/><p><small>Location</small><span>Hoboken, New Jersey, USA</span></p></div>
-        <div className="contact-method"><ContactIcon name="work"/><p><small>Open to</small><span>Research opportunities · Internships · Full-time roles<br/>Technical discussions · Project collaborations</span></p></div>
+        <div className="contact-method"><ContactIcon name="work"/><p><small>Open to</small><span>Research opportunities · Internships · Full-time roles<br/>Collaborations · Technical discussions</span></p></div>
         <div className="contact-profiles"><a href="https://github.com/sandunmunasinghe91?tab=repositories" target="_blank" rel="noreferrer"><ProfileMark type="github"/>GitHub <span>↗</span></a><a href="https://www.linkedin.com/in/sandun-munasinghe-268a1a27b" target="_blank" rel="noreferrer"><ProfileMark type="linkedin"/>LinkedIn <span>↗</span></a><a href="mailto:sandunmunasinghe2017@gmail.com"><ProfileMark type="email"/>Email <span>↗</span></a></div>
       </div>
       <form className="message-card" action="mailto:sandunmunasinghe2017@gmail.com" method="post" encType="text/plain">

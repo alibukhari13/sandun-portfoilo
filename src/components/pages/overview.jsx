@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import NeuralNetwork from "@/components/NeuralNetwork";
@@ -12,9 +9,17 @@ const projects = [
 ];
 
 function Mark({ type }) {
-  if (type === "chart") return <div className="mini-chart" aria-label="Truthfulness results chart"><small>Truthfulness Rate (%)</small><div>{[["89.7%", "Base Fine", "89.7%"], ["75.6%", "Conspiracy", "75.6%"], ["72%", "Popular Myth", "72%"], ["60.5%", "Force Wrong", "60.5%"]].map(([height, label, value]) => <span key={label}><b>{value}</b><i style={{ height: `${Number.parseFloat(height) * 0.72}px` }} /><em>{label}</em></span>)}</div></div>;
-  if (type === "agents") return <div className="mini-agents" aria-hidden="true"><span>A1</span><span>A2</span><b>Consensus</b><span>A3</span><span>A4</span></div>;
-  return <div className="mini-atom" aria-hidden="true"><svg viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="43" ry="17"/><ellipse cx="50" cy="50" rx="43" ry="17" transform="rotate(60 50 50)"/><ellipse cx="50" cy="50" rx="43" ry="17" transform="rotate(120 50 50)"/><circle cx="50" cy="50" r="4"/></svg></div>;
+  if (type === "chart") return <div className="mini-chart" aria-label="Truthfulness results chart"><small>Truthfulness Rate (%)</small><div>{[["88.7%", "Baseline"], ["75.6%", "Conspiracy"], ["72.0%", "Popular Myth"], ["60.5%", "Force Wrong"]].map(([value, label], index) => <span key={label}><b>{value}</b><i style={{ height: `${Number.parseFloat(value) * 0.72}px`, animationDelay: `${index * 90}ms` }} /><em>{label}</em></span>)}</div></div>;
+  if (type === "agents") return <div className="home-agents" aria-hidden="true">
+    <svg viewBox="0 0 220 140"><path d="M48 36h124M48 104h124M48 36 110 70 48 104M172 36 110 70 172 104" /></svg>
+    <span>A1<small>Planner</small></span><span>A2<small>Critic</small></span>
+    <b>CONSENSUS</b>
+    <span>A3<small>Researcher</small></span><span>A4<small>Executor</small></span>
+  </div>;
+  return <div className="home-plant" aria-hidden="true">
+    <svg viewBox="0 0 220 120"><g fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"><path d="M12 108h196M28 108V62h18v46m8 0V42h26v66m8 0V58h22v50m8 0V28h26v80m8 0V70h22v38"/><path d="M32 62V48h10v14m18-20V32h16v10m22 26h14m-8-16V40h14v12m24-24V16h16v12m20 54V70h14v16"/></g><g fill="currentColor"><circle cx="40" cy="82" r="2"/><circle cx="78" cy="58" r="2"/><circle cx="132" cy="44" r="2"/><circle cx="176" cy="84" r="2"/></g></svg>
+    <em>Process Design</em><em>Thermodynamics</em><em>Reactor Design</em><em>Separations</em><em>Process Control</em>
+  </div>;
 }
 
 function ProjectCard({ project, index }) {
@@ -24,39 +29,33 @@ function ProjectCard({ project, index }) {
 }
 
 export default function OverviewPage() {
-  const [projectFilter, setProjectFilter] = useState("all");
-  const visibleProjects = projects.filter((project) => {
-    if (projectFilter === "ai") return project.art !== "atom";
-    if (projectFilter === "engineering") return project.art === "atom";
-    return true;
-  });
-
   return <div className="home-page">
     <section className="home-hero">
       <div className="hero-network"><NeuralNetwork density="dense" /></div>
       <div className="container home-hero-grid">
         <div className="home-hero-copy"><p className="hero-location"><i /> New Jersey, United States</p><h1>Hey, I’m Sandun<br />Munasinghe.</h1><h2>Machine Learning &amp; AI Researcher.<br /><span>Building Intelligent Systems.</span></h2><p className="hero-description">I research large language model truthfulness and interpretability, develop multi-agent AI systems, and build domain-specific language models. With a background in Chemical Engineering and professional experience in operations, I bring an engineering mindset and a data-driven approach to solving real-world problems.</p><p className="hero-skills">LLMs <b>·</b> Deep Learning <b>·</b> NLP <b>·</b> PyTorch <b>·</b> AI Systems</p><div className="hero-buttons"><Link className="button primary lime-button" href="/projects">Explore Projects <span>↗</span></Link><a className="button secondary dark-outline" href="https://sandun.figma.site/Sandun-Munasinghe-Resume.pdf" target="_blank" rel="noreferrer">Download Resume <span>↓</span></a></div></div>
-        <div className="home-portrait-stage"><div className="portrait-neural"><NeuralNetwork /></div><Image className="hero-portrait" src="/sandun-portrait-cutout.png" alt="Sandun Munasinghe" fill priority sizes="(max-width: 700px) 100vw, 42vw" /></div>
+        <div className="home-portrait-stage"><div className="portrait-neural"><NeuralNetwork variant="portrait" /></div><Image className="hero-portrait" src="/sandun-portrait-cutout.png" alt="Sandun Munasinghe" fill priority sizes="(max-width: 700px) 100vw, 42vw" /><span className="portrait-float float-agents">Multi-Agent Systems</span><span className="portrait-float float-llms">LLMs</span><span className="portrait-float float-nlp">NLP</span><span className="portrait-float float-interp">Interpretability</span><span className="portrait-float float-impact">Real-World Impact</span></div>
         <div className="hero-metrics"><div><span className="metric-icon"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7zM14 3v5h5M10 12h5M10 16h5" /></svg></span><p><strong>10K+</strong><small>Research papers<br />processed</small></p></div><div><span className="metric-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v5c0 1.7 3.1 3 7 3s7-1.3 7-3V5m-14 5v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5m-14 5v4c0 1.7 3.1 3 7 3s7-1.3 7-3v-4" /></svg></span><p><strong>790</strong><small>TruthfulQA questions<br />evaluated</small></p></div><div><span className="metric-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m6-9a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7-7.5a4 4 0 0 1 0 7.8m2 3.2a4 4 0 0 1 3 3.9V21" /></svg></span><p><strong>2+</strong><small>AI projects<br />(research + applied)</small></p></div><div><span className="metric-icon"><svg viewBox="0 0 24 24"><path d="M9 3h6m-5 0v6l-5.5 9.3A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.7L14 9V3m-7 12h10" /></svg></span><p><strong>5+ years</strong><small>Operations &amp;<br />data experience</small></p></div></div>
       </div>
     </section>
     <div className="credential-strip" aria-label="Education and research affiliations"><div className="container credential-inner">
       <a className="credential-item" href="https://www.stevens.edu/" target="_blank" rel="noreferrer" aria-label="Stevens Institute of Technology, opens in a new tab">
+        <span className="credential-index">01</span>
         <span className="school-mark mark-image stevens-mark" aria-label="Stevens Institute official logo"><Image src="/logos/stevens-primary.png" alt="Stevens Institute of Technology shield and S mark" width={1500} height={732} /></span>
-        <span className="credential-copy"><strong>Graduate Student</strong><small>M.S. Computer Science · Machine Learning</small></span>
+        <span className="credential-copy"><strong>Stevens Institute of Technology</strong><small>MS Computer Science · Machine Learning</small></span>
       </a>
       <a className="credential-item" href="https://ecailab.org/" target="_blank" rel="noreferrer" aria-label="ECAI Lab, opens in a new tab">
+        <span className="credential-index">02</span>
         <span className="school-mark ecai-mark" aria-hidden="true">Z</span>
-        <span className="credential-copy"><strong>Graduate Research Assistant</strong><small>Explainable &amp; Controllable AI Lab</small></span>
+        <span className="credential-copy"><strong>ECAI Lab</strong><small>Graduate Research Assistant<br />LLM Research &amp; Interpretability</small></span>
       </a>
-      <a className="credential-item" href="https://smlr.rutgers.edu/academic-programs/undergraduate-programs/bachelors-degree-management-and-work" target="_blank" rel="noreferrer" aria-label="Rutgers School of Management and Labor Relations, opens in a new tab">
+      <a className="credential-item" href="https://www.rutgers.edu/" target="_blank" rel="noreferrer" aria-label="Rutgers University, opens in a new tab">
+        <span className="credential-index">03</span>
         <span className="school-mark rutgers-mark" aria-label="Rutgers University">R</span>
-        <span className="credential-copy"><strong>Rutgers University</strong><small>B.S. Chemical Engineering</small></span>
+        <span className="credential-copy"><strong>Rutgers University</strong><small>BS Chemical Engineering<br />Process Systems &amp; Engineering</small></span>
       </a>
     </div></div>
-    <section className="home-focus"><div className="container focus-inner"><div><span className="section-kicker">TWO DISCIPLINES / ONE PERSPECTIVE</span><h2>Research-led.<br /><span>Engineering-grounded.</span></h2></div><div><p>My work connects large language models, interpretability, multi-agent systems, and domain-specific AI with a foundation in chemical engineering, process systems, and data-driven analysis. I focus on building and applying intelligent systems to solve complex, real-world challenges in engineering.</p><div className="focus-links"><Link className="button primary" href="/projects">View My Work <span>↗</span></Link><Link className="button secondary" href="/contact">Contact Sandun <span>↗</span></Link></div></div></div></section>
-    <section className="home-featured"><div className="container"><div className="featured-heading"><h2>Featured Projects</h2><span className="featured-watermark" aria-hidden="true">PORTFOLIO</span></div><div className="featured-filters" aria-label="Featured project categories">
-      {[{ id: "all", label: "All" }, { id: "ai", label: "Machine Learning & AI" }, { id: "engineering", label: "Chemical Engineering" }].map((filter) => <button key={filter.id} type="button" className={projectFilter === filter.id ? "active" : ""} aria-pressed={projectFilter === filter.id} onClick={() => setProjectFilter(filter.id)}>{filter.label}</button>)}
-    </div><div className="home-project-grid">{visibleProjects.map((project) => <ProjectCard key={project.title} project={project} index={projects.indexOf(project)} />)}</div></div></section>
+    <section className="home-focus"><div className="focus-wave" aria-hidden="true"><NeuralNetwork density="dense" /></div><div className="container focus-inner"><div><span className="section-kicker">TWO DISCIPLINES / ONE PERSPECTIVE</span><h2>Research-led.<br /><span>Engineering-grounded.</span></h2></div><div><p>My work connects large language models, interpretability, multi-agent systems, and domain-specific AI with a foundation in chemical engineering, process systems, and data-driven analysis. I focus on building and applying intelligent systems to solve complex, real-world challenges in engineering and industry.</p><div className="focus-links"><Link className="button lime-button" href="/projects">View My Work <span>↗</span></Link><Link className="button dark-outline" href="/contact">Contact Sandun <span>↗</span></Link></div></div></div></section>
+    <section className="home-featured"><div className="container"><div className="featured-heading featured-heading-row"><h2><i /> Featured Projects</h2><Link href="/projects">View All Projects <span>↗</span></Link></div><div className="home-project-grid">{projects.map((project, index) => <ProjectCard key={project.title} project={project} index={index} />)}</div></div></section>
   </div>;
 }
