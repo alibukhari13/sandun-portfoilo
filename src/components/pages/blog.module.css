@@ -1,0 +1,17 @@
+.posts { display: grid; gap: 14px; padding-top: 34px; padding-bottom: 54px; }
+.post { padding: 28px 32px; border: 1px solid #dfe3d9; border-radius: 12px; background: linear-gradient(130deg, #fbfcf9, #f1f4ee); }
+.postMeta { display: flex; align-items: center; justify-content: space-between; gap: 14px; color: #73816e; font-size: 10px; }
+.post h2 { margin-top: 24px; color: #27322b; font: 600 25px/1.25 Sora, sans-serif; }
+.coverImage { display: block; width: 100%; max-height: 480px; margin-top: 20px; border-radius: 8px; object-fit: cover; }
+.excerpt { margin-top: 10px; color: #677078; font-size: 13px; line-height: 1.7; }
+.content { margin-top: 24px; padding-top: 20px; border-top: 1px solid #dfe3d9; color: #414b45; font-size: 14px; line-height: 1.85; white-space: pre-wrap; overflow-wrap: anywhere; }
+.empty { min-height: 240px; padding: 34px; border: 1px solid #dfe3d9; border-radius: 12px; background: linear-gradient(130deg, #f9fbf6, #edf3e8); }
+.empty h2 { margin-top: 30px; font: 600 28px/1.2 Sora, sans-serif; }
+.empty p { margin-top: 12px; color: #677078; font-size: 13px; }
+
+@media (max-width: 700px) {
+  .posts { padding-top: 24px; }
+  .post { padding: 22px 20px; }
+  .post h2 { font-size: 22px; }
+  .postMeta { align-items: flex-start; flex-direction: column; gap: 5px; }
+}
