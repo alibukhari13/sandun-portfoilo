@@ -5,6 +5,7 @@ import {
 } from "@/lib/supabase";
 import { isAdminSessionValid } from "@/lib/admin-auth";
 import { getBlogImageUrl } from "@/lib/blogs";
+import { listLocalPosts } from "@/lib/local-blog-store";
 import BlogPostForm from "./BlogPostForm";
 import {
   createBlog,
@@ -88,7 +89,7 @@ export default async function AdminPage({ searchParams }) {
       .from("blog_posts")
       .select("id, title, excerpt, content, slug, image_path, published, created_at, updated_at, published_at")
       .order("updated_at", { ascending: false }))
-    : { data: null, error: { message: "Supabase is not configured" } };
+    : { data: await listLocalPosts(), error: null };
   const posts = result.data ?? [];
   const error = result.error;
 
@@ -99,7 +100,7 @@ export default async function AdminPage({ searchParams }) {
           <a className={styles.backLink} href="/blog">← Public blog</a>
           <span className={styles.kicker}>SANDUN MUNASINGHE / ADMIN</span>
           <h1>Blog dashboard</h1>
-          <p className={styles.intro}>Create, revise, and publish articles.</p>
+          <p className={styles.intro}>Create, revise, publish, or delete articles. Published posts show on the public blog.</p>
         </div>
         <form action={logout}><button className={styles.secondaryButton} type="submit">Sign out</button></form>
       </header>

@@ -10,6 +10,16 @@ import {
   verifyAdminCredentials,
 } from "@/lib/admin-auth";
 import {
+  deleteLocalPost,
+  insertLocalPost,
+  isLocalBlogImage,
+  listLocalPosts,
+  removeLocalBlogImage,
+  saveLocalBlogImage,
+  uniqueLocalSlug,
+  updateLocalPost,
+} from "@/lib/local-blog-store";
+import {
   createSupabaseAdminClient,
   hasBlogDataConfig,
   safeSupabaseRequest,
@@ -47,7 +57,6 @@ async function hasValidImageSignature(image) {
 
 async function requireAdmin() {
   if (!(await isAdminSessionValid())) redirect("/admin?error=unauthorized");
-  if (!hasBlogDataConfig()) redirect("/admin?error=supabase");
 }
 
 function readPost(formData) {
@@ -85,6 +94,15 @@ async function uploadImage(formData) {
   }
   if (!(await hasValidImageSignature(image))) return { error: "image" };
 
+  if (!hasBlogDataConfig()) {
+    try {
+      return { path: await saveLocalBlogImage(image, imageTypes.get(image.type)) };
+    } catch (error) {
+      console.error("Unable to save blog image:", error instanceof Error ? error.message : error);
+      return { error: "image-upload" };
+    }
+  }
+
   const path = `${crypto.randomUUID()}.${imageTypes.get(image.type)}`;
   try {
     const { error } = await createSupabaseAdminClient()
@@ -114,6 +132,10 @@ async function uploadImage(formData) {
 
 async function removeImage(path) {
   if (!path) return;
+  if (isLocalBlogImage(path)) {
+    await removeLocalBlogImage(path);
+    return;
+  }
   try {
     const { error } = await createSupabaseAdminClient()
       .storage.from("blog-images")
@@ -188,6 +210,24 @@ export async function createBlog(state, formData) {
   const image = await uploadImage(formData);
   if (image.error) return returnFormError(state, image.error);
 
+  const published = formData.get("published") === "true";
+  if (!hasBlogDataConfig()) {
+    try {
+      await insertLocalPost({
+        ...post,
+        image_path: image.path,
+        slug: await uniqueLocalSlug(post.title),
+        published,
+        published_at: published ? new Date().toISOString() : null,
+      });
+    } catch (error) {
+      await removeImage(image.path);
+      console.error("Unable to save blog post:", error instanceof Error ? error.message : error);
+      return returnFormError(state, "save");
+    }
+    refreshBlogPages(published ? "published" : "created");
+  }
+
   const client = createSupabaseAdminClient();
   const slug = await uniqueSlug(client, post.title);
   if (!slug) {
@@ -195,7 +235,6 @@ export async function createBlog(state, formData) {
     return returnFormError(state, "save");
   }
 
-  const published = formData.get("published") === "true";
   const { error } = await safeSupabaseRequest(
     client.from("blog_posts").insert({
       ...post,
@@ -219,6 +258,37 @@ export async function updateBlog(state, formData) {
   const post = readPost(formData);
   if (!postIdPattern.test(id) || !post)
     return returnFormError(state, "validation");
+
+  if (!hasBlogDataConfig()) {
+    const existing = (await listLocalPosts()).find((item) => item.id === id);
+    if (!existing) return returnFormError(state, "save");
+
+    const image = await uploadImage(formData);
+    if (image.error) return returnFormError(state, image.error);
+    const imagePath = image.path ?? (formData.get("removeImage") === "true" ? null : existing.image_path);
+    const published = formData.get("published") === "true";
+
+    try {
+      const updated = await updateLocalPost(id, {
+        ...post,
+        image_path: imagePath,
+        slug: await uniqueLocalSlug(post.title, id),
+        published,
+        published_at: published ? (existing.published_at ?? new Date().toISOString()) : null,
+      });
+      if (!updated) {
+        await removeImage(image.path);
+        return returnFormError(state, "save");
+      }
+    } catch (error) {
+      await removeImage(image.path);
+      console.error("Unable to update blog post:", error instanceof Error ? error.message : error);
+      return returnFormError(state, "save");
+    }
+
+    if (image.path || imagePath === null) await removeImage(existing.image_path);
+    refreshBlogPages("updated");
+  }
 
   const client = createSupabaseAdminClient();
   const { data: existing, error: readError } = await safeSupabaseRequest(
@@ -271,6 +341,13 @@ export async function deleteBlog(formData) {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");
   if (!postIdPattern.test(id)) redirect("/admin?error=validation");
+
+  if (!hasBlogDataConfig()) {
+    const existing = await deleteLocalPost(id);
+    if (!existing) redirect("/admin?error=save");
+    await removeImage(existing.image_path);
+    refreshBlogPages("deleted");
+  }
 
   const client = createSupabaseAdminClient();
   const { data: existing, error: readError } = await safeSupabaseRequest(
