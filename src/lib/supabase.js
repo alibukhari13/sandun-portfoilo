@@ -7,12 +7,22 @@ import { cookies } from "next/headers";
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+function hasSupabaseUrl(url) {
+  if (!url) return false;
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "https:" || parsed.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
 export function hasPublicSupabaseConfig() {
-  return Boolean(supabaseUrl && supabaseAnonKey);
+  return hasSupabaseUrl(supabaseUrl) && Boolean(supabaseAnonKey);
 }
 
 export function hasBlogDataConfig() {
-  return Boolean(supabaseUrl && process.env.SUPABASE_SERVICE_ROLE_KEY);
+  return hasSupabaseUrl(supabaseUrl) && Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
 }
 
 export function isAdminEmail(email) {

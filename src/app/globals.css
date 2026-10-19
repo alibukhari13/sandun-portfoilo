@@ -1085,91 +1085,96 @@ body { background: var(--surface); color: var(--ink); }
 @keyframes intro-node-pop { 0%{opacity:0;transform:scale(.2)}70%{opacity:1;transform:scale(1.35)}100%{opacity:1;transform:scale(1)} }
 @keyframes caption-arrive { from{opacity:0;letter-spacing:.48em}to{opacity:1;letter-spacing:.28em} }
 @keyframes intro-progress-fill { to{transform:scaleX(1)} }
-/* ===== MOBILE STARTUP ANIMATION — COMPLETE FIX ===== */
+/* Mobile startup: keep the name in normal flow so the arrive animation cannot pull it off-center. */
 @media (max-width: 700px) {
-  /* Full screen dark overlay — fits any phone */
   .neural-intro {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0;
-    padding: 0 28px;
+    gap: 18px;
+    padding:
+      max(28px, env(safe-area-inset-top))
+      24px
+      max(72px, calc(env(safe-area-inset-bottom) + 56px));
     background: radial-gradient(ellipse at 50% 42%, #142e22 0%, #0a1820 50%, #050910 100%);
   }
 
-  /* Neural network canvas — bigger, more visible on mobile */
   .neural-intro .neural-canvas {
-    opacity: .7;
-    transform: scale(1);
+    opacity: .62;
     animation: neural-connect 1.9s cubic-bezier(.16,.78,.22,1) both;
   }
 
-  /* Brand block — centered vertically */
   .intro-brand {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -54%);
+    position: relative;
+    top: auto;
+    left: auto;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    gap: 18px;
-    width: 100%;
-    padding: 0 24px;
+    gap: 16px;
+    width: min(100%, 280px);
+    max-width: 100%;
+    padding: 0;
+    animation: brand-arrive-mobile .8s .04s cubic-bezier(.18,.75,.2,1) both;
   }
 
-  /* Logo mark — bigger & more impactful */
   .intro-mark {
-    width: 72px;
-    height: 72px;
-    border-radius: 20px;
-    box-shadow: 0 0 48px #aaff5040, inset 0 0 28px #aaff5018;
+    width: 68px;
+    height: 68px;
+    border-radius: 18px;
+    box-shadow: 0 0 40px #aaff5040, inset 0 0 24px #aaff5018;
   }
   .intro-mark svg {
-    width: 52px;
-    height: 52px;
+    width: 46px;
+    height: 46px;
   }
 
-  /* Name wordmark — large & centered */
   .intro-wordmark {
-    font-size: clamp(28px, 8vw, 40px);
-    letter-spacing: -1.5px;
-    line-height: 1.08;
+    font-size: clamp(26px, 8vw, 34px);
+    letter-spacing: -1.1px;
+    line-height: 1.05;
     text-align: center;
-    text-shadow: 0 2px 32px #baff5040;
+    text-shadow: 0 2px 28px #baff5040;
   }
 
-  /* "CONNECTING IDEAS" label — below center */
   .neural-intro .intro-caption {
-    position: absolute;
+    position: relative;
     top: auto;
-    bottom: calc(18vh + 26px);
-    left: 50%;
-    transform: translateX(-50%);
+    right: auto;
+    bottom: auto;
+    left: auto;
+    transform: none;
     margin: 0;
-    font-size: 9px;
-    letter-spacing: .3em;
+    font-size: 10px;
+    letter-spacing: .24em;
     white-space: nowrap;
     text-align: center;
+    animation: caption-arrive .65s .85s ease both;
   }
 
-  /* Loading progress bar — always visible at bottom */
   .neural-intro .intro-progress {
-    bottom: 14vh;
-    width: min(260px, 70vw);
+    left: 50%;
+    bottom: max(28px, calc(env(safe-area-inset-bottom) + 18px));
+    width: min(220px, 64vw);
     height: 2px;
+    transform: translateX(-50%);
   }
 }
 
-/* Very small phones (iPhone SE, Galaxy A series) */
+@keyframes brand-arrive-mobile {
+  0% { opacity: 0; transform: translateY(16px); filter: blur(6px); }
+  100% { opacity: 1; transform: none; filter: blur(0); }
+}
+
 @media (max-width: 400px) {
-  .intro-brand { gap: 14px; }
-  .intro-mark { width: 62px; height: 62px; border-radius: 16px; }
-  .intro-mark svg { width: 44px; height: 44px; }
-  .intro-wordmark { font-size: 28px; }
-  .neural-intro .intro-caption { font-size: 8px; letter-spacing: .22em; bottom: calc(16vh + 22px); }
-  .neural-intro .intro-progress { width: min(220px, 72vw); bottom: 13vh; }
+  .intro-brand { gap: 14px; width: min(100%, 250px); }
+  .intro-mark { width: 58px; height: 58px; border-radius: 16px; }
+  .intro-mark svg { width: 40px; height: 40px; }
+  .intro-wordmark { font-size: 26px; letter-spacing: -1px; }
+  .neural-intro .intro-caption { font-size: 9px; letter-spacing: .18em; }
+  .neural-intro .intro-progress { width: min(200px, 70vw); }
 }
 @media(prefers-reduced-motion:reduce) { .neural-intro,.neural-intro *{animation-duration:.01ms!important;animation-delay:0ms!important}.neural-intro{display:none} }
 
