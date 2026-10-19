@@ -33,7 +33,7 @@ export default function AboutPage() {
         <p>I’m currently pursuing a Master’s degree in Computer Science with a specialization in Machine Learning at Stevens Institute of Technology. As a Graduate Research Assistant at the ECAI Lab, I research large language model (LLM) truthfulness and interpretability, develop multi-agent AI systems, and build transformer-based language models from scratch using PyTorch.</p>
         <p>Before focusing on AI, I earned my Bachelor’s degree in Chemical Engineering from Rutgers University and gained more than five years of professional experience in operations. At the United States Postal Service, I applied data-driven analysis to improve staffing decisions, operational efficiency, and automated sorting processes.</p>
         <p>Today, I combine my engineering problem-solving background with machine learning to build practical, intelligent systems that address real-world challenges across engineering and industry.</p>
-        <div className="about-actions"><a className="button lime-button" href="https://sandun.figma.site/Sandun-Munasinghe-Resume.pdf" target="_blank" rel="noreferrer">View Resume <span>↗</span></a><Link className="button dark-outline" href="/projects">Explore Projects <span>↗</span></Link></div>
+        <div className="about-actions"><a className="button lime-button" href="/assets/Sandun_Munasinghe.pdf" target="_blank" rel="noreferrer">View Resume <span>↗</span></a><Link className="button dark-outline" href="/projects">Explore Projects <span>↗</span></Link></div>
       </div>
     </section>
     <section className="container about-drive">
