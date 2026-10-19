@@ -9,6 +9,19 @@
 .empty h2 { margin-top: 30px; font: 600 28px/1.2 Sora, sans-serif; }
 .empty p { margin-top: 12px; color: #677078; font-size: 13px; }
 
+:global(:root[data-theme="dark"]) .post,
+:global(:root[data-theme="dark"]) .empty {
+  color: #edf2ef;
+  border-color: #303b42;
+  background: #19232b;
+}
+:global(:root[data-theme="dark"]) .post h2,
+:global(:root[data-theme="dark"]) .empty h2 { color: #edf2ef; }
+:global(:root[data-theme="dark"]) .postMeta,
+:global(:root[data-theme="dark"]) .excerpt,
+:global(:root[data-theme="dark"]) .empty p { color: #a5afb5; }
+:global(:root[data-theme="dark"]) .content { color: #d5ddd8; border-top-color: #303b42; }
+
 @media (max-width: 700px) {
   .posts { padding-top: 24px; }
   .post { padding: 22px 20px; }

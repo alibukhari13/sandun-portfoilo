@@ -41,7 +41,6 @@ function LoginPanel({ error, backendReady }) {
       <span className={styles.kicker}>SANDUN MUNASINGHE / ADMIN</span>
       <h1>Sign in</h1>
       <p className={styles.intro}>Manage articles for the public blog.</p>
-      {!backendReady && <p className={styles.notice}>Backend is not connected yet. Open the dashboard to review the admin screens. Sign-in will be required after the backend is connected.</p>}
       {error && <p className={styles.alert} role="alert">{error}</p>}
       {!backendReady && <a className={styles.previewButton} href="/admin">Open dashboard</a>}
       <form action={login} className={styles.form}>
@@ -85,7 +84,7 @@ export default async function AdminPage({ searchParams }) {
   const params = await searchParams;
   const databaseConfigured = hasBlogDataConfig();
   const signedIn = await isAdminSessionValid();
-  if (!signedIn && (databaseConfigured || params?.screen === "login")) {
+  if (params?.screen === "login") {
     return <LoginPanel error={errorMessages[params?.error]} backendReady={databaseConfigured} />;
   }
   const result = databaseConfigured
@@ -108,7 +107,6 @@ export default async function AdminPage({ searchParams }) {
         </div>
         {signedIn ? <form action={logout}><button className={styles.secondaryButton} type="submit">Sign out</button></form> : <a className={styles.secondaryButton} href="/admin?screen=login">Sign-in screen</a>}
       </header>
-      {!databaseConfigured && <p className={styles.notice}>Frontend review is open because the backend is not connected. A backend developer can turn sign-in back on by connecting the database.</p>}
 
       {params?.status && statusMessages[params.status] && <p className={styles.success} role="status">{statusMessages[params.status]}</p>}
       {params?.error && <p className={styles.alert} role="alert">{errorMessages[params.error] ?? "Something went wrong."}</p>}
