@@ -31,6 +31,10 @@
 .checkboxLabel input { width: 16px; height: 16px; accent-color: #6e9139; }
 .primaryButton, .secondaryButton, .deleteButton { min-height: 40px; border: 1px solid transparent; border-radius: 6px; padding: 0 15px; font: 600 12px Inter, sans-serif; cursor: pointer; }
 .primaryButton { width: fit-content; color: #fff; background: #3d5637; }
+.previewButton { display: flex; align-items: center; justify-content: center; min-height: 42px; margin: 16px 0 4px; border-radius: 6px; color: #fff; background: #3d5637; font: 600 13px Inter, sans-serif; text-decoration: none; }
+.previewButton:hover { background: #2e4529; }
+.notice { margin-top: 14px; border-radius: 6px; padding: 11px 13px; color: #3f5142; background: #eef3e6; font-size: 13px; line-height: 1.5; }
+a.secondaryButton { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
 .primaryButton:hover { background: #2e4529; }
 .secondaryButton { color: #3f5142; border-color: #d6ddd5; background: #fff; }
 .secondaryButton:hover { border-color: #8c9b87; background: #f8faf6; }

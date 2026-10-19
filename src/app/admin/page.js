@@ -34,14 +34,16 @@ const errorMessages = {
   save: "The change could not be saved. Please try again.",
 };
 
-function LoginPanel({ error }) {
+function LoginPanel({ error, backendReady }) {
   return <main className={styles.page}>
     <div className={styles.loginPanel}>
       <a className={styles.backLink} href="/blog">← Public blog</a>
       <span className={styles.kicker}>SANDUN MUNASINGHE / ADMIN</span>
       <h1>Sign in</h1>
       <p className={styles.intro}>Manage articles for the public blog.</p>
-        {error && <p className={styles.alert} role="alert">{error}</p>}
+      {!backendReady && <p className={styles.notice}>Backend is not connected yet. Open the dashboard to review the admin screens. Sign-in will be required after the backend is connected.</p>}
+      {error && <p className={styles.alert} role="alert">{error}</p>}
+      {!backendReady && <a className={styles.previewButton} href="/admin">Open dashboard</a>}
       <form action={login} className={styles.form}>
         <label>Email<input type="email" name="email" autoComplete="username" required /></label>
         <label>Password<input type="password" name="password" autoComplete="current-password" required /></label>
@@ -81,9 +83,11 @@ function PostRow({ post }) {
 
 export default async function AdminPage({ searchParams }) {
   const params = await searchParams;
-  if (!(await isAdminSessionValid())) return <LoginPanel error={errorMessages[params?.error]} />;
-
   const databaseConfigured = hasBlogDataConfig();
+  const signedIn = await isAdminSessionValid();
+  if (!signedIn && (databaseConfigured || params?.screen === "login")) {
+    return <LoginPanel error={errorMessages[params?.error]} backendReady={databaseConfigured} />;
+  }
   const result = databaseConfigured
     ? await safeSupabaseRequest(createSupabaseAdminClient()
       .from("blog_posts")
@@ -102,8 +106,9 @@ export default async function AdminPage({ searchParams }) {
           <h1>Blog dashboard</h1>
           <p className={styles.intro}>Create, revise, publish, or delete articles. Published posts show on the public blog.</p>
         </div>
-        <form action={logout}><button className={styles.secondaryButton} type="submit">Sign out</button></form>
+        {signedIn ? <form action={logout}><button className={styles.secondaryButton} type="submit">Sign out</button></form> : <a className={styles.secondaryButton} href="/admin?screen=login">Sign-in screen</a>}
       </header>
+      {!databaseConfigured && <p className={styles.notice}>Frontend review is open because the backend is not connected. A backend developer can turn sign-in back on by connecting the database.</p>}
 
       {params?.status && statusMessages[params.status] && <p className={styles.success} role="status">{statusMessages[params.status]}</p>}
       {params?.error && <p className={styles.alert} role="alert">{errorMessages[params.error] ?? "Something went wrong."}</p>}

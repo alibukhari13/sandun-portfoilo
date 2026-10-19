@@ -56,7 +56,9 @@ async function hasValidImageSignature(image) {
 }
 
 async function requireAdmin() {
-  if (!(await isAdminSessionValid())) redirect("/admin?error=unauthorized");
+  if (await isAdminSessionValid()) return;
+  if (!hasBlogDataConfig()) return;
+  redirect("/admin?error=unauthorized");
 }
 
 function readPost(formData) {
