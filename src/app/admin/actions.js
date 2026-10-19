@@ -57,7 +57,6 @@ async function hasValidImageSignature(image) {
 
 async function requireAdmin() {
   if (await isAdminSessionValid()) return;
-  if (!hasBlogDataConfig()) return;
   redirect("/admin?error=unauthorized");
 }
 
@@ -98,9 +97,14 @@ async function uploadImage(formData) {
 
   if (!hasBlogDataConfig()) {
     try {
-      return { path: await saveLocalBlogImage(image, imageTypes.get(image.type)) };
+      return {
+        path: await saveLocalBlogImage(image, imageTypes.get(image.type)),
+      };
     } catch (error) {
-      console.error("Unable to save blog image:", error instanceof Error ? error.message : error);
+      console.error(
+        "Unable to save blog image:",
+        error instanceof Error ? error.message : error,
+      );
       return { error: "image-upload" };
     }
   }
@@ -224,7 +228,10 @@ export async function createBlog(state, formData) {
       });
     } catch (error) {
       await removeImage(image.path);
-      console.error("Unable to save blog post:", error instanceof Error ? error.message : error);
+      console.error(
+        "Unable to save blog post:",
+        error instanceof Error ? error.message : error,
+      );
       return returnFormError(state, "save");
     }
     refreshBlogPages(published ? "published" : "created");
@@ -267,7 +274,9 @@ export async function updateBlog(state, formData) {
 
     const image = await uploadImage(formData);
     if (image.error) return returnFormError(state, image.error);
-    const imagePath = image.path ?? (formData.get("removeImage") === "true" ? null : existing.image_path);
+    const imagePath =
+      image.path ??
+      (formData.get("removeImage") === "true" ? null : existing.image_path);
     const published = formData.get("published") === "true";
 
     try {
@@ -276,7 +285,9 @@ export async function updateBlog(state, formData) {
         image_path: imagePath,
         slug: await uniqueLocalSlug(post.title, id),
         published,
-        published_at: published ? (existing.published_at ?? new Date().toISOString()) : null,
+        published_at: published
+          ? (existing.published_at ?? new Date().toISOString())
+          : null,
       });
       if (!updated) {
         await removeImage(image.path);
@@ -284,11 +295,15 @@ export async function updateBlog(state, formData) {
       }
     } catch (error) {
       await removeImage(image.path);
-      console.error("Unable to update blog post:", error instanceof Error ? error.message : error);
+      console.error(
+        "Unable to update blog post:",
+        error instanceof Error ? error.message : error,
+      );
       return returnFormError(state, "save");
     }
 
-    if (image.path || imagePath === null) await removeImage(existing.image_path);
+    if (image.path || imagePath === null)
+      await removeImage(existing.image_path);
     refreshBlogPages("updated");
   }
 
