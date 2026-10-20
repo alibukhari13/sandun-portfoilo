@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image from "next/image";
+import { ReckittLogo, StevensLogo, UspsLogo } from "@/components/BrandLogos";
+import SatelliteGlobe, { WorldDots } from "@/components/SatelliteGlobe";
 
 const roles = [
   {
@@ -22,6 +23,7 @@ const roles = [
     ],
     skills: ["Python", "PyTorch", "Hugging Face", "LLM Evaluation", "Model Interpretability", "NLP", "Research Methods"],
     logo: "stevens",
+    href: "https://www.stevens.edu/",
   },
   {
     id: "operations",
@@ -41,6 +43,7 @@ const roles = [
     ],
     skills: ["Operations Management", "Data Analysis", "Process Improvement", "Team Leadership", "Stakeholder Communication", "Logistics Systems"],
     logo: "usps",
+    href: "https://www.usps.com/",
   },
   {
     id: "process",
@@ -50,7 +53,7 @@ const roles = [
     tone: "violet",
     title: "Process & Quality Engineering Associate",
     org: "Reckitt Benckiser",
-    place: "Parsippany, NJ",
+    place: "Colombo, Sri Lanka",
     date: "Aug 2012 – Oct 2017",
     summary: "Supported process design, scale-up, and quality control for disinfectant production, ensuring operational efficiency and regulatory compliance.",
     bullets: [
@@ -61,6 +64,7 @@ const roles = [
     ],
     skills: ["Process Engineering", "GMP / ISO", "Quality Control", "Process Optimization", "Troubleshooting", "MATLAB/Simulink"],
     logo: "reckitt",
+    href: "https://www.reckitt.com/offices/sri-lanka/",
   },
 ];
 
@@ -75,7 +79,6 @@ const highlights = [
   ["years", "5+", "Years of industry experience"],
   ["orgs", "3", "Major organizations"],
   ["overtime", "20%", "Overtime cost reduction (USPS)"],
-  ["throughput", "40%", "Throughput increase (Reckitt Benckiser)"],
 ];
 
 const journey = [
@@ -97,90 +100,10 @@ function Icon({ name }) {
   return <svg {...common}><path d="M9 3h6M10 3v5.5L5.2 18A2 2 0 0 0 7 21h10a2 2 0 0 0 1.8-3L14 8.5V3"/><path d="M8 15h8"/></svg>;
 }
 
-function StevensLogo() {
-  return <span className="xp-logo stevens-logo"><Image src="/logos/stevens-primary.png" alt="Stevens Institute of Technology" width={1500} height={732} /></span>;
-}
-
-function UspsLogo() {
-  return <svg className="xp-logo usps-logo" viewBox="0 0 132 46" role="img" aria-label="United States Postal Service">
-    <rect width="132" height="46" rx="3" fill="#004b87"/>
-    <path fill="#fff" d="M22 33c-6.2-1.2-9.4-6.8-8.2-12.4 1-4.6 4.6-7.6 9.2-8.2 1.6-2.8 5.4-4.2 8.8-3.2 2.4-2.6 6.6-3.2 9.6-1.4 3.2.2 5.4 2.4 6.2 5.2 3.4.2 6.6 2.4 7.4 5.8.8 3.6-.8 7-3.8 8.6-1.2 4.8-5.6 8-10.6 8.2-2.4 1.6-6.2 1.8-8.8.4-3.2 1.2-7.2.6-9.8-3Z"/>
-    <path fill="#004b87" d="M28.5 22.5c2.2-3.6 6.8-4.4 9.6-2.2l1.6-3.2c-4.4-3.2-10.8-2.2-14 2.6-2.6 4-2.2 9.2.8 12.4 1.2-2.2 1.4-6.2 2-9.6Z"/>
-    <path fill="#e31c3d" d="M46 16.5h16.5v2.2H46zm0 3.4h16.5v2.1H46zm0 3.3h16.5V25H46z"/>
-    <path fill="#fff" d="M64.2 14.8c2.8 0 4.4 1.6 4.4 4.2v8.6h-2.6v-1.4c-.8 1-2 1.6-3.4 1.6-2.8 0-4.6-2-4.6-4.8s1.8-4.8 4.6-4.8c1.2 0 2.2.4 3 .1v-.5c0-1.2-.8-1.8-2.2-1.8-1.2 0-2 .4-2.6 1.1l-1.6-1.6c1.1-1.1 2.6-1.7 4.6-1.7Zm-1.4 7.2c0-1.2-.8-2-2-2s-2 .8-2 2 .8 2 2 2 2-.8 2-2ZM72.2 19.2h2.5v1.2c.6-.8 1.6-1.4 2.9-1.4 2.4 0 3.8 1.6 3.8 4.2v5.4h-2.5v-4.8c0-1.4-.6-2.2-1.8-2.2-1.3 0-2.2.9-2.2 2.4v4.6h-2.5V19.2Zm14.2 0h2.5v1.3c.7-.9 1.7-1.5 3.1-1.5 2.6 0 4.2 1.8 4.2 4.6 0 2.9-1.6 4.7-4.2 4.7-1.3 0-2.3-.6-3-1.4v4.2h-2.6V19.2Zm5.4 3.2c0-1.4-.8-2.2-2-2.2s-2 .8-2 2.3.8 2.3 2 2.3 2-.9 2-2.4ZM99.6 19.2h2.6v9.4h-2.6z"/>
-    <text x="8" y="42" fill="#9fd0ff" fontSize="4.2" fontFamily="Arial, sans-serif" letterSpacing=".4">UNITED STATES POSTAL SERVICE</text>
-  </svg>;
-}
-
-function ReckittLogo() {
-  return <span className="xp-logo reckitt-logo" role="img" aria-label="Reckitt">
-    <svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="16" fill="#e31c79"/><path d="M11 22c4.5-1.2 8.2-5.4 7.2-11.2" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round"/><circle cx="18.2" cy="11.2" r="1.6" fill="#fff"/></svg>
-    <b>reckitt</b>
-  </span>;
-}
-
 function Logo({ kind }) {
-  if (kind === "stevens") return <StevensLogo />;
-  if (kind === "usps") return <UspsLogo />;
-  return <ReckittLogo />;
-}
-
-function Globe() {
-  const dots = [
-    [62, 48], [78, 42], [96, 50], [118, 44], [136, 58], [150, 46],
-    [58, 70], [74, 66], [92, 78], [112, 70], [132, 82], [148, 68],
-    [70, 96], [88, 104], [108, 98], [126, 112], [146, 96], [84, 124],
-    [104, 132], [124, 126], [66, 118], [140, 120],
-  ];
-  return <div className="xp-globe" aria-hidden="true">
-    <div className="xp-globe-spin">
-      <svg viewBox="0 0 200 200">
-        <defs>
-          <radialGradient id="xpEarth" cx="32%" cy="30%">
-            <stop offset="0%" stopColor="#1d4a46"/>
-            <stop offset="55%" stopColor="#0e2430"/>
-            <stop offset="100%" stopColor="#071018"/>
-          </radialGradient>
-          <clipPath id="xpClip"><circle cx="100" cy="100" r="78"/></clipPath>
-        </defs>
-        <circle cx="100" cy="100" r="78" fill="url(#xpEarth)" stroke="#7dff9a55"/>
-        <g clipPath="url(#xpClip)" fill="none" stroke="#9dffc244" strokeWidth="1">
-          <ellipse cx="100" cy="100" rx="78" ry="26"/>
-          <ellipse cx="100" cy="100" rx="78" ry="50"/>
-          <ellipse cx="100" cy="100" rx="26" ry="78"/>
-          <ellipse cx="100" cy="100" rx="52" ry="78"/>
-          <path d="M22 100h156M100 22v156"/>
-        </g>
-        <g clipPath="url(#xpClip)">
-          {dots.map(([x, y], i) => <circle key={i} cx={x} cy={y} r={i % 5 === 0 ? 2.4 : 1.35} fill="#d8ff8a"/>)}
-          <path d="M62 48 96 50 136 58 148 68 126 112 88 104 70 96 62 48" fill="none" stroke="#c6ff57" strokeWidth="0.8" opacity=".7"/>
-          <path d="M78 42 118 44 150 46 146 96 124 126" fill="none" stroke="#7dffe0" strokeWidth="0.7" opacity=".55"/>
-        </g>
-        <circle cx="136" cy="58" r="3.2" fill="#eaffb0"/>
-      </svg>
-    </div>
-    <i className="xp-globe-ring"/>
-    <i className="xp-globe-ring xp-globe-ring-b"/>
-  </div>;
-}
-
-function WorldMap() {
-  const land = [
-    [28, 38], [36, 34], [44, 40], [34, 46], [42, 50], [52, 44], [48, 56], [58, 50], [40, 62], [50, 68], [62, 60],
-    [46, 86], [52, 98], [58, 112], [54, 124],
-    [118, 36], [128, 40], [136, 34], [146, 42], [124, 50], [136, 52], [150, 50], [128, 64], [140, 70], [132, 84], [124, 96], [136, 108],
-    [168, 38], [180, 34], [192, 42], [204, 36], [176, 48], [190, 52], [206, 48], [184, 62], [198, 66], [214, 58], [222, 46], [230, 54], [208, 74], [196, 82],
-    [236, 96], [246, 104], [254, 112],
-  ];
-  return <svg className="xp-map" viewBox="0 0 280 150" aria-hidden="true">
-    <rect width="280" height="150" rx="10" fill="#07131c"/>
-    {land.map(([x, y], i) => <circle key={i} cx={x} cy={y} r="1.7" fill="#7fbf86"/>)}
-    <circle className="xp-hot" cx="62" cy="52" r="3.4" fill="#d6ff6a"/>
-    <circle className="xp-hot xp-hot-b" cx="136" cy="42" r="3" fill="#9dffd2"/>
-    <circle className="xp-hot xp-hot-c" cx="214" cy="58" r="3" fill="#d6ff6a"/>
-    <path d="M62 52C90 30 120 28 136 42c22-18 58-8 78 16" fill="none" stroke="#c6ff57" strokeWidth="1" strokeDasharray="3 4" opacity=".8"/>
-    <text x="14" y="142" fill="#9eb0aa" fontSize="8" fontFamily="Inter, sans-serif">New Jersey · Research · Industry · Global systems</text>
-  </svg>;
+  if (kind === "stevens") return <StevensLogo className="xp-logo stevens-logo" />;
+  if (kind === "usps") return <UspsLogo className="xp-logo usps-logo" />;
+  return <ReckittLogo className="xp-logo reckitt-logo" />;
 }
 
 export default function ExperiencePage() {
@@ -203,7 +126,7 @@ export default function ExperiencePage() {
           <p className="xp-aside">From industry operations to AI research — a journey of continuous learning and impact.</p>
         </div>
       </div>
-      <Globe />
+      <div className="xp-globe" aria-hidden="true"><SatelliteGlobe /><i className="xp-globe-ring"/><i className="xp-globe-ring xp-globe-ring-b"/></div>
     </section>
 
     <section className="container xp-layout">
@@ -217,8 +140,8 @@ export default function ExperiencePage() {
             <div className="xp-card">
               <div className="xp-card-top">
                 <span className="xp-badge">{role.badge}</span>
-                <Logo kind={role.logo}/>
-                <span className="xp-arrow" aria-hidden="true">↗</span>
+                <a className="xp-logo-link" href={role.href} target="_blank" rel="noreferrer" aria-label={`${role.org}, opens in a new tab`}><Logo kind={role.logo}/></a>
+                <a className="xp-arrow" href={role.href} target="_blank" rel="noreferrer" aria-label={`${role.org} website`}>↗</a>
               </div>
               <h2>{role.title}</h2>
               <p className="xp-org">{role.org}</p>
@@ -252,7 +175,7 @@ export default function ExperiencePage() {
         </section>
         <section className="xp-panel xp-global">
           <h2>Global Perspective</h2>
-          <WorldMap />
+          <WorldDots />
           <p>Experience across research, industry, and global systems, with a focus on building intelligent and impactful solutions.</p>
         </section>
       </aside>

@@ -1,3 +1,7 @@
+"use client";
+
+import NeuralNetwork from "@/components/NeuralNetwork";
+
 function ContactIcon({ name }) {
   const icons = {
     email: (
@@ -175,6 +179,7 @@ const questions = [
 export default function ContactPage() {
   return (
     <div className="subpage contact-page">
+      <div className="contact-field" aria-hidden="true"><NeuralNetwork density="dense" /></div>
       <div className="container page-intro">
         <div className="section-kicker">SANDUN MUNASINGHE / CONTACT</div>
         <div className="page-intro-row">
@@ -268,13 +273,13 @@ export default function ContactPage() {
             </div>
           </div>
           <label>
-            Your name *
+            <span>Your name <em className="req-star">*</em></span>
             <FieldControl icon="user">
               <input required name="name" placeholder="Enter your name" />
             </FieldControl>
           </label>
           <label>
-            Your email *
+            <span>Your email <em className="req-star">*</em></span>
             <FieldControl icon="email">
               <input
                 required
@@ -300,7 +305,7 @@ export default function ContactPage() {
             </FieldControl>
           </label>
           <label>
-            Your message *
+            <span>Your message <em className="req-star">*</em></span>
             <FieldControl icon="message">
               <textarea
                 required
