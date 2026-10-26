@@ -14,8 +14,8 @@ export default function NeuralNetwork({ density = "normal", variant = "field" })
     let nodes = [];
     let dpr = 1;
     const portrait = variant === "portrait";
-    const count = portrait ? 84 : density === "dense" ? 76 : 50;
-    const reach = portrait ? 118 : 140;
+    const count = portrait ? 128 : density === "dense" ? 76 : 50;
+    const reach = portrait ? 132 : 140;
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
       width = rect.width;
@@ -44,7 +44,7 @@ export default function NeuralNetwork({ density = "normal", variant = "field" })
         return {
           x: point.x, y: point.y,
           phase: random() * Math.PI * 2,
-          radius: i % 9 === 0 ? 3.1 : 1.2 + random() * 1.15,
+          radius: portrait && i % 6 === 0 ? 5.4 : i % 9 === 0 ? 3.1 : 1.15 + random() * 1.2,
           speed: .00035 + random() * .0007,
         };
       });
@@ -67,9 +67,9 @@ export default function NeuralNetwork({ density = "normal", variant = "field" })
           const dx = b.x - a.x; const dy = b.y - a.y;
           const distance = Math.hypot(dx, dy);
           if (distance < reach) {
-            const opacity = (1 - distance / reach) * (portrait ? .55 : .36);
+            const opacity = (1 - distance / reach) * (portrait ? .9 : .36);
             context.beginPath(); context.moveTo(a.x, a.y); context.lineTo(b.x, b.y);
-            context.strokeStyle = `rgba(166,255,78,${opacity})`; context.lineWidth = .7; context.stroke();
+            context.strokeStyle = portrait ? `rgba(190,255,92,${opacity})` : `rgba(166,255,78,${opacity})`; context.lineWidth = portrait ? 1.05 : .7; context.stroke();
             connections.push({ a, b, phase: (i * 13 + j * 7) % 1900 });
           }
         }
@@ -84,8 +84,8 @@ export default function NeuralNetwork({ density = "normal", variant = "field" })
       points.forEach((point) => {
         const pulse = .62 + .38 * Math.sin(now * .002 + point.phase);
         context.beginPath(); context.arc(point.x, point.y, point.r * (point.r > 2 ? 1 : pulse), 0, Math.PI * 2);
-        context.fillStyle = `rgba(207,255,131,${.62 + pulse * .35})`;
-        context.shadowColor = "#a6ff4e"; context.shadowBlur = point.r > 2 ? 18 : 8; context.fill(); context.shadowBlur = 0;
+        context.fillStyle = portrait ? `rgba(226,255,150,${.8 + pulse * .2})` : `rgba(207,255,131,${.62 + pulse * .35})`;
+        context.shadowColor = "#b6ff46"; context.shadowBlur = point.r > 4 ? 26 : point.r > 2 ? 16 : 7; context.fill(); context.shadowBlur = 0;
       });
       frame = requestAnimationFrame(draw);
     };
