@@ -38,10 +38,10 @@ const roles = [
     summary: "Managed large-scale operations, applied data-driven analysis to optimize staffing and automation, and led cross-functional teams in a high-volume logistics environment.",
     bullets: [
       "Applied demand variability analysis to redesign staffing models across a 200K+ daily package operation, reducing overtime costs by 20%.",
-      "Led deployment of automated sorting systems (SDUS), troubleshot integration issues, and trained 20+ staff.",
-      "Communicated performance insights and operational decisions to non-technical stakeholders and senior leadership.",
+      "Led deployment of automated sorting systems (SDUS): troubleshot integration issues and trained 20+ staff, improving system adoption.",
+      "Communicated performance insights and operational decisions to non-technical stakeholders and senior leadership, building cross-functional communication skills critical in enterprise.",
     ],
-    skills: ["Operations Management", "Data Analysis", "Process Improvement", "Team Leadership", "Stakeholder Communication", "Logistics Systems"],
+    skills: ["Operations Management", "Process Improvement", "Team Leadership", "Stakeholder Communication", "Logistics Systems", "Staffing Optimization"],
     logo: "usps",
     href: "https://www.usps.com/",
   },

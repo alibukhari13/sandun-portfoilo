@@ -24,18 +24,25 @@ const plantLabels = [
   { text: "Process Control", x: 206, y: 146, w: 94 },
 ];
 
-function useChartLive(threshold = 0.2) {
+function useChartLive(threshold = 0.12) {
   const rootRef = useRef(null);
   const [live, setLive] = useState(false);
 
   useEffect(() => {
     const node = rootRef.current;
     if (!node) return undefined;
-    if (typeof IntersectionObserver === "undefined") {
+    let activated = false;
+    const activate = () => {
+      if (activated) return;
+      activated = true;
       setLive(true);
+    };
+
+    if (typeof IntersectionObserver === "undefined") {
+      activate();
       return undefined;
     }
-    const activate = () => setLive(true);
+
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
@@ -43,19 +50,22 @@ function useChartLive(threshold = 0.2) {
           io.disconnect();
         }
       },
-      { threshold, rootMargin: "120px 0px" }
+      { threshold, rootMargin: "180px 0px" }
     );
     io.observe(node);
-    // Above-the-fold charts: kick animation even if IO is slow
-    const rect = node.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom > 0) {
-      const t = window.setTimeout(activate, 80);
-      return () => {
-        window.clearTimeout(t);
-        io.disconnect();
-      };
-    }
-    return () => io.disconnect();
+
+    const kickIfVisible = () => {
+      const rect = node.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 1.08 && rect.bottom > -48) activate();
+    };
+    const near = window.setTimeout(kickIfVisible, 50);
+    const failsafe = window.setTimeout(activate, 1600);
+
+    return () => {
+      window.clearTimeout(near);
+      window.clearTimeout(failsafe);
+      io.disconnect();
+    };
   }, [threshold]);
 
   return [rootRef, live];
@@ -191,8 +201,9 @@ export function TruthfulnessChart({ idPrefix = "pg" }) {
 }
 
 export function AgentsDiagram({ idPrefix = "pg" }) {
+  const [rootRef, live] = useChartLive();
   return (
-    <svg className="pg-agents" viewBox="0 0 300 200" role="img" aria-label="Four agents — Planner, Critic, Researcher, Executor — converging on consensus">
+    <svg ref={rootRef} className={`pg-agents${live ? " is-live" : ""}`} viewBox="0 0 300 200" role="img" aria-label="Four agents — Planner, Critic, Researcher, Executor — converging on consensus">
       <defs>
         <radialGradient id={`${idPrefix}-core`} cx="50%" cy="50%" r="50%">
           <stop offset="0" stopColor="#0f4d60" />
@@ -242,8 +253,9 @@ function Column({ x, top, bottom, width, trays = 0, dome = true, fill }) {
 }
 
 export function ChemPlant({ idPrefix = "pg" }) {
+  const [rootRef, live] = useChartLive();
   return (
-    <svg className="pg-plant" viewBox="0 0 300 200" role="img" aria-label="Chemical plant illustration: process design, thermodynamics, reactor design, separations, process control">
+    <svg ref={rootRef} className={`pg-plant${live ? " is-live" : ""}`} viewBox="0 0 300 200" role="img" aria-label="Chemical plant illustration: process design, thermodynamics, reactor design, separations, process control">
       <defs>
         <linearGradient id={`${idPrefix}-vessel-fill`} x1="0" y1="0" x2="1" y2="0">
           <stop offset="0" stopColor="#4a36a0" stopOpacity=".8" />

@@ -167,6 +167,7 @@ export default function PortfolioPage({ children }) {
   const [showIntro, setShowIntro] = useState(false);
   const [landingReveal, setLandingReveal] = useState(false);
   useLayoutEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
     if (path === "/") {
       let playIntro = document.documentElement.dataset.startup === "play";
       if (!playIntro) {
@@ -207,7 +208,7 @@ export default function PortfolioPage({ children }) {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return undefined;
     document.documentElement.classList.add("js-reveal");
-    const nodes = [...root.querySelectorAll(".home-hero-copy, .home-portrait-stage, .hero-metrics > div, .credential-item, .focus-inner > div, .home-project-card, .xp-hero-copy, .xp-globe, .xp-role, .xp-panel, .xp-quote, .about-photo, .about-copy, .about-pillars article, .stats-strip > div, .about-record-grid > article, .skill-detail-card, .detailed-project, .degree-card, .coursework-grid > article, .beyond-row, .contact-copy, .message-card, .topic-grid article, .faq-block, .skills-in-action, .upcoming-card")];
+    const nodes = [...root.querySelectorAll(".home-hero-copy, .hero-metrics > div, .credential-item, .focus-inner > div, .home-project-card, .xp-hero-copy, .xp-globe, .xp-role, .xp-panel, .xp-quote, .about-photo, .about-copy, .about-pillars article, .stats-strip > div, .about-record-grid > article, .skill-detail-card, .detailed-project, .degree-card, .coursework-grid > article, .beyond-row, .contact-copy, .message-card, .topic-grid article, .faq-block, .skills-in-action, .upcoming-card, .pcard")];
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;

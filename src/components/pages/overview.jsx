@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import NeuralNetwork from "@/components/NeuralNetwork";
 import ParticleWave from "@/components/ParticleWave";
-import HeroAura from "@/components/HeroAura";
 import { ProjectMark } from "@/components/ProjectGraphics";
 
 const skills = ["LLMs", "Deep Learning", "NLP", "PyTorch", "AI Systems"];
@@ -36,15 +35,6 @@ export default function OverviewPage() {
             <Link className="button primary lime-button" href="/projects">Explore Projects <span>↗</span></Link>
             <a className="button secondary dark-outline" href="/assets/Sandun_Munasinghe.pdf" target="_blank" rel="noreferrer">Download Resume <svg className="tray-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m-4.5-4.5 4.5 4.5 4.5-4.5M4 15.5v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" /></svg></a>
           </div>
-        </div>
-        <div className="home-portrait-stage">
-          <HeroAura />
-          <Image className="hero-portrait" src="/sandun-portrait-cutout.png" alt="Sandun Munasinghe" fill priority sizes="(max-width: 760px) 90vw, (max-width: 1180px) 46vw, 38vw" />
-          <span className="portrait-float float-agents">Multi-Agent Systems</span>
-          <span className="portrait-float float-llms">LLMs</span>
-          <span className="portrait-float float-nlp">NLP</span>
-          <span className="portrait-float float-interp">Interpretability</span>
-          <span className="portrait-float float-impact">Real-World Impact</span>
         </div>
         <div className="hero-metrics">
           <div><span className="metric-icon"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7zM14 3v5h5M10 12h5M10 16h5" /></svg></span><p><strong>10K+</strong><small>Research papers<br />processed</small></p></div>
