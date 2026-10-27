@@ -83,7 +83,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 :root { color-scheme: dark; --lime: #c9ff54; --surface: #07111b; --ink: #f4f7f2; --muted: #aeb8bf; --line: #243140; --card: #101a24; --subtle: #0d1722; }
 html { scroll-behavior: smooth; scroll-padding-top: 92px; }
 body { background: var(--surface); color: var(--ink); }
-.site-root { overflow: clip; }
+.site-root { overflow-x: clip; overflow-y: visible; }
 .skip-link { position: fixed; z-index: 3000; top: 8px; left: 8px; padding: 10px 14px; background: white; transform: translateY(-150%); }
 .skip-link:focus { transform: translateY(0); }
 .site-header { position: sticky; top: 0; z-index: 1000; max-width: none; height: 72px; padding: 0 max(5vw, calc((100vw - 1280px) / 2)); background: #07101b; color: #f6f8f2; border-bottom: 1px solid #ffffff17; }
@@ -1866,9 +1866,9 @@ body, .subpage, .page-content { background-color: var(--surface); color: var(--i
 .xp-green .xp-badge { color: #10200f; background: #c9ff54; } .xp-blue .xp-badge { color: #e7f7ff; background: #1d4e89; } .xp-violet .xp-badge { color: #f8e9ff; background: #6d3d86; }
 .xp-green .xp-card { box-shadow: inset 3px 0 0 #c9ff54, inset 0 1px 0 #ffffff10; } .xp-blue .xp-card { box-shadow: inset 3px 0 0 #4aa3ff, inset 0 1px 0 #ffffff10; } .xp-violet .xp-card { box-shadow: inset 3px 0 0 #d16bff, inset 0 1px 0 #ffffff10; }
 .xp-logo { margin-left: auto; }
-.stevens-logo { width: 148px; height: 42px; display: block; overflow: hidden; }
-.stevens-logo img { width: 148px; height: 42px; object-fit: cover; object-position: left center; }
-.usps-logo { width: 132px; height: 46px; display: block; }
+.stevens-logo { width: 200px; height: 54px; display: block; overflow: visible; }
+.stevens-logo img { width: 200px; height: 54px; object-fit: contain; object-position: right center; }
+.usps-logo { width: 56px; height: 56px; display: block; }
 .reckitt-logo { display: flex; align-items: center; gap: 6px; color: #fff; }
 .reckitt-logo svg { width: 34px; height: 34px; } .reckitt-logo b { font: 700 16px Sora, sans-serif; letter-spacing: -.3px; }
 .xp-arrow { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid #ffffff2a; border-radius: 50%; color: #d7e7c8; }
@@ -1917,7 +1917,8 @@ body, .subpage, .page-content { background-color: var(--surface); color: var(--i
 @media (max-width: 700px) {
   .xp-role { grid-template-columns: 58px minmax(0, 1fr); }
   .xp-card h2 { font-size: 20px; }
-  .stevens-logo, .usps-logo { width: 92px; }
+  .stevens-logo { width: 168px; }
+  .usps-logo { width: 50px; height: 50px; }
   .about-quote { max-width: none; margin-top: 12px; }
   .featured-heading-row { align-items: flex-start; gap: 8px; }
 }
@@ -2040,9 +2041,10 @@ body, .subpage, .page-content { background-color: var(--surface); color: var(--i
   .xp-years { display: flex; gap: 10px; align-items: center; padding-top: 0; }
   .xp-years i { display: none; }
   .xp-card { padding: 14px; }
-  .xp-card h2 { font-size: 22px; }
+  .xp-card h2 { font-size: clamp(18px, 5.2vw, 22px); line-height: 1.25; }
   .xp-card-top { flex-wrap: wrap; }
-  .stevens-logo, .usps-logo { width: 120px; }
+  .stevens-logo { width: 168px; }
+  .usps-logo { width: 50px; height: 50px; }
   .xp-side { padding-top: 4px; }
   .message-card .button, .contact-profiles a { width: auto; }
   .contact-profiles { flex-wrap: wrap; }
@@ -2261,14 +2263,37 @@ body, .subpage, .page-content { background-color: var(--surface); color: var(--i
 .xp-page { background: radial-gradient(1.2px 1.2px at 12% 18%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 28% 8%, #fff 50%, transparent 52%), radial-gradient(1.4px 1.4px at 74% 6%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 88% 24%, #dff 50%, transparent 52%), radial-gradient(1px 1px at 64% 16%, #fff 50%, transparent 52%), radial-gradient(ellipse at 82% 0%, #10342e 0%, transparent 42%), #050910; }
 .sat-globe-canvas { width: 100%; height: 100%; display: block; }
 .xp-globe { width: 280px; height: 280px; }
-.xp-logo-link { margin-left: auto; height: 46px; display: flex; align-items: center; }
-.xp-logo { margin-left: 0; }
-.xp-logo.stevens-logo, .xp-logo.usps-logo, .xp-logo.reckitt-logo { display: block; }
-.xp-logo.stevens-logo { width: 168px; height: 44px; }
-.xp-logo.stevens-logo img { width: 168px; height: 44px; object-fit: contain; object-position: right center; mix-blend-mode: screen; }
-.xp-logo.usps-logo { width: 72px; height: auto; }
-.xp-logo.reckitt-logo { width: 96px; height: auto; }
-.xp-card-top { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+.xp-logo-link {
+  margin-left: auto;
+  height: 56px;
+  max-height: 56px;
+  max-width: min(220px, 52%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: visible;
+  min-width: 0;
+}
+.xp-logo { margin-left: 0; max-width: 100%; }
+.xp-logo.stevens-logo, .xp-logo.usps-logo, .xp-logo.reckitt-logo { display: block; flex: 0 0 auto; overflow: visible; }
+.xp-logo.stevens-logo { width: 200px; height: 54px; }
+.xp-logo.stevens-logo img { width: 200px; height: 54px; max-width: none; object-fit: contain; object-position: right center; mix-blend-mode: screen; }
+.xp-logo.usps-logo { width: 56px; height: 56px; max-width: 56px; max-height: 56px; }
+.xp-logo.reckitt-logo { width: 120px; height: 56px; }
+.xp-logo.reckitt-logo img { width: 120px; height: 56px; max-width: none; object-fit: contain; }
+.xp-card-top { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; min-width: 0; min-height: 56px; }
+.xp-card,
+.xp-main,
+.xp-timeline,
+.xp-role,
+.xp-side,
+.xp-panel { min-width: 0; max-width: 100%; }
+.xp-card h2,
+.xp-org,
+.xp-summary,
+.xp-card li,
+.xp-skills em { overflow-wrap: anywhere; word-break: break-word; }
+.xp-arrow { flex: 0 0 auto; }
 .xp-card h2, .education-page h1, .education-page h2, .education-page h3, .education-slogan, .degree-card h3, .coursework-grid h3, .beyond-copy h3, .page-intro h1 { font-weight: 700; }
 .degree-card-top > strong { font-weight: 800; font-size: 16px; }
 .degree-card h3 { font-size: 18px; }
@@ -2338,10 +2363,14 @@ body, .subpage, .page-content { background-color: var(--surface); color: var(--i
 @media (max-width: 760px) {
   #main .home-hero-grid { display: grid; grid-template-columns: 1fr; grid-template-areas: "copy" "metrics"; min-height: 0; gap: 16px; padding: 22px 18px 20px; }
   #main .hero-metrics { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
-  .xp-card-top { grid-template-columns: 1fr auto; }
+  .xp-card-top { grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
   .xp-badge { grid-column: 1 / -1; justify-self: start; }
-  .xp-logo.stevens-logo, .xp-logo.usps-logo { width: 132px; }
-  .xp-logo.stevens-logo img { width: 132px; }
+  .xp-logo-link { max-width: min(180px, 56%); height: 52px; max-height: 52px; }
+  .xp-logo.stevens-logo { width: 168px; height: 48px; overflow: visible; }
+  .xp-logo.stevens-logo img { width: 168px; height: 48px; object-fit: contain; object-position: right center; }
+  .xp-logo.usps-logo { width: 50px; height: 50px; max-width: 50px; max-height: 50px; }
+  .xp-logo.reckitt-logo { width: 108px; height: 50px; }
+  .xp-logo.reckitt-logo img { width: 108px; height: 50px; max-width: none; object-fit: contain; }
   .project-art, .detailed-project-head .project-art { height: 210px; }
 }
 
@@ -2421,9 +2450,9 @@ body, .subpage, .page-content { background-color: var(--surface); color: var(--i
 .about-page .record-logo { width: 64px; height: 52px; display: flex; align-items: center; justify-content: center; }
 .about-page .about-shield { width: auto; height: 52px; object-fit: contain; filter: drop-shadow(0 0 10px #a3283f55); }
 .about-page .record-logo .rutgers-mark { display: block; color: #e10600; font-family: Georgia, "Times New Roman", serif; font-size: 50px; font-weight: 700; line-height: 1; }
-.about-page .about-usps { width: 60px; height: auto; display: block; }
+.about-page .about-usps { width: 44px; height: 44px; max-width: 44px; max-height: 44px; display: block; }
 .about-page .about-reckitt { width: 64px; height: auto; display: block; }
-.about-reckitt img, .xp-logo.reckitt-logo img { width: 100%; height: auto; display: block; }
+.about-reckitt img { width: 100%; height: auto; display: block; }
 .record-copy { min-width: 0; display: grid; gap: 4px; }
 .record-copy strong { color: #f4f7f2; font-size: 16px; font-weight: 700; line-height: 1.3; }
 .record-copy small { color: #b8c2c8; font-size: 14px; line-height: 1.45; }
@@ -6403,9 +6432,15 @@ body {
   overflow-x: clip;
   max-width: 100vw;
 }
-img, svg, video, canvas {
+img, video, canvas {
   max-width: 100%;
   height: auto;
+}
+.xp-logo img,
+.stevens-logo img,
+.reckitt-logo img,
+.school-mark img {
+  max-width: none;
 }
 .container,
 .page-content,
@@ -6413,9 +6448,63 @@ img, svg, video, canvas {
 .pcard,
 .skill-detail-card,
 .xp-card,
-.degree-card {
+.degree-card,
+.about-record-grid > article,
+.home-project-card {
   max-width: 100%;
   min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Experience: stack timeline earlier so cards get full width on tablets */
+@media (max-width: 900px) {
+  .xp-hero,
+  .xp-layout,
+  .xp-hero-row {
+    grid-template-columns: 1fr !important;
+  }
+  .xp-role {
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+  }
+  .xp-years {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    padding-top: 0;
+  }
+  .xp-years i { display: none; }
+  .xp-card-top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+  .xp-badge { grid-column: 1 / -1; justify-self: start; }
+  .xp-logo-link { max-width: min(190px, 54%); height: 54px; max-height: 54px; }
+  .xp-logo.stevens-logo { width: 180px; height: 50px; overflow: visible; }
+  .xp-logo.stevens-logo img { width: 180px; height: 50px; object-fit: contain; object-position: right center; }
+  .xp-logo.usps-logo { width: 52px; height: 52px; max-width: 52px; max-height: 52px; }
+  .xp-logo.reckitt-logo { width: 112px; height: 52px; }
+  .xp-logo.reckitt-logo img { width: 112px; height: 52px; max-width: none; object-fit: contain; }
+  .xp-globe {
+    width: min(220px, 56vw);
+    height: min(220px, 56vw);
+    margin: 8px auto 0;
+    justify-self: center;
+  }
+  .xp-aside {
+    max-width: none;
+    padding-left: 0;
+    border-left: 0;
+    border-top: 2px solid #c9ff54;
+    padding-top: 10px;
+  }
+  .site-root .xp-page > .container,
+  .site-root .xp-page section.container,
+  .site-root .xp-page .page-intro.container,
+  .site-root #main .xp-page > .container {
+    padding-left: max(16px, 3.5vw);
+    padding-right: max(16px, 3.5vw);
+  }
 }
 
 @media (max-width: 980px) {
@@ -6434,6 +6523,15 @@ img, svg, video, canvas {
   .projects-page .pcard-actions .button {
     flex: 1 1 140px;
   }
+  .about-record-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .skill-detail-card {
+    grid-template-columns: 1fr !important;
+  }
+  .home-project-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 @media (max-width: 760px) {
@@ -6444,7 +6542,11 @@ img, svg, video, canvas {
     padding-right: max(16px, 4vw);
   }
   .page-intro h1,
-  .subpage h1 {
+  .subpage h1,
+  .xp-card h2,
+  .degree-card h3,
+  .pcard-copy h2,
+  .skill-detail-heading h2 {
     overflow-wrap: break-word;
     word-break: break-word;
   }
@@ -6483,6 +6585,30 @@ img, svg, video, canvas {
     flex: 1 1 140px;
     min-width: 0;
   }
+  .xp-filters {
+    gap: 6px;
+  }
+  .xp-filters button {
+    min-height: 32px;
+    padding: 0 12px;
+    font-size: 11px;
+  }
+  .xp-meta {
+    gap: 8px 12px;
+  }
+  .xp-skills em {
+    font-size: 11px;
+    padding: 5px 8px;
+  }
+  .xp-panel,
+  .xp-quote {
+    padding: 14px;
+  }
+  .about-page .record-copy strong,
+  .about-page .record-role,
+  .about-page .record-points li {
+    overflow-wrap: anywhere;
+  }
 }
 
 @media (max-width: 420px) {
@@ -6490,12 +6616,50 @@ img, svg, video, canvas {
   .home-hero h1 { letter-spacing: -1.2px; }
   .skill-pills,
   .pcard-tags,
-  .detail-tags {
+  .detail-tags,
+  .xp-skills div {
     gap: 6px;
   }
   .skill-pills span,
-  .pcard-tags span {
+  .pcard-tags span,
+  .xp-skills em {
     font-size: 11px;
     padding: 6px 9px;
+  }
+  .xp-card {
+    padding: 12px;
+    border-radius: 14px;
+  }
+  .xp-card h2 {
+    font-size: clamp(17px, 5.8vw, 20px);
+  }
+  .xp-logo-link {
+    max-width: min(172px, 56%);
+    height: 50px;
+    max-height: 50px;
+  }
+  .xp-logo.stevens-logo {
+    width: 156px;
+    height: 46px;
+    overflow: visible;
+  }
+  .xp-logo.stevens-logo img {
+    width: 156px;
+    height: 46px;
+    object-fit: contain;
+    object-position: right center;
+  }
+  .xp-logo.usps-logo {
+    width: 48px;
+    height: 48px;
+    max-width: 48px;
+    max-height: 48px;
+  }
+  .xp-logo.reckitt-logo,
+  .xp-logo.reckitt-logo img {
+    width: 100px;
+    height: 48px;
+    max-width: none;
+    object-fit: contain;
   }
 }
