@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import NeuralNetwork from "@/components/NeuralNetwork";
 import ParticleWave from "@/components/ParticleWave";
+import { PortfolioSettingsProvider } from "@/components/PortfolioSettingsContext";
 
 const pages = [
   ["Overview", "/"], ["About", "/about"], ["Experience", "/experience"],
@@ -75,17 +76,12 @@ function saveThemePreference(theme) {
 
 function Header({ path }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dark, setDark] = useState(() => {
-    if (typeof document === "undefined") return true;
-    const current = document.documentElement.dataset.theme;
-    if (current === "light" || current === "dark") return current === "dark";
-    return readThemePreference() === "dark";
-  });
+  const [dark, setDark] = useState(true);
   useLayoutEffect(() => {
     const saved = readThemePreference();
-    const isDark = saved === "dark";
-    setDark(isDark);
     document.documentElement.dataset.theme = saved;
+    const frame = requestAnimationFrame(() => setDark(saved === "dark"));
+    return () => cancelAnimationFrame(frame);
   }, [path]);
   useEffect(() => {
     const sync = () => {
@@ -132,16 +128,49 @@ function Header({ path }) {
   </>;
 }
 
-function Footer({ path }) {
+function SocialLinks({ settings, className }) {
+  return (
+    <div className={className}>
+      {settings.github_url && (
+        <a href={settings.github_url} target="_blank" rel="noreferrer" aria-label="Sandun on GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.56.1.76-.24.76-.54v-2.08c-3.1.67-3.76-1.32-3.76-1.32-.5-1.29-1.24-1.63-1.24-1.63-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 1.7 2.62 1.21 3.26.92.1-.72.39-1.21.71-1.49-2.48-.28-5.09-1.24-5.09-5.51 0-1.22.44-2.22.11-2.96 0 0 .94-.3 3.05 1.15a10.6 10.6 0 0 1 5.55 0c2.11-1.45 3.05-1.15 3.05-1.15.61 1.54.23 2.68.11 2.96.72.78 1.15 1.78 1.15 3 0 4.28-2.61 5.23-5.1 5.5-.4.35.75 1.03.75 2.08v3.08c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/></svg>
+        </a>
+      )}
+      {settings.linkedin_url && (
+        <a href={settings.linkedin_url} target="_blank" rel="noreferrer" aria-label="Sandun on LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.1 8.3H1.8V22h3.3V8.3ZM3.45 2a1.92 1.92 0 1 0 0 3.84 1.92 1.92 0 0 0 0-3.84ZM22.2 14.15c0-4.12-2.2-6.04-5.14-6.04a4.44 4.44 0 0 0-4 2.2V8.3H9.8V22h3.27v-6.78c0-1.79.34-3.52 2.55-3.52 2.17 0 2.2 2.04 2.2 3.64V22h3.28l1.1-7.85Z"/></svg>
+        </a>
+      )}
+      {settings.contact_email && (
+        <a href={`mailto:${settings.contact_email}`} aria-label="Email Sandun">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3.5 6 8.5 7 8.5-7"/></svg>
+        </a>
+      )}
+    </div>
+  );
+}
+
+function FooterHeading({ children }) {
+  const words = children.trim().split(/\s+/);
+  const highlight = words.pop();
+  return (
+    <h2>
+      {words.join(" ")} <span>{highlight}</span>
+    </h2>
+  );
+}
+
+function Footer({ path, settings }) {
   return <>
     <footer className="portfolio-footer site-footer">
     <ParticleWave className="footer-wave" rows={22} phase={2.4} lift={-20} amplitude={38} />
     <div className="container footer-inner">
         <div className="footer-top">
           <div className="footer-invitation">
-            <h2>Let’s build something<br/><span>meaningful.</span></h2>
-            <p>Open to opportunities in machine learning, AI, and chemical engineering.<br />Great ideas begin with a conversation.</p>
-            <div className="footer-socials">
+            <FooterHeading>{settings.footer_heading}</FooterHeading>
+            <p>{settings.footer_description}</p>
+            <SocialLinks settings={settings} className="footer-socials" />
+            <div className="footer-socials" hidden>
               <a href="https://github.com/sandunmunasinghe91?tab=repositories" target="_blank" rel="noreferrer" aria-label="Sandun on GitHub"><svg viewBox="0 0 24 24"><path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.56.1.76-.24.76-.54v-2.08c-3.1.67-3.76-1.32-3.76-1.32-.5-1.29-1.24-1.63-1.24-1.63-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 1.7 2.62 1.21 3.26.92.1-.72.39-1.21.71-1.49-2.48-.28-5.09-1.24-5.09-5.51 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.42.11-2.96 0 0 .94-.3 3.05 1.15a10.6 10.6 0 0 1 5.55 0c2.11-1.45 3.05-1.15 3.05-1.15.61 1.54.23 2.68.11 2.96.72.78 1.15 1.03 1.15 3 0 4.28-2.61 5.23-5.1 5.5.4.35.75 1.03.75 2.08v3.08c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/></svg></a>
               <a href="https://www.linkedin.com/in/sandun-munasinghe-268a1a27b" target="_blank" rel="noreferrer" aria-label="Sandun on LinkedIn"><svg viewBox="0 0 24 24"><path d="M5.1 8.3H1.8V22h3.3V8.3ZM3.45 2a1.92 1.92 0 1 0 0 3.84 1.92 1.92 0 0 0 0-3.84ZM22.2 14.15c0-4.12-2.2-6.04-5.14-6.04a4.44 4.44 0 0 0-4 2.2V8.3H9.8V22h3.27v-6.78c0-1.79.34-3.52 2.55-3.52 2.17 0 2.2 2.04 2.2 3.64V22h3.28l1.1-7.85Z"/></svg></a>
               <a href="mailto:sandunmunasinghe2017@gmail.com" aria-label="Email Sandun"><svg viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3.5 6 8.5 7 8.5-7"/></svg></a>
@@ -149,25 +178,33 @@ function Footer({ path }) {
           </div>
           <div className="footer-contact">
             <span className="footer-label">START A CONVERSATION</span>
-            <a href="mailto:sandunmunasinghe2017@gmail.com">sandunmunasinghe2017@gmail.com <Arrow /></a>
+            {settings.contact_email && <a href={`mailto:${settings.contact_email}`}>{settings.contact_email} <Arrow /></a>}
             <div className="footer-buttons">
-              <Link className="button footer-email-button" href="/contact">Email Sandun <Arrow /></Link>
+              {settings.contact_email && <Link className="button footer-email-button" href="/contact">Email Sandun <Arrow /></Link>}
               <a className="button footer-resume-button" href="/assets/Sandun_Munasinghe.pdf" target="_blank" rel="noreferrer">Download Resume <svg className="tray-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m-4.5-4.5 4.5 4.5 4.5-4.5M4 15.5v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" /></svg></a>
             </div>
           </div>
         </div>
     </div>
     </footer>
-    <div className="contact-subfooter home-subfooter"><Link className="wordmark" href="/">Sandun<span>Munasinghe<span className="brand-dot">.</span></span></Link><nav aria-label="Footer navigation">{pages.map(([label, href]) => <Link key={href} href={href} aria-current={path === href ? "page" : undefined}>{label}</Link>)}</nav><div className="contact-subfooter-socials"><a href="https://github.com/sandunmunasinghe91?tab=repositories" aria-label="Sandun on GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.56.1.76-.24.76-.54v-2.08c-3.1.67-3.76-1.32-3.76-1.32-.5-1.29-1.24-1.63-1.24-1.63-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 1.7 2.62 1.21 3.26.92.1-.72.39-1.21.71-1.49-2.48-.28-5.09-1.24-5.09-5.51 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.42.11-2.96 0 0 .94-.3 3.05 1.15a10.6 10.6 0 0 1 5.55 0c2.11-1.45 3.05-1.15 3.05-1.15.61 1.54.23 2.68.11 2.96.72.78 1.15 1.78 1.15 3 0 4.28-2.61 5.23-5.1 5.5.4.35.75 1.03.75 2.08v3.08c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/></svg></a><a href="https://www.linkedin.com/in/sandun-munasinghe-268a1a27b" aria-label="Sandun on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.1 8.3H1.8V22h3.3V8.3ZM3.45 2a1.92 1.92 0 1 0 0 3.84 1.92 1.92 0 0 0 0-3.84ZM22.2 14.15c0-4.12-2.2-6.04-5.14-6.04a4.44 4.44 0 0 0-4 2.2V8.3H9.8V22h3.27v-6.78c0-1.79.34-3.52 2.55-3.52 2.17 0 2.2 2.04 2.2 3.64V22h3.28l1.1-7.85Z"/></svg></a><a href="mailto:sandunmunasinghe2017@gmail.com" aria-label="Email Sandun"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3.5 6 8.5 7 8.5-7"/></svg></a></div><p className="subfooter-copy">© 2026 Sandun Munasinghe.<br />All rights reserved.</p></div>
+    <div className="contact-subfooter home-subfooter">
+      <Link className="wordmark" href="/">Sandun<span>Munasinghe<span className="brand-dot">.</span></span></Link>
+      <nav aria-label="Footer navigation">{pages.map(([label, href]) => <Link key={href} href={href} aria-current={path === href ? "page" : undefined}>{label}</Link>)}</nav>
+      <SocialLinks settings={settings} className="contact-subfooter-socials" />
+      <p className="subfooter-copy">© 2026 Sandun Munasinghe.<br />All rights reserved.</p>
+    </div>
   </>;
 }
 
-export default function PortfolioPage({ children }) {
+export default function PortfolioPage({ children, settings }) {
   const path = usePathname();
   const [showIntro, setShowIntro] = useState(false);
   const [landingReveal, setLandingReveal] = useState(false);
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
+    let revealFrame;
+    let unlockFrame;
+    let timer;
     if (path === "/") {
       let playIntro = document.documentElement.dataset.startup === "play";
       if (!playIntro) {
@@ -178,29 +215,36 @@ export default function PortfolioPage({ children }) {
       }
 
       if (playIntro) {
-        // Set state FIRST so neural-intro renders, THEN remove the CSS lock
-        // This prevents the blink (flash of unstyled content)
-        setShowIntro(true);
-        setLandingReveal(false);
-        // Use rAF to wait for paint — neural-intro is in DOM before CSS hiding lifts
-        requestAnimationFrame(() => {
-          delete document.documentElement.dataset.startup;
+        revealFrame = requestAnimationFrame(() => {
+          setShowIntro(true);
+          setLandingReveal(false);
+          unlockFrame = requestAnimationFrame(() => {
+            delete document.documentElement.dataset.startup;
+            timer = setTimeout(() => {
+              setShowIntro(false);
+              setLandingReveal(true);
+            }, 2100);
+          });
         });
-        const timer = setTimeout(() => {
+      } else {
+        delete document.documentElement.dataset.startup;
+        revealFrame = requestAnimationFrame(() => {
           setShowIntro(false);
           setLandingReveal(true);
-        }, 2100);
-        return () => clearTimeout(timer);
-      } else {
-        // No intro — remove lock immediately, reveal page
-        delete document.documentElement.dataset.startup;
-        setShowIntro(false);
-        setLandingReveal(true);
-        return;
+        });
       }
+    } else {
+      revealFrame = requestAnimationFrame(() => {
+        setShowIntro(false);
+        setLandingReveal(false);
+      });
     }
-    setShowIntro(false);
-    setLandingReveal(false);
+
+    return () => {
+      if (revealFrame !== undefined) cancelAnimationFrame(revealFrame);
+      if (unlockFrame !== undefined) cancelAnimationFrame(unlockFrame);
+      if (timer !== undefined) clearTimeout(timer);
+    };
   }, [path]);
   useLayoutEffect(() => {
     const root = document.getElementById("main");
@@ -228,10 +272,10 @@ export default function PortfolioPage({ children }) {
       document.documentElement.classList.remove("js-reveal");
     };
   }, [path]);
-  return <div id="root" className={`site-root home-footer${landingReveal ? " landing-reveal" : ""}`}>
+  return <PortfolioSettingsProvider settings={settings}><div id="root" className={`site-root home-footer${landingReveal ? " landing-reveal" : ""}`}>
     {showIntro && <div className="neural-intro" aria-hidden="true"><NeuralNetwork density="dense" /><div className="intro-brand"><span className="intro-mark"><svg viewBox="0 0 48 48"><path d="M8 25 19 11l10 7 11-8M8 25l10 12 11-10 11 6M19 11l-1 26M29 18l0 9M8 25l32 6"/><circle cx="8" cy="25" r="3"/><circle cx="19" cy="11" r="3"/><circle cx="29" cy="18" r="3"/><circle cx="40" cy="10" r="3"/><circle cx="18" cy="37" r="3"/><circle cx="29" cy="27" r="3"/><circle cx="40" cy="33" r="3"/></svg></span><span className="intro-wordmark">Sandun<br/>Munasinghe<span>.</span></span></div><span className="intro-caption">CONNECTING IDEAS</span><span className="intro-progress"><i/></span></div>}
     <Header path={path} />
     <div className="route-stage" key={path}><main id="main" tabIndex="-1" className="page-content">{children}</main></div>
-    <Footer path={path} />
-  </div>;
+    <Footer path={path} settings={settings} />
+  </div></PortfolioSettingsProvider>;
 }

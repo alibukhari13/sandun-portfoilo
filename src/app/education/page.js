@@ -1,6 +1,8 @@
-import PortfolioPage from "@/components/PortfolioPage";
+import PortfolioLayout from "@/components/PortfolioLayout";
 import EducationPage from "@/components/pages/education";
 
+export const dynamic = "force-dynamic";
+
 export default function Page() {
-  return <PortfolioPage><EducationPage /></PortfolioPage>;
+  return <PortfolioLayout><EducationPage /></PortfolioLayout>;
 }

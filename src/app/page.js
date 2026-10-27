@@ -1,6 +1,10 @@
-import PortfolioPage from "@/components/PortfolioPage";
+import PortfolioLayout from "@/components/PortfolioLayout";
 import OverviewPage from "@/components/pages/overview";
+import { getPortfolioProjects } from "@/lib/portfolio-content";
 
-export default function Page() {
-  return <PortfolioPage><OverviewPage /></PortfolioPage>;
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
+  const projects = await getPortfolioProjects();
+  return <PortfolioLayout><OverviewPage projects={projects} /></PortfolioLayout>;
 }

@@ -24,6 +24,7 @@ import {
   hasBlogDataConfig,
   safeSupabaseRequest,
 } from "@/lib/supabase";
+import { defaultPortfolioSettings } from "@/lib/portfolio-content";
 
 const postIdPattern =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -380,3 +381,235 @@ export async function deleteBlog(formData) {
   await removeImage(existing.image_path);
   refreshBlogPages("deleted");
 }
+
+  const projectKinds = new Set(["green", "blue", "violet"]);
+  const projectArts = new Set(["chart", "agents", "atom"]);
+
+  function readLines(value, maxItems, maxLength) {
+    const lines = String(value ?? "")
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+    if (lines.length > maxItems || lines.some((line) => line.length > maxLength)) {
+      return null;
+    }
+    return lines;
+  }
+
+  function readProject(formData) {
+    const groupName = String(formData.get("group_name") ?? "").trim();
+    const title = String(formData.get("title") ?? "").trim();
+    const summary = String(formData.get("summary") ?? "").trim();
+    const problem = String(formData.get("problem") ?? "").trim();
+    const approach = String(formData.get("approach") ?? "").trim();
+    const resultLabel = String(formData.get("result_label") ?? "").trim();
+    const keyResults = readLines(formData.get("key_results"), 12, 300);
+    const tags = readLines(formData.get("tags"), 20, 60);
+    const link = String(formData.get("link") ?? "").trim();
+    const kind = String(formData.get("kind") ?? "");
+    const art = String(formData.get("art") ?? "");
+    const label = String(formData.get("label") ?? "").trim();
+    const badge = String(formData.get("badge") ?? "").trim();
+    const goal = String(formData.get("goal") ?? "").trim();
+    const sortOrderValue = String(formData.get("sort_order") ?? "");
+    const sortOrder = Number(sortOrderValue);
+
+    if (
+      !groupName ||
+      groupName.length > 80 ||
+      !title ||
+      title.length > 160 ||
+      !summary ||
+      summary.length > 1200 ||
+      !problem ||
+      problem.length > 3000 ||
+      !approach ||
+      approach.length > 5000 ||
+      !resultLabel ||
+      resultLabel.length > 80 ||
+      !keyResults ||
+      !tags ||
+      (!goal && keyResults.length === 0) ||
+      (link && !isSecureUrl(link)) ||
+      !projectKinds.has(kind) ||
+      !projectArts.has(art) ||
+      label.length > 100 ||
+      badge.length > 40 ||
+      goal.length > 1200 ||
+      !sortOrderValue ||
+      !Number.isInteger(sortOrder) ||
+      sortOrder < 0 ||
+      sortOrder > 100000
+    ) {
+      return null;
+    }
+
+    return {
+      group_name: groupName,
+      title,
+      summary,
+      problem,
+      approach,
+      key_results: keyResults,
+      result_label: resultLabel,
+      goal: goal || null,
+      tags,
+      link,
+      kind,
+      label: label || `${String(sortOrder + 1).padStart(2, "0")} / ${groupName.toUpperCase()}`,
+      art,
+      badge,
+      sort_order: sortOrder,
+    };
+  }
+
+  function isSecureUrl(value) {
+    try {
+      return new URL(value).protocol === "https:";
+    } catch {
+      return false;
+    }
+  }
+
+  function refreshPortfolio(status) {
+    [
+      "/",
+      "/about",
+      "/experience",
+      "/projects",
+      "/skills",
+      "/education",
+      "/blog",
+      "/recommendations",
+      "/contact",
+    ].forEach((path) => revalidatePath(path));
+    revalidatePath("/admin");
+    redirect(`/admin?status=${status}`);
+  }
+
+  export async function createProject(state, formData) {
+    await requireAdmin();
+    const project = readProject(formData);
+    if (!project) return returnFormError(state, "validation");
+    if (!hasBlogDataConfig()) return returnFormError(state, "database");
+
+    const { data, error } = await safeSupabaseRequest(
+      createSupabaseAdminClient()
+        .from("portfolio_projects")
+        .insert(project)
+        .select("id")
+        .single(),
+    );
+    if (error || !data) {
+      console.error("Unable to create portfolio project:", error?.message ?? "No project was returned");
+      return returnFormError(state, "save");
+    }
+    refreshPortfolio("project-created");
+  }
+
+  export async function updateProject(state, formData) {
+    await requireAdmin();
+    const id = String(formData.get("id") ?? "");
+    const project = readProject(formData);
+    if (!postIdPattern.test(id) || !project) {
+      return returnFormError(state, "validation");
+    }
+    if (!hasBlogDataConfig()) return returnFormError(state, "database");
+
+    const { data, error } = await safeSupabaseRequest(
+      createSupabaseAdminClient()
+        .from("portfolio_projects")
+        .update({ ...project, updated_at: new Date().toISOString() })
+        .eq("id", id)
+        .select("id")
+        .maybeSingle(),
+    );
+    if (error || !data) {
+      console.error("Unable to update portfolio project:", error?.message ?? "Project not found");
+      return returnFormError(state, "save");
+    }
+    refreshPortfolio("project-updated");
+  }
+
+  export async function deleteProject(formData) {
+    await requireAdmin();
+    const id = String(formData.get("id") ?? "");
+    if (!postIdPattern.test(id)) redirect("/admin?error=validation");
+    if (!hasBlogDataConfig()) redirect("/admin?error=database");
+
+    const { data, error } = await safeSupabaseRequest(
+      createSupabaseAdminClient()
+        .from("portfolio_projects")
+        .delete()
+        .eq("id", id)
+        .select("id")
+        .maybeSingle(),
+    );
+    if (error || !data) {
+      console.error("Unable to delete portfolio project:", error?.message ?? "Project not found");
+      redirect("/admin?error=save");
+    }
+    refreshPortfolio("project-deleted");
+  }
+
+  function readPortfolioSettings(formData) {
+    const settings = Object.fromEntries(
+      Object.keys(defaultPortfolioSettings).map((key) => [
+        key,
+        String(formData.get(key) ?? "").trim(),
+      ]),
+    );
+
+    const email = settings.contact_email;
+    const emailValid =
+      !email || (email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+    const socialUrlsValid = ["github_url", "linkedin_url"].every(
+      (key) => !settings[key] || (settings[key].length <= 500 && isSecureUrl(settings[key])),
+    );
+    const formEndpointValid =
+      !settings.contact_form_endpoint ||
+      (settings.contact_form_endpoint.length <= 500 &&
+        isSecureUrl(settings.contact_form_endpoint));
+    const textLengthsValid = [
+      ["location", 160],
+      ["availability", 500],
+      ["contact_intro", 500],
+      ["contact_description", 1000],
+      ["contact_lede", 1000],
+      ["footer_heading", 160],
+      ["footer_description", 500],
+    ].every(([key, maxLength]) => settings[key].length <= maxLength);
+
+    if (
+      !emailValid ||
+      !socialUrlsValid ||
+      !formEndpointValid ||
+      !textLengthsValid ||
+      !settings.contact_intro ||
+      !settings.contact_description ||
+      !settings.contact_lede ||
+      !settings.footer_heading ||
+      !settings.footer_description
+    ) {
+      return null;
+    }
+    return settings;
+  }
+
+  export async function savePortfolioSettings(state, formData) {
+    await requireAdmin();
+    const settings = readPortfolioSettings(formData);
+    if (!settings) return returnFormError(state, "validation");
+    if (!hasBlogDataConfig()) return returnFormError(state, "database");
+
+    const { error } = await safeSupabaseRequest(
+      createSupabaseAdminClient()
+        .from("portfolio_settings")
+        .upsert({ id: "main", settings, updated_at: new Date().toISOString() }),
+    );
+    if (error) {
+      console.error("Unable to save portfolio settings:", error.message);
+      return returnFormError(state, "save");
+    }
+    refreshPortfolio("settings-updated");
+  }

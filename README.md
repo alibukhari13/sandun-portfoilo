@@ -11,13 +11,13 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-## Blog administration
+## Portfolio and blog administration
 
-The public `/blog` page reads published posts from Supabase. `/admin` provides a private dashboard for adding, editing, and deleting posts, with optional cover image uploads and a publish checkbox in the post form.
+The public portfolio reads projects and shared site details from Supabase. `/admin` provides a private dashboard for adding, editing, ordering, and deleting projects; updating contact details, social links, contact copy, and footer copy; and adding, editing, publishing, and deleting blog posts.
 
-1. Create a Supabase project and run [`supabase/schema.sql`](supabase/schema.sql) in its SQL editor. The schema creates the public-read `blog-images` storage bucket and adds the image path column; uploads are restricted to JPEG, PNG, WebP, and AVIF images under 3 MB.
+1. Create a Supabase project and run [`supabase/schema.sql`](supabase/schema.sql) in its SQL editor. The schema creates the public-read project and settings tables, seeds the current portfolio content, creates the public-read `blog-images` storage bucket, and adds the image path column; uploads are restricted to JPEG, PNG, WebP, and AVIF images under 3 MB.
 2. Copy `.env.example` to `.env.local`. Set `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and a long random `ADMIN_SESSION_SECRET` for the server-verified admin login. Set the Supabase URL, anon key, and service-role key when ready; keep the service-role key private because it is only used on the server.
-3. Run [`supabase/schema.sql`](supabase/schema.sql) in the Supabase SQL editor. Until the Supabase URL and service-role key are set, login works but blog storage remains unavailable.
+3. Until the Supabase URL and service-role key are set, project and site-detail editing is unavailable; the public portfolio uses its built-in starter content. Blog storage retains its existing local fallback.
 4. Add the same environment variables in Vercel and redeploy.
 
 Admin credentials are verified on the server. The eight-hour session is signed with `ADMIN_SESSION_SECRET` and stored in an HttpOnly, SameSite=Strict cookie. Every write rechecks that session before using the server-only service-role client. The table uses row-level security so anonymous clients can select published rows only. Post content is plain text, not HTML.

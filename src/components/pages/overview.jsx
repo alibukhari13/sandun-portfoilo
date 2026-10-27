@@ -6,19 +6,13 @@ import { ProjectMark } from "@/components/ProjectGraphics";
 
 const skills = ["LLMs", "Deep Learning", "NLP", "PyTorch", "AI Systems"];
 
-const projects = [
-  { category: "Machine Learning & AI", title: "LLM Truthfulness & Interpretability Research", description: "Evaluated how adversarial prompting affects LLM truthfulness using 790 TruthfulQA questions across four conditions. Analyzed layer-wise representations with logit lens and token predictions.", tags: ["LLM Evaluation", "PyTorch", "Interpretability", "NLP"], href: "https://github.com/sandunmunasinghe91/truthfulqa-adversarial-eval", art: "chart" },
-  { category: "Multi-Agent Systems", title: "Multi-Agent LLM Conflict Resolution", description: "Built a collaborative multi-agent system with voting, debate, and hierarchical authority. Implemented real-time communication with FastAPI and Next.js, and evaluated behavioral outcomes across 32 scenarios.", tags: ["LangGraph", "NLP", "Multi-Agent Systems", "FastAPI"], href: "https://github.com/sandunmunasinghe91/Multi-agent-LLM-conflict-resolution-research-", art: "agents" },
-  { category: "Chemical Engineering", title: "Chemical Engineering Domain Language Model", description: "Building a GPT-2-style language model from scratch in PyTorch using a curated corpus of 3,000+ arXiv papers and technical articles. Goal is to support engineering knowledge retrieval and technical troubleshooting.", tags: ["PyTorch", "Transformers", "Data Engineering", "Chemical Engineering"], href: "https://github.com/sandunmunasinghe91/ChemEng-LLM", art: "atom" },
-];
-
 function ProjectCard({ project, index }) {
   return <article className={`home-project-card project-art-${project.art}`}>
-    <div className="home-project-body"><div className="home-project-heading"><span className="home-project-category"><b>0{index + 1}</b> / {project.category}</span>{project.art === "atom" ? <em className="in-progress-badge">IN PROGRESS</em> : <span className="home-project-index">0{index + 1}</span>}</div><h3>{project.title}</h3><p>{project.description}</p><div className="home-project-art"><ProjectMark type={project.art} idPrefix={`home-${project.art}`} /></div><div className="home-project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><a className="home-project-link" href={project.href} target="_blank" rel="noreferrer">View on GitHub <span aria-hidden="true">↗</span></a></div>
+    <div className="home-project-body"><div className="home-project-heading"><span className="home-project-category"><b>{String(index + 1).padStart(2, "0")}</b> / {project.group_name}</span>{project.badge ? <em className="in-progress-badge">{project.badge}</em> : <span className="home-project-index">{String(index + 1).padStart(2, "0")}</span>}</div><h3>{project.title}</h3><p>{project.summary}</p><div className="home-project-art"><ProjectMark type={project.art} idPrefix={`home-${project.art}-${index}`} /></div><div className="home-project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>{project.link && <a className="home-project-link" href={project.link} target="_blank" rel="noreferrer">View on GitHub <span aria-hidden="true">↗</span></a>}</div>
   </article>;
 }
 
-export default function OverviewPage() {
+export default function OverviewPage({ projects }) {
   return <div className="home-page">
     <section className="home-hero">
       <div className="hero-network"><NeuralNetwork density="dense" /></div>
@@ -62,6 +56,6 @@ export default function OverviewPage() {
       </a>
     </div></div>
     <section className="home-focus"><ParticleWave className="focus-wave" id="focus-wave" rows={22} phase={2.4} lift={-20} amplitude={38} /><div className="container focus-inner"><div><span className="section-kicker">TWO DISCIPLINES / ONE PERSPECTIVE</span><h2>Research-led.<br /><span>Engineering-grounded.</span></h2></div><div><p>My work connects large language models, interpretability, multi-agent systems, and domain-specific AI with a foundation in chemical engineering, process systems, and data-driven analysis. I focus on building and applying intelligent systems to solve complex, real-world challenges in engineering and industry.</p><div className="focus-links"><Link className="button lime-button" href="/projects">View My Work <span>↗</span></Link><Link className="button dark-outline" href="/contact">Contact Sandun <span>↗</span></Link></div></div></div></section>
-    <section className="home-featured"><div className="container"><div className="featured-heading featured-heading-row"><h2><i /> Featured Projects</h2><p>A collection of research projects, personal builds, and applied ML/AI solutions across natural language processing, multi-agent systems, and chemical engineering.</p><Link className="featured-all-link" href="/projects">View All Projects <span>↗</span></Link></div><div className="home-project-grid">{projects.map((project, index) => <ProjectCard key={project.title} project={project} index={index} />)}</div></div></section>
+    <section className="home-featured"><div className="container"><div className="featured-heading featured-heading-row"><h2><i /> Featured Projects</h2><p>A collection of research projects, personal builds, and applied ML/AI solutions across natural language processing, multi-agent systems, and chemical engineering.</p><Link className="featured-all-link" href="/projects">View All Projects <span>↗</span></Link></div><div className="home-project-grid">{projects.map((project, index) => <ProjectCard key={project.id ?? project.title} project={project} index={index} />)}</div></div></section>
   </div>;
 }

@@ -22,11 +22,11 @@
 .postsSection { padding-top: 34px; }
 .form { display: grid; gap: 16px; }
 .form label { display: grid; gap: 7px; color: #38443d; font-size: 12px; font-weight: 600; }
-.form input:not([type="checkbox"]), .form textarea { width: 100%; border: 1px solid #d6ddd5; border-radius: 6px; padding: 11px 12px; color: #26302c; background: #fff; font: 400 14px/1.5 Inter, sans-serif; }
+.form input:not([type="checkbox"]), .form textarea, .form select { width: 100%; border: 1px solid #d6ddd5; border-radius: 6px; padding: 11px 12px; color: #26302c; background: #fff; font: 400 14px/1.5 Inter, sans-serif; }
 .form textarea { min-height: 150px; resize: vertical; }
 .form input[type="file"] { max-width: 100%; padding: 9px; }
 .imagePreview { display: block; width: min(100%, 320px); max-height: 200px; border-radius: 6px; object-fit: cover; }
-.form input:focus, .form textarea:focus { outline: 2px solid #94b75d; outline-offset: 1px; }
+.form input:focus, .form textarea:focus, .form select:focus { outline: 2px solid #94b75d; outline-offset: 1px; }
 .checkboxLabel { display: flex !important; align-items: center; gap: 9px !important; width: fit-content; }
 .checkboxLabel input { width: 16px; height: 16px; accent-color: #6e9139; }
 .primaryButton, .secondaryButton, .deleteButton { min-height: 40px; border: 1px solid transparent; border-radius: 6px; padding: 0 15px; font: 600 12px Inter, sans-serif; cursor: pointer; }

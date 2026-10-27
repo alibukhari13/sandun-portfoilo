@@ -10,51 +10,6 @@ const truthRows = [
   { label: "Force Wrong", value: 60.5, soft: "#b8e84a" },
 ];
 
-const items = [
-  {
-    group: "LLM Research",
-    title: "LLM Truthfulness & Interpretability",
-    summary: "Evaluating how adversarial prompts influence truthfulness in large language models.",
-    problem: "Understand how different prompting strategies affect model truthfulness and where untruthful behaviors emerge inside the model.",
-    approach: "Used TruthfulQA (790 questions) with four prompt conditions, generated responses using Gemma-3-4B-it, and analyzed results with GPT-5.6 Sol. Applied logit lens analysis to study internal activations.",
-    keyResults: ["Baseline: 89.7%", "Conspiracy: 75.6%", "Popular Myth: 72.0%", "Force Wrong: 60.5%"],
-    tags: ["Python", "PyTorch", "Transformers", "TruthfulQA", "Interpretability", "Logit Lens", "Pandas", "Matplotlib"],
-    link: "https://github.com/sandunmunasinghe91/truthfulqa-adversarial-eval",
-    kind: "green",
-    label: "01 / LLM RESEARCH",
-    art: "chart",
-  },
-  {
-    group: "AI Systems",
-    title: "Multi-Agent LLM Conflict Resolution",
-    summary: "Exploring multi-agent decision-making using LangGraph orchestration strategies such as majority voting, structured debate, hierarchical authority, and evidence-weighted consensus.",
-    problem: "Investigate how multiple LLM agents with different roles can collaborate, resolve disagreements, and make better decisions on complex, open-ended tasks.",
-    approach: "Built a multi-agent framework using LangGraph with majority voting, structured debate, hierarchical authority, and evidence-weighted consensus. Evaluated across 9 behavioral metrics and 32 scenarios.",
-    keyResults: ["Misinformation agents outperformed factual agents in 88% of cases (p < 0.006) across 9 behavioral metrics and 32 scenarios."],
-    tags: ["Python", "LangGraph", "LangChain", "FastAPI", "Next.js", "NLP", "Multi-Agent Systems"],
-    link: "https://github.com/sandunmunasinghe91/Multi-agent-LLM-conflict-resolution-research-",
-    kind: "blue",
-    label: "02 / AI SYSTEMS",
-    resultLabel: "Key Results",
-    art: "agents",
-  },
-  {
-    group: "Engineering AI",
-    title: "Chemical Engineering LLM from Scratch",
-    summary: "Building a domain-specific language model for chemical and process engineering using a GPT-2 style decoder-only transformer.",
-    problem: "Create a specialized language model that understands chemical engineering concepts, equations, process design knowledge, and troubleshooting steps for real industrial applications.",
-    approach: "Built a GPT-2 style decoder-only transformer in PyTorch. Developed automated pipelines to collect 3,000+ arXiv papers and Wikipedia articles, and processed 2,300+ research papers into a curated 10M-token corpus.",
-    goal: "Develop an AI-powered chemical engineering assistant capable of answering technical questions, explaining engineering concepts, and supporting process troubleshooting and engineering design.",
-    tags: ["PyTorch", "tiktoken", "Transformers", "NLP", "Data Processing", "Chemical Engineering"],
-    link: "https://github.com/sandunmunasinghe91/ChemEng-LLM",
-    kind: "violet",
-    label: "03 / ENGINEERING AI",
-    resultLabel: "Long-term Goal",
-    art: "atom",
-    badge: "IN PROGRESS",
-  },
-];
-
 function LineIcon({ name }) {
   const paths = {
     target: <><circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="4.5" /><circle cx="12" cy="12" r="1" fill="currentColor" /></>,
@@ -237,24 +192,33 @@ function ProjectCard({ item }) {
               <span className={index === 0 ? "lead" : ""} key={tag}>{tag}</span>
             ))}
           </div>
-          <div className="pcard-actions">
-            <a className="button lime-button" href={item.link} target="_blank" rel="noreferrer">
-              <LineIcon name="github" /><b>View Code</b><span>→</span>
-            </a>
-            <a className="button dark-outline" href={item.link} target="_blank" rel="noreferrer">
-              <b>{item.art === "atom" ? "Read More" : "Read Case Study"}</b><span>→</span>
-            </a>
-          </div>
+          {item.link && (
+            <div className="pcard-actions">
+              <a className="button lime-button" href={item.link} target="_blank" rel="noreferrer">
+                <LineIcon name="github" /><b>View Code</b><span>→</span>
+              </a>
+              <a className="button dark-outline" href={item.link} target="_blank" rel="noreferrer">
+                <b>{item.art === "atom" ? "Read More" : "Read Case Study"}</b><span>→</span>
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </article>
   );
 }
 
-export default function ProjectsPage() {
+export default function ProjectsPage({ projects }) {
   const [active, setActive] = useState("All");
-  const filters = [["All", 3], ["LLM Research", 1], ["AI Systems", 1], ["Engineering AI", 1]];
-  const shown = active === "All" ? items : items.filter((item) => item.group === active);
+  const groups = [...new Set(projects.map((item) => item.group_name))];
+  const filters = [["All", projects.length], ...groups.map((group) => [
+    group,
+    projects.filter((item) => item.group_name === group).length,
+  ])];
+  const shown =
+    active === "All"
+      ? projects
+      : projects.filter((item) => item.group_name === active);
   return (
     <div className="subpage projects-page">
       <div className="container page-intro">
@@ -279,7 +243,18 @@ export default function ProjectsPage() {
         </div>
       </div>
       <section className="container pcard-list">
-        {shown.map((item) => <ProjectCard key={item.title} item={item} />)}
+        {shown.length === 0 && <p className="emptyState">No projects in this category yet.</p>}
+        {shown.map((item) => (
+          <ProjectCard
+            key={item.id ?? item.title}
+            item={{
+              ...item,
+              group: item.group_name,
+              keyResults: item.key_results ?? [],
+              resultLabel: item.result_label,
+            }}
+          />
+        ))}
       </section>
     </div>
   );

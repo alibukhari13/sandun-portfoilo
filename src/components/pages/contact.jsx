@@ -1,6 +1,7 @@
 "use client";
 
 import NeuralNetwork from "@/components/NeuralNetwork";
+import { usePortfolioSettings } from "@/components/PortfolioSettingsContext";
 
 function ContactIcon({ name }) {
   const icons = {
@@ -172,11 +173,12 @@ const questions = [
   ],
   [
     "What is the best way to reach you?",
-    "Email is the best way to get in touch: sandunmunasinghe2017@gmail.com.",
+    "Email is the best way to get in touch.",
   ],
 ];
 
 export default function ContactPage() {
+  const settings = usePortfolioSettings();
   return (
     <div className="subpage contact-page">
       <div className="contact-field" aria-hidden="true"><NeuralNetwork density="dense" /></div>
@@ -185,16 +187,10 @@ export default function ContactPage() {
         <div className="page-intro-row">
           <div>
             <h1>Contact</h1>
-            <p>
-              Have a research idea, an opportunity, or a project in mind?
-              <br />
-              I’d love to hear from you.
-            </p>
+            <p>{settings.contact_intro}</p>
           </div>
           <span className="intro-aside page-description">
-            I’m open to machine learning and AI opportunities, research
-            collaborations, and interesting technical challenges at the
-            intersection of computer science and chemical engineering.
+            {settings.contact_description}
           </span>
         </div>
       </div>
@@ -205,65 +201,52 @@ export default function ContactPage() {
             <br />
             <span>meaningful.</span>
           </h2>
-          <p className="contact-lede">
-            I’m open to machine learning and AI opportunities, research
-            collaborations, project discussions, and technical conversations at
-            the intersection of computer science and chemical engineering.
-          </p>
-          <div className="contact-method">
+          <p className="contact-lede">{settings.contact_lede}</p>
+          {settings.contact_email && <div className="contact-method">
             <ContactIcon name="email" />
             <p>
               <small>Email</small>
-              <a href="mailto:sandunmunasinghe2017@gmail.com">
-                sandunmunasinghe2017@gmail.com ↗
+              <a href={`mailto:${settings.contact_email}`}>
+                {settings.contact_email} ↗
               </a>
             </p>
-          </div>
-          <div className="contact-method">
+          </div>}
+          {settings.location && <div className="contact-method">
             <ContactIcon name="location" />
             <p>
               <small>Location</small>
-              <span>Hoboken, New Jersey, USA</span>
+              <span>{settings.location}</span>
             </p>
-          </div>
-          <div className="contact-method">
+          </div>}
+          {settings.availability && <div className="contact-method">
             <ContactIcon name="work" />
             <p>
               <small>Open to</small>
-              <span>
-                Research opportunities · Internships · Full-time roles
-                <br />
-                Collaborations · Technical discussions
-              </span>
+              <span style={{ whiteSpace: "pre-line" }}>{settings.availability}</span>
             </p>
-          </div>
+          </div>}
           <div className="contact-profiles">
-            <a
-              href="https://github.com/sandunmunasinghe91?tab=repositories"
-              target="_blank"
-              rel="noreferrer"
-            >
+            {settings.github_url && <a href={settings.github_url} target="_blank" rel="noreferrer">
               <ProfileMark type="github" />
               GitHub <span>↗</span>
-            </a>
-            <a
-              href="https://www.linkedin.com/in/sandun-munasinghe-268a1a27b"
-              target="_blank"
-              rel="noreferrer"
-            >
+            </a>}
+            {settings.linkedin_url && <a href={settings.linkedin_url} target="_blank" rel="noreferrer">
               <ProfileMark type="linkedin" />
               LinkedIn <span>↗</span>
-            </a>
-            <a href="mailto:sandunmunasinghe2017@gmail.com">
+            </a>}
+            {settings.contact_email && <a href={`mailto:${settings.contact_email}`}>
               <ProfileMark type="email" />
               Email <span>↗</span>
-            </a>
+            </a>}
           </div>
         </div>
         <form
           className="message-card"
-          action="https://formspree.io/f/mrpejwge"
+          action={settings.contact_form_endpoint || undefined}
           method="POST"
+          onSubmit={(event) => {
+            if (!settings.contact_form_endpoint) event.preventDefault();
+          }}
         >
           <div className="message-heading">
             <ContactIcon name="send" />
@@ -272,6 +255,11 @@ export default function ContactPage() {
               <p>I’ll get back to you as soon as possible.</p>
             </div>
           </div>
+          {!settings.contact_form_endpoint && (
+            <p className="alert" role="status">
+              The contact form is currently unavailable.
+            </p>
+          )}
           <label>
             <span>Your name <em className="req-star">*</em></span>
             <FieldControl icon="user">
@@ -315,7 +303,11 @@ export default function ContactPage() {
               />
             </FieldControl>
           </label>
-          <button className="button lime-button" type="submit">
+          <button
+            className="button lime-button"
+            type="submit"
+            disabled={!settings.contact_form_endpoint}
+          >
             Send Message <span>↗</span>
           </button>
           <small className="form-privacy">
@@ -358,7 +350,11 @@ export default function ContactPage() {
                 {q}
                 <span>›</span>
               </summary>
-              <p>{a}</p>
+              <p>{q === "What is the best way to reach you?" && settings.contact_email
+                ? `${a} ${settings.contact_email}.`
+                : q === "What is the best way to reach you?"
+                  ? "Contact details are currently unavailable."
+                  : a}</p>
             </details>
           ))}
         </div>

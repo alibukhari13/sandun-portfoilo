@@ -6,12 +6,21 @@ import {
 import { isAdminSessionValid } from "@/lib/admin-auth";
 import { getBlogImageUrl } from "@/lib/blogs";
 import { listLocalPosts } from "@/lib/local-blog-store";
+import {
+  defaultPortfolioSettings,
+} from "@/lib/portfolio-content";
 import BlogPostForm from "./BlogPostForm";
+import ProjectForm from "./ProjectForm";
+import PortfolioSettingsForm from "./PortfolioSettingsForm";
 import {
   createBlog,
+  createProject,
   deleteBlog,
+  deleteProject,
   login,
   logout,
+  savePortfolioSettings,
+  updateProject,
   updateBlog,
 } from "@/app/admin/actions";
 import styles from "./admin.module.css";
@@ -22,6 +31,10 @@ const statusMessages = {
   published: "Post published on the public blog.",
   unpublished: "Post returned to drafts.",
   deleted: "Post deleted.",
+  "project-created": "Project added to the portfolio.",
+  "project-updated": "Project changes saved.",
+  "project-deleted": "Project deleted.",
+  "settings-updated": "Site details saved.",
 };
 
 const errorMessages = {
@@ -30,6 +43,8 @@ const errorMessages = {
   "auth-config":
     "Set ADMIN_EMAIL, ADMIN_PASSWORD, and ADMIN_SESSION_SECRET in the server environment.",
   supabase: "Add the Supabase URL and service-role key to enable blog storage.",
+  database:
+    "Add the Supabase URL and service-role key, then apply supabase/schema.sql to enable portfolio editing.",
   validation: "Check the title, excerpt, and content fields, then try again.",
   image: "Choose a JPEG, PNG, WebP, or AVIF image no larger than 3 MB.",
   save: "The change could not be saved. Please try again.",
@@ -117,6 +132,40 @@ function PostRow({ post }) {
   );
 }
 
+function ProjectRow({ project }) {
+  return (
+    <article className={styles.postRow}>
+      <div className={styles.postSummary}>
+        <div>
+          <span className={styles.status}>{project.group_name}</span>
+          <h2>{project.title}</h2>
+          <p>Display order: {project.sort_order}</p>
+        </div>
+        <div className={styles.rowActions}>
+          <details className={styles.disclosure}>
+            <summary>Edit</summary>
+            <ProjectForm
+              action={updateProject}
+              project={project}
+              submitLabel="Save project"
+            />
+          </details>
+          <details className={`${styles.disclosure} ${styles.deleteDisclosure}`}>
+            <summary>Delete</summary>
+            <form action={deleteProject} className={styles.deleteConfirm}>
+              <input type="hidden" name="id" value={project.id} />
+              <span>Delete this project permanently?</span>
+              <button className={styles.deleteButton} type="submit">
+                Confirm delete
+              </button>
+            </form>
+          </details>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default async function AdminPage({ searchParams }) {
   const params = await searchParams;
   const databaseConfigured = hasBlogDataConfig();
@@ -136,6 +185,36 @@ export default async function AdminPage({ searchParams }) {
     : { data: await listLocalPosts(), error: null };
   const posts = result.data ?? [];
   const error = result.error;
+  const portfolioResult = databaseConfigured
+    ? await Promise.all([
+        safeSupabaseRequest(
+          createSupabaseAdminClient()
+            .from("portfolio_projects")
+            .select(
+              "id, group_name, title, summary, problem, approach, key_results, result_label, goal, tags, link, kind, label, art, badge, sort_order",
+            )
+            .order("sort_order", { ascending: true })
+            .order("created_at", { ascending: true }),
+        ),
+        safeSupabaseRequest(
+          createSupabaseAdminClient()
+            .from("portfolio_settings")
+            .select("settings")
+            .eq("id", "main")
+            .maybeSingle(),
+        ),
+      ])
+    : [
+        { data: null, error: { message: "Supabase is not configured" } },
+        { data: null, error: { message: "Supabase is not configured" } },
+      ];
+  const projects = portfolioResult[0].data ?? [];
+  const portfolioSettings = {
+    ...defaultPortfolioSettings,
+    ...(portfolioResult[1].data?.settings ?? {}),
+  };
+  const portfolioError =
+    portfolioResult.find((item) => item.error)?.error ?? null;
 
   return (
     <main className={styles.page}>
@@ -146,10 +225,10 @@ export default async function AdminPage({ searchParams }) {
               ← Public blog
             </a>
             <span className={styles.kicker}>SANDUN MUNASINGHE / ADMIN</span>
-            <h1>Blog dashboard</h1>
+            <h1>Portfolio dashboard</h1>
             <p className={styles.intro}>
-              Create, revise, publish, or delete articles. Published posts show
-              on the public blog.
+              Manage portfolio projects and site details, and create, revise,
+              publish, or delete blog articles.
             </p>
           </div>
           <form action={logout}>
@@ -169,6 +248,53 @@ export default async function AdminPage({ searchParams }) {
             {errorMessages[params.error] ?? "Something went wrong."}
           </p>
         )}
+
+        <section className={styles.createSection}>
+          <div className={styles.sectionHeading}>
+            <div>
+              <span className={styles.kicker}>PROJECTS</span>
+              <h2>Add a project</h2>
+            </div>
+            <span className={styles.counter}>
+              {projects.length} {projects.length === 1 ? "project" : "projects"}
+            </span>
+          </div>
+          {portfolioError && (
+            <p className={styles.alert} role="alert">
+              {errorMessages.database}
+            </p>
+          )}
+          <ProjectForm action={createProject} submitLabel="Add project" />
+        </section>
+
+        <section className={styles.postsSection}>
+          <div className={styles.sectionHeading}>
+            <div>
+              <span className={styles.kicker}>LIBRARY</span>
+              <h2>Portfolio projects</h2>
+            </div>
+          </div>
+          {!portfolioError && projects.length === 0 && (
+            <p className={styles.emptyState}>No projects have been added.</p>
+          )}
+          {!portfolioError &&
+            projects.map((project) => (
+              <ProjectRow key={project.id} project={project} />
+            ))}
+        </section>
+
+        <section className={styles.createSection}>
+          <div className={styles.sectionHeading}>
+            <div>
+              <span className={styles.kicker}>SITE DETAILS</span>
+              <h2>Contact, social links, and shared copy</h2>
+            </div>
+          </div>
+          <PortfolioSettingsForm
+            action={savePortfolioSettings}
+            settings={portfolioSettings}
+          />
+        </section>
 
         <section className={styles.createSection}>
           <div className={styles.sectionHeading}>
