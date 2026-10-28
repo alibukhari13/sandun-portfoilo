@@ -151,12 +151,47 @@ function SocialLinks({ settings, className }) {
 }
 
 function FooterHeading({ children }) {
-  const words = children.trim().split(/\s+/);
+  const text = String(children ?? "").trim();
+  const words = text.split(/\s+/).filter(Boolean);
+  if (words.length < 2) {
+    return <h2>{text}</h2>;
+  }
   const highlight = words.pop();
   return (
     <h2>
-      {words.join(" ")} <span>{highlight}</span>
+      {words.join(" ")}
+      <br />
+      <span>{highlight}</span>
     </h2>
+  );
+}
+
+function FooterDescription({ children }) {
+  const lines = String(children ?? "")
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  if (lines.length <= 1) {
+    const text = lines[0] ?? "";
+    const splitAt = text.indexOf(". ");
+    if (splitAt === -1) return <p>{text}</p>;
+    return (
+      <p>
+        {text.slice(0, splitAt + 1)}
+        <br />
+        {text.slice(splitAt + 2)}
+      </p>
+    );
+  }
+  return (
+    <p>
+      {lines.map((line, index) => (
+        <span key={`${line}-${index}`}>
+          {index > 0 ? <br /> : null}
+          {line}
+        </span>
+      ))}
+    </p>
   );
 }
 
@@ -168,19 +203,14 @@ function Footer({ path, settings }) {
         <div className="footer-top">
           <div className="footer-invitation">
             <FooterHeading>{settings.footer_heading}</FooterHeading>
-            <p>{settings.footer_description}</p>
+            <FooterDescription>{settings.footer_description}</FooterDescription>
             <SocialLinks settings={settings} className="footer-socials" />
-            <div className="footer-socials" hidden>
-              <a href="https://github.com/sandunmunasinghe91?tab=repositories" target="_blank" rel="noreferrer" aria-label="Sandun on GitHub"><svg viewBox="0 0 24 24"><path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.56.1.76-.24.76-.54v-2.08c-3.1.67-3.76-1.32-3.76-1.32-.5-1.29-1.24-1.63-1.24-1.63-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 1.7 2.62 1.21 3.26.92.1-.72.39-1.21.71-1.49-2.48-.28-5.09-1.24-5.09-5.51 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.42.11-2.96 0 0 .94-.3 3.05 1.15a10.6 10.6 0 0 1 5.55 0c2.11-1.45 3.05-1.15 3.05-1.15.61 1.54.23 2.68.11 2.96.72.78 1.15 1.03 1.15 3 0 4.28-2.61 5.23-5.1 5.5.4.35.75 1.03.75 2.08v3.08c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/></svg></a>
-              <a href="https://www.linkedin.com/in/sandun-munasinghe-268a1a27b" target="_blank" rel="noreferrer" aria-label="Sandun on LinkedIn"><svg viewBox="0 0 24 24"><path d="M5.1 8.3H1.8V22h3.3V8.3ZM3.45 2a1.92 1.92 0 1 0 0 3.84 1.92 1.92 0 0 0 0-3.84ZM22.2 14.15c0-4.12-2.2-6.04-5.14-6.04a4.44 4.44 0 0 0-4 2.2V8.3H9.8V22h3.27v-6.78c0-1.79.34-3.52 2.55-3.52 2.17 0 2.2 2.04 2.2 3.64V22h3.28l1.1-7.85Z"/></svg></a>
-              <a href="mailto:sandunmunasinghe2017@gmail.com" aria-label="Email Sandun"><svg viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3.5 6 8.5 7 8.5-7"/></svg></a>
-            </div>
           </div>
           <div className="footer-contact">
             <span className="footer-label">START A CONVERSATION</span>
             {settings.contact_email && <a href={`mailto:${settings.contact_email}`}>{settings.contact_email} <Arrow /></a>}
             <div className="footer-buttons">
-              {settings.contact_email && <Link className="button footer-email-button" href="/contact">Email Sandun <Arrow /></Link>}
+              <Link className="button footer-email-button" href="/contact">Email Sandun <Arrow /></Link>
               <a className="button footer-resume-button" href="/assets/Sandun_Munasinghe.pdf" target="_blank" rel="noreferrer">Download Resume <svg className="tray-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m-4.5-4.5 4.5 4.5 4.5-4.5M4 15.5v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" /></svg></a>
             </div>
           </div>
