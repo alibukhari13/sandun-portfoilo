@@ -39,86 +39,101 @@ export default function BlogPostForm({ action, post, imageUrl, submitLabel }) {
       onReset={(event) => event.preventDefault()}
     >
       {post?.id && <input type="hidden" name="id" value={post.id} />}
-      <label>
-        Title
-        <input
-          name="title"
-          value={fields.title}
-          onChange={handleFieldChange}
-          maxLength={160}
-          required
-        />
-      </label>
-      <label>
-        Excerpt
-        <input
-          name="excerpt"
-          value={fields.excerpt}
-          onChange={handleFieldChange}
-          maxLength={500}
-        />
-      </label>
-      <label>
-        Article content
-        <textarea
-          name="content"
-          value={fields.content}
-          onChange={handleFieldChange}
-          maxLength={50000}
-          rows={8}
-          required
-        />
-      </label>
-      <label className={styles.checkboxLabel}>
-        <input
-          type="checkbox"
-          name="published"
-          value="true"
-          checked={fields.published}
-          onChange={handleFieldChange}
-        />{" "}
-        Publish on the public blog
-      </label>
-      <label>
-        Cover image
-        <input
-          name="image"
-          type="file"
-          accept="image/jpeg,image/png,image/webp,image/avif"
-        />
-      </label>
-      {post?.image_path && (
-        <>
-          {imageUrl && (
-            <Image
-              className={styles.imagePreview}
-              src={imageUrl}
-              alt={`Current cover for ${post.title}`}
-              width={640}
-              height={400}
-              unoptimized
+
+      <div className={styles.fieldGroup}>
+        <p className={styles.fieldGroupTitle}>Article</p>
+        <div className={styles.formGrid}>
+          <label className={styles.fullWidth}>
+            Title
+            <input
+              name="title"
+              value={fields.title}
+              onChange={handleFieldChange}
+              maxLength={160}
+              required
             />
-          )}
+          </label>
+          <label className={styles.fullWidth}>
+            Excerpt
+            <input
+              name="excerpt"
+              value={fields.excerpt}
+              onChange={handleFieldChange}
+              maxLength={500}
+            />
+          </label>
+          <label className={styles.fullWidth}>
+            Article content
+            <textarea
+              name="content"
+              value={fields.content}
+              onChange={handleFieldChange}
+              maxLength={50000}
+              rows={8}
+              required
+            />
+          </label>
+        </div>
+      </div>
+
+      <div className={styles.fieldGroup}>
+        <p className={styles.fieldGroupTitle}>Publishing</p>
+        <div className={styles.formGrid}>
           <label className={styles.checkboxLabel}>
             <input
               type="checkbox"
-              name="removeImage"
+              name="published"
               value="true"
-              checked={fields.removeImage}
+              checked={fields.published}
               onChange={handleFieldChange}
             />{" "}
-            Remove current cover
+            Publish on the public blog
           </label>
-        </>
-      )}
+          <label className={styles.fullWidth}>
+            Cover image
+            <input
+              name="image"
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/avif"
+            />
+          </label>
+          {post?.image_path && (
+            <>
+              {imageUrl && (
+                <Image
+                  className={styles.imagePreview}
+                  src={imageUrl}
+                  alt={`Current cover for ${post.title}`}
+                  width={640}
+                  height={400}
+                  unoptimized
+                />
+              )}
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  name="removeImage"
+                  value="true"
+                  checked={fields.removeImage}
+                  onChange={handleFieldChange}
+                />{" "}
+                Remove current cover
+              </label>
+            </>
+          )}
+        </div>
+      </div>
+
       {state.error && (
         <p className={styles.alert} role="alert">
           {errorMessages[state.error] ?? "Something went wrong."}
         </p>
       )}
-      <button className={styles.primaryButton} type="submit" disabled={pending}>
-        {submitLabel}
-      </button>
+      <div className={styles.formActions}>
+        <button className={styles.primaryButton} type="submit" disabled={pending}>
+          {pending ? "Saving…" : submitLabel}
+        </button>
+      </div>
     </form>
   );
 }

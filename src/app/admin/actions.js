@@ -188,7 +188,9 @@ async function uniqueSlug(client, title, currentId) {
 function refreshBlogPages(status) {
   revalidatePath("/blog");
   revalidatePath("/admin");
-  redirect(`/admin?status=${status}`);
+  const view =
+    status === "created" || status === "published" ? "write" : "library";
+  redirect(`/admin?tab=blog&view=${view}&status=${status}`);
 }
 
 export async function login(formData) {
@@ -484,7 +486,11 @@ export async function deleteBlog(formData) {
       "/contact",
     ].forEach((path) => revalidatePath(path));
     revalidatePath("/admin");
-    redirect(`/admin?status=${status}`);
+    if (status === "settings-updated") {
+      redirect(`/admin?tab=settings&status=${status}`);
+    }
+    const view = status === "project-created" ? "add" : "library";
+    redirect(`/admin?tab=projects&view=${view}&status=${status}`);
   }
 
   export async function createProject(state, formData) {
