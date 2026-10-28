@@ -6,8 +6,8 @@ import {
 import { isAdminSessionValid } from "@/lib/admin-auth";
 import { listLocalPosts } from "@/lib/local-blog-store";
 import { defaultPortfolioSettings } from "@/lib/portfolio-content";
-import { login } from "@/app/admin/actions";
 import AdminDashboard from "./AdminDashboard";
+import LoginForm from "./LoginForm";
 import styles from "./admin.module.css";
 
 const statusMessages = {
@@ -95,26 +95,7 @@ function LoginPanel({ error }) {
             {error}
           </p>
         )}
-        <form action={login} className={styles.form}>
-          <label>
-            Email
-            <input type="email" name="email" autoComplete="username" required />
-          </label>
-          <label>
-            Password
-            <input
-              type="password"
-              name="password"
-              autoComplete="current-password"
-              required
-            />
-          </label>
-          <div className={styles.formActions}>
-            <button className={styles.primaryButton} type="submit">
-              Sign in
-            </button>
-          </div>
-        </form>
+        <LoginForm />
         <a className={styles.loginBackLink} href="/">
           ← Back to site
         </a>

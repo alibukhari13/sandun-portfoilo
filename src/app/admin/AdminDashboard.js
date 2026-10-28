@@ -375,9 +375,6 @@ export default function AdminDashboard({
           <form action={logout} className={styles.signOutForm}>
             <div className={styles.sessionCard}>
               <div className={styles.sessionInfo}>
-                <span className={styles.sessionAvatar} aria-hidden="true">
-                  SM
-                </span>
                 <div>
                   <strong>Admin session</strong>
                   <span>Signed in securely</span>

@@ -78,6 +78,46 @@
   font-size: 15px;
 }
 
+.passwordField {
+  position: relative;
+  display: block;
+}
+
+.passwordField input {
+  padding-right: 46px;
+}
+
+.passwordToggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #66726b;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.passwordToggle:hover {
+  color: #0f1714;
+  background: #f0f3eb;
+}
+
+.passwordToggle:focus-visible {
+  outline: 2px solid #94b75d;
+  outline-offset: 1px;
+}
+
+.passwordToggle svg {
+  width: 18px;
+  height: 18px;
+}
+
 .loginPanel .primaryButton {
   width: 100%;
   justify-content: center;
@@ -336,18 +376,6 @@
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.sessionAvatar {
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  background: var(--lime);
-  color: #132018;
-  font: 700 12px/1 Sora, sans-serif;
-  flex-shrink: 0;
 }
 
 .sessionInfo strong {
