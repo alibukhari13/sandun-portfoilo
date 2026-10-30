@@ -1,0 +1,13 @@
+Unzip this folder in public_html, then on Hostinger VPS run:
+
+  cd public_html
+  npm start
+
+Or:
+
+  node server.js
+
+Node.js 20+ required. Keep .env in this same folder.
+If Hostinger has Node.js App, set startup file to server.js and port 3000.
+
+Do not open the site as Apache files only — this is a Next.js app, Node must be running.

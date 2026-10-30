@@ -1,6 +1,7 @@
 node_modules/
 .next/
 out/
+vps-release/
 .DS_Store
 .env*
 !.env.example
