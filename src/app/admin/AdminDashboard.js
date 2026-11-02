@@ -1,3 +1,4 @@
+import Link from "next/link";
 import BlogPostForm from "./BlogPostForm";
 import ProjectForm from "./ProjectForm";
 import PortfolioSettingsForm from "./PortfolioSettingsForm";
@@ -122,7 +123,7 @@ function ViewSwitch({ tab, view, options }) {
       {options.map((option) => {
         const active = option.id === view;
         return (
-          <a
+          <Link
             key={option.id}
             href={hrefFor({ tab, view: option.id })}
             className={`${styles.viewChip} ${active ? styles.viewChipActive : ""}`}
@@ -130,7 +131,7 @@ function ViewSwitch({ tab, view, options }) {
             aria-selected={active}
           >
             {option.label}
-          </a>
+          </Link>
         );
       })}
     </div>
@@ -312,21 +313,21 @@ export default function AdminDashboard({
   return (
     <div className={styles.app}>
       <aside className={styles.sidebar}>
-        <a className={styles.sidebarBrand} href="/" aria-label="Sandun Munasinghe home">
+        <Link className={styles.sidebarBrand} href="/" aria-label="Sandun Munasinghe home">
           <span className={styles.brandWordmark}>
             Sandun
             <span>
               Munasinghe<span className={styles.brandDot}>.</span>
             </span>
           </span>
-        </a>
+        </Link>
         <p className={styles.sidebarAdminLabel}>Admin panel</p>
 
         <nav className={styles.sideNav} aria-label="Admin sections">
           {tabs.map((item) => {
             const active = item.id === activeTab.id;
             return (
-              <a
+              <Link
                 key={item.id}
                 href={hrefFor({
                   tab: item.id,
@@ -342,7 +343,7 @@ export default function AdminDashboard({
               >
                 <span>{item.label}</span>
                 <small>{item.description}</small>
-              </a>
+              </Link>
             );
           })}
         </nav>
@@ -364,12 +365,12 @@ export default function AdminDashboard({
 
         <div className={styles.sidebarFooter}>
           <div className={styles.quickLinks}>
-            <a className={styles.ghostLink} href="/">
+            <Link className={styles.ghostLink} href="/">
               View site
-            </a>
-            <a className={styles.ghostLink} href="/blog">
+            </Link>
+            <Link className={styles.ghostLink} href="/blog">
               Public blog
-            </a>
+            </Link>
           </div>
 
           <form action={logout} className={styles.signOutForm}>

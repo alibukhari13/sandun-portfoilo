@@ -101,7 +101,7 @@ body { background: var(--surface); color: var(--ink); }
 .site-header .mobile-menu:hover { background: #ffffff12; border-color: #ffffff50; }
 .site-header .mobile-menu[aria-expanded="true"] { background: #c6f25a22; border-color: #c6f25a55; color: #c6f25a; }
 .profile-tabs { display: none; }
-.route-stage { animation: route-enter 520ms cubic-bezier(.2,.72,.25,1) both; }
+.route-stage { animation: none; }
 @keyframes route-enter { from { opacity: .72; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
 .neural-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .neural-intro { position: fixed; inset: 0; z-index: 2500; display: grid; place-items: center; overflow: hidden; color: #ddffaf; background: radial-gradient(ellipse at 50% 48%, #12231c 0, #07101b 50%, #050910 100%); animation: intro-exit 1.5s cubic-bezier(.7,0,.25,1) forwards; }
