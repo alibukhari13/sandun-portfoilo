@@ -1,10 +1,10 @@
 import PortfolioLayout from "@/components/PortfolioLayout";
 import ProjectsPage from "@/components/pages/projects";
-import { getPortfolioProjects } from "@/lib/portfolio-content";
+import { getPortfolioProjects, getPortfolioSettings } from "@/lib/portfolio-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const projects = await getPortfolioProjects();
-  return <PortfolioLayout><ProjectsPage projects={projects} /></PortfolioLayout>;
+  const [projects, settings] = await Promise.all([getPortfolioProjects(), getPortfolioSettings()]);
+  return <PortfolioLayout settings={settings}><ProjectsPage projects={projects} /></PortfolioLayout>;
 }

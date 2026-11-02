@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import NeuralNetwork from "@/components/NeuralNetwork";
 import ParticleWave from "@/components/ParticleWave";
@@ -75,6 +75,7 @@ function saveThemePreference(theme) {
 }
 
 function Header({ path }) {
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(true);
   useLayoutEffect(() => {
@@ -100,6 +101,9 @@ function Header({ path }) {
       window.removeEventListener("sandun-theme-change", sync);
     };
   }, []);
+  useEffect(() => {
+    if (menuOpen) pages.forEach(([, href]) => router.prefetch(href));
+  }, [menuOpen, router]);
   function toggleTheme() {
     const next = !dark;
     const theme = next ? "dark" : "light";
@@ -114,7 +118,7 @@ function Header({ path }) {
     <header className={`header site-header ${menuOpen ? "menu-open" : ""}`}>
       <Link className="wordmark" href="/">Sandun<span>Munasinghe<span className="brand-dot">.</span></span></Link>
       <nav className="main-nav" aria-label="Main navigation">
-        {visiblePages.map(([label, href]) => <Link key={href} className={path === href ? "active" : ""} aria-current={path === href ? "page" : undefined} href={href}>{label}</Link>)}
+        {visiblePages.map(([label, href]) => <Link key={href} prefetch className={path === href ? "active" : ""} aria-current={path === href ? "page" : undefined} href={href}>{label}</Link>)}
       </nav>
       <div className="nav-actions">
         <button className="icon-button theme-toggle" onClick={toggleTheme} aria-pressed={dark} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"} title={dark ? "Switch to light mode" : "Switch to dark mode"}>{dark ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 7 7 0 0 0 21 14.5Z"/></svg> : "☀"}</button>
@@ -123,7 +127,7 @@ function Header({ path }) {
       </div>
     </header>
     <nav className={`profile-tabs ${menuOpen ? "open" : ""}`} aria-label="Portfolio pages">
-      <div className="container">{visiblePages.map(([label, href]) => <Link key={href} className={path === href ? "active" : ""} aria-current={path === href ? "page" : undefined} href={href} onClick={() => setMenuOpen(false)}>{label}</Link>)}</div>
+      <div className="container">{visiblePages.map(([label, href]) => <Link key={href} prefetch className={path === href ? "active" : ""} aria-current={path === href ? "page" : undefined} href={href} onClick={() => setMenuOpen(false)}>{label}</Link>)}</div>
     </nav>
   </>;
 }
@@ -228,82 +232,10 @@ function Footer({ path, settings }) {
 
 export default function PortfolioPage({ children, settings }) {
   const path = usePathname();
-  const [showIntro, setShowIntro] = useState(false);
-  const [landingReveal, setLandingReveal] = useState(false);
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
-    let revealFrame;
-    let unlockFrame;
-    let timer;
-    if (path === "/") {
-      let playIntro = document.documentElement.dataset.startup === "play";
-      if (!playIntro) {
-        try {
-          playIntro = !window.sessionStorage.getItem("sandun-startup-seen");
-          if (playIntro) window.sessionStorage.setItem("sandun-startup-seen", "1");
-        } catch {}
-      }
-
-      if (playIntro) {
-        revealFrame = requestAnimationFrame(() => {
-          setShowIntro(true);
-          setLandingReveal(false);
-          unlockFrame = requestAnimationFrame(() => {
-            delete document.documentElement.dataset.startup;
-            timer = setTimeout(() => {
-              setShowIntro(false);
-              setLandingReveal(true);
-            }, 2100);
-          });
-        });
-      } else {
-        delete document.documentElement.dataset.startup;
-        revealFrame = requestAnimationFrame(() => {
-          setShowIntro(false);
-          setLandingReveal(true);
-        });
-      }
-    } else {
-      revealFrame = requestAnimationFrame(() => {
-        setShowIntro(false);
-        setLandingReveal(false);
-      });
-    }
-
-    return () => {
-      if (revealFrame !== undefined) cancelAnimationFrame(revealFrame);
-      if (unlockFrame !== undefined) cancelAnimationFrame(unlockFrame);
-      if (timer !== undefined) clearTimeout(timer);
-    };
   }, [path]);
-  useLayoutEffect(() => {
-    const root = document.getElementById("main");
-    if (!root) return undefined;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return undefined;
-    document.documentElement.classList.add("js-reveal");
-    const nodes = [...root.querySelectorAll(".home-hero-copy, .hero-metrics > div, .credential-item, .focus-inner > div, .home-project-card, .xp-hero-copy, .xp-globe, .xp-role, .xp-panel, .xp-quote, .about-photo, .about-copy, .about-pillars article, .stats-strip > div, .about-record-grid > article, .skill-detail-card, .detailed-project, .degree-card, .coursework-grid > article, .beyond-row, .contact-copy, .message-card, .topic-grid article, .faq-block, .skills-in-action, .upcoming-card, .pcard")];
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("reveal-in");
-        observer.unobserve(entry.target);
-      });
-    }, { threshold: 0.14, rootMargin: "0px 0px -6% 0px" });
-    nodes.forEach((node, index) => {
-      node.classList.add("reveal");
-      node.style.setProperty("--reveal-delay", `${(index % 5) * 70}ms`);
-      const rect = node.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) node.classList.add("reveal-in");
-      else observer.observe(node);
-    });
-    return () => {
-      observer.disconnect();
-      document.documentElement.classList.remove("js-reveal");
-    };
-  }, [path]);
-  return <PortfolioSettingsProvider settings={settings}><div id="root" className={`site-root home-footer${landingReveal ? " landing-reveal" : ""}`}>
-    {showIntro && <div className="neural-intro" aria-hidden="true"><NeuralNetwork density="dense" /><div className="intro-brand"><span className="intro-mark"><svg viewBox="0 0 48 48"><path d="M8 25 19 11l10 7 11-8M8 25l10 12 11-10 11 6M19 11l-1 26M29 18l0 9M8 25l32 6"/><circle cx="8" cy="25" r="3"/><circle cx="19" cy="11" r="3"/><circle cx="29" cy="18" r="3"/><circle cx="40" cy="10" r="3"/><circle cx="18" cy="37" r="3"/><circle cx="29" cy="27" r="3"/><circle cx="40" cy="33" r="3"/></svg></span><span className="intro-wordmark">Sandun<br/>Munasinghe<span>.</span></span></div><span className="intro-caption">CONNECTING IDEAS</span><span className="intro-progress"><i/></span></div>}
+  return <PortfolioSettingsProvider settings={settings}><div id="root" className="site-root home-footer">
     <Header path={path} />
     <div className="route-stage" key={path}><main id="main" tabIndex="-1" className="page-content">{children}</main></div>
     <Footer path={path} settings={settings} />

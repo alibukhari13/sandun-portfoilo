@@ -102,6 +102,13 @@ body { background: var(--surface); color: var(--ink); }
 .site-header .mobile-menu[aria-expanded="true"] { background: #c6f25a22; border-color: #c6f25a55; color: #c6f25a; }
 .profile-tabs { display: none; }
 .route-stage { animation: none; }
+.route-loading { min-height: 60vh; display: grid; align-content: center; justify-items: center; gap: 14px; padding: 36px 20px; color: var(--ink); background: var(--surface); }
+.route-loading-brand { font: 600 22px/1.2 Sora, sans-serif; letter-spacing: -.8px; }
+.route-loading-brand span { color: var(--lime); }
+.route-loading-label { color: var(--muted); font-size: 12px; }
+.route-loading-track { width: min(220px, 60vw); height: 3px; overflow: hidden; border-radius: 4px; background: var(--line); }
+.route-loading-track i { display: block; width: 38%; height: 100%; border-radius: inherit; background: var(--lime); animation: route-loading-progress 850ms ease-in-out infinite alternate; }
+@keyframes route-loading-progress { from { transform: translateX(-105%); } to { transform: translateX(265%); } }
 @keyframes route-enter { from { opacity: .72; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
 .neural-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .neural-intro { position: fixed; inset: 0; z-index: 2500; display: grid; place-items: center; overflow: hidden; color: #ddffaf; background: radial-gradient(ellipse at 50% 48%, #12231c 0, #07101b 50%, #050910 100%); animation: intro-exit 1.5s cubic-bezier(.7,0,.25,1) forwards; }
@@ -1776,9 +1783,6 @@ body, .subpage, .page-content { background-color: var(--surface); color: var(--i
   --card: #101a24;
   --subtle: #0d1722;
 }
-.js-reveal .reveal:not(.reveal-in) { opacity: 0; transform: translateY(18px); }
-.js-reveal .reveal.reveal-in { animation: rise-in .72s cubic-bezier(.18,.74,.24,1) backwards; animation-delay: var(--reveal-delay, 0ms); }
-@keyframes rise-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 .mini-chart i, .results-bars i { transform-origin: bottom; animation: bar-rise .8s cubic-bezier(.2,.7,.2,1) both; }
 @keyframes bar-rise { from { transform: scaleY(.08); } to { transform: scaleY(1); } }
 .portrait-float { animation: chip-drift 5.5s ease-in-out infinite; }
