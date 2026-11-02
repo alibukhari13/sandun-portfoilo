@@ -16,6 +16,13 @@ export default function RootLayout({ children }) {
           var t = localStorage.getItem('sandun-theme') || (document.cookie.match(/sandun-theme=([^;]+)/)||[])[1] || 'dark';
           document.documentElement.dataset.theme = t;
         } catch(e) {}
+        try {
+          // Play the branded intro only when a new tab opens on the landing page.
+          if (window.location.pathname === '/' && !sessionStorage.getItem('sandun-startup-seen')) {
+            sessionStorage.setItem('sandun-startup-seen', '1');
+            document.documentElement.dataset.startup = 'play';
+          }
+        } catch(e) {}
       })();
     `}</Script>
     {children}

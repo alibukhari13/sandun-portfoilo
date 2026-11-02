@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import { FaGithub } from "react-icons/fa";
 import NeuralNetwork from "@/components/NeuralNetwork";
 import ParticleWave from "@/components/ParticleWave";
 import { PortfolioSettingsProvider } from "@/components/PortfolioSettingsContext";
@@ -74,6 +75,27 @@ function saveThemePreference(theme) {
   document.cookie = `sandun-theme=${theme}; Path=/; Max-Age=31536000; SameSite=Lax`;
 }
 
+function StartupIntro() {
+  return (
+    <div className="neural-intro" aria-hidden="true">
+      <NeuralNetwork density="dense" />
+      <div className="intro-brand">
+        <span className="intro-mark">
+          <svg viewBox="0 0 48 48" fill="none">
+            <path d="M9 24h10l5-10 6 20 4-10h5" />
+            <circle cx="9" cy="24" r="2.5" /><circle cx="19" cy="24" r="2.5" />
+            <circle cx="24" cy="14" r="2.5" /><circle cx="30" cy="34" r="2.5" />
+            <circle cx="34" cy="24" r="2.5" /><circle cx="39" cy="24" r="2.5" />
+          </svg>
+        </span>
+        <span className="intro-wordmark">Sandun Munasinghe<span>.</span></span>
+      </div>
+      <p className="intro-caption">AI · RESEARCH · ENGINEERING</p>
+      <div className="intro-progress"><i /></div>
+    </div>
+  );
+}
+
 function Header({ path }) {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -137,7 +159,7 @@ function SocialLinks({ settings, className }) {
     <div className={className}>
       {settings.github_url && (
         <a href={settings.github_url} target="_blank" rel="noreferrer" aria-label="Sandun on GitHub">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.56.1.76-.24.76-.54v-2.08c-3.1.67-3.76-1.32-3.76-1.32-.5-1.29-1.24-1.63-1.24-1.63-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 1.7 2.62 1.21 3.26.92.1-.72.39-1.21.71-1.49-2.48-.28-5.09-1.24-5.09-5.51 0-1.22.44-2.22.11-2.96 0 0 .94-.3 3.05 1.15a10.6 10.6 0 0 1 5.55 0c2.11-1.45 3.05-1.15 3.05-1.15.61 1.54.23 2.68.11 2.96.72.78 1.15 1.78 1.15 3 0 4.28-2.61 5.23-5.1 5.5-.4.35.75 1.03.75 2.08v3.08c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/></svg>
+          <FaGithub className="social-github-icon" aria-hidden="true" focusable="false" />
         </a>
       )}
       {settings.linkedin_url && (
@@ -235,7 +257,21 @@ export default function PortfolioPage({ children, settings }) {
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, [path]);
+  useEffect(() => {
+    if (document.documentElement.dataset.startup !== "play") return;
+    const finishIntro = () => {
+      delete document.documentElement.dataset.startup;
+      document.getElementById("root")?.classList.add("landing-reveal");
+    };
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      finishIntro();
+      return;
+    }
+    const timer = window.setTimeout(finishIntro, 2100);
+    return () => window.clearTimeout(timer);
+  }, []);
   return <PortfolioSettingsProvider settings={settings}><div id="root" className="site-root home-footer">
+    <StartupIntro />
     <Header path={path} />
     <div className="route-stage" key={path}><main id="main" tabIndex="-1" className="page-content">{children}</main></div>
     <Footer path={path} settings={settings} />
