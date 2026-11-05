@@ -4,5 +4,5 @@ import ExperiencePage from "@/components/pages/experience";
 export const dynamic = "force-dynamic";
 
 export default function Page() {
-  return <PortfolioLayout><ExperiencePage /></PortfolioLayout>;
+  return <PortfolioLayout pageHref="/experience"><ExperiencePage /></PortfolioLayout>;
 }

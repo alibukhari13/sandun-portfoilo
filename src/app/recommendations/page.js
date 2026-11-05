@@ -4,5 +4,5 @@ import RecommendationsPage from "@/components/pages/recommendations";
 export const dynamic = "force-dynamic";
 
 export default function Page() {
-  return <PortfolioLayout><RecommendationsPage /></PortfolioLayout>;
+  return <PortfolioLayout pageHref="/recommendations"><RecommendationsPage /></PortfolioLayout>;
 }

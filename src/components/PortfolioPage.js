@@ -1,18 +1,13 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import NeuralNetwork from "@/components/NeuralNetwork";
 import ParticleWave from "@/components/ParticleWave";
 import { PortfolioSettingsProvider } from "@/components/PortfolioSettingsContext";
-
-const pages = [
-  ["Overview", "/"], ["About", "/about"], ["Experience", "/experience"],
-  ["Projects", "/projects"], ["Skills", "/skills"], ["Education", "/education"],
-  ["Blog", "/blog"], ["Recommendations", "/recommendations"], ["Contact", "/contact"],
-];
+import { getVisiblePages, isPageVisible } from "@/lib/site-pages";
 
 function Arrow({ diagonal = true }) {
   return <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={diagonal ? "M5 19 19 5M5 5h14v14" : "M5 12h14m-6-6 6 6-6 6"} /></svg>;
@@ -96,10 +91,12 @@ function StartupIntro() {
   );
 }
 
-function Header({ path }) {
+function Header({ path, settings }) {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(true);
+  const visiblePages = useMemo(() => getVisiblePages(settings), [settings]);
+  const showContact = isPageVisible(settings, "/contact");
   useLayoutEffect(() => {
     const saved = readThemePreference();
     document.documentElement.dataset.theme = saved;
@@ -124,8 +121,8 @@ function Header({ path }) {
     };
   }, []);
   useEffect(() => {
-    if (menuOpen) pages.forEach(([, href]) => router.prefetch(href));
-  }, [menuOpen, router]);
+    if (menuOpen) visiblePages.forEach((page) => router.prefetch(page.href));
+  }, [menuOpen, router, visiblePages]);
   function toggleTheme() {
     const next = !dark;
     const theme = next ? "dark" : "light";
@@ -134,22 +131,21 @@ function Header({ path }) {
     saveThemePreference(theme);
     window.dispatchEvent(new Event("sandun-theme-change"));
   }
-  const visiblePages = pages;
   return <>
     <a className="skip-link" href="#main">Skip to content</a>
     <header className={`header site-header ${menuOpen ? "menu-open" : ""}`}>
       <Link className="wordmark" href="/">Sandun<span>Munasinghe<span className="brand-dot">.</span></span></Link>
       <nav className="main-nav" aria-label="Main navigation">
-        {visiblePages.map(([label, href]) => <Link key={href} prefetch className={path === href ? "active" : ""} aria-current={path === href ? "page" : undefined} href={href}>{label}</Link>)}
+        {visiblePages.map((page) => <Link key={page.href} prefetch className={path === page.href ? "active" : ""} aria-current={path === page.href ? "page" : undefined} href={page.href}>{page.label}</Link>)}
       </nav>
       <div className="nav-actions">
         <button className="icon-button theme-toggle" onClick={toggleTheme} aria-pressed={dark} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"} title={dark ? "Switch to light mode" : "Switch to dark mode"}>{dark ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 7 7 0 0 0 21 14.5Z"/></svg> : "☀"}</button>
-        <Link className="nav-contact" href="/contact">Let’s talk <Arrow /></Link>
+        {showContact && <Link className="nav-contact" href="/contact">Let’s talk <Arrow /></Link>}
         <button className="icon-button mobile-menu" aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><MenuIcon open={menuOpen} /></button>
       </div>
     </header>
     <nav className={`profile-tabs ${menuOpen ? "open" : ""}`} aria-label="Portfolio pages">
-      <div className="container">{visiblePages.map(([label, href]) => <Link key={href} prefetch className={path === href ? "active" : ""} aria-current={path === href ? "page" : undefined} href={href} onClick={() => setMenuOpen(false)}>{label}</Link>)}</div>
+      <div className="container">{visiblePages.map((page) => <Link key={page.href} prefetch className={path === page.href ? "active" : ""} aria-current={path === page.href ? "page" : undefined} href={page.href} onClick={() => setMenuOpen(false)}>{page.label}</Link>)}</div>
     </nav>
   </>;
 }
@@ -222,6 +218,8 @@ function FooterDescription({ children }) {
 }
 
 function Footer({ path, settings }) {
+  const visiblePages = getVisiblePages(settings);
+  const showContact = isPageVisible(settings, "/contact");
   return <>
     <footer className="portfolio-footer site-footer">
     <ParticleWave className="footer-wave" rows={22} phase={2.4} lift={-20} amplitude={38} />
@@ -236,7 +234,7 @@ function Footer({ path, settings }) {
             <span className="footer-label">START A CONVERSATION</span>
             {settings.contact_email && <a href={`mailto:${settings.contact_email}`}>{settings.contact_email} <Arrow /></a>}
             <div className="footer-buttons">
-              <Link className="button footer-email-button" href="/contact">Email Sandun <Arrow /></Link>
+              {showContact && <Link className="button footer-email-button" href="/contact">Email Sandun <Arrow /></Link>}
               <a className="button footer-resume-button" href="/assets/Sandun_Munasinghe.pdf" target="_blank" rel="noreferrer">Download Resume <svg className="tray-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m-4.5-4.5 4.5 4.5 4.5-4.5M4 15.5v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" /></svg></a>
             </div>
           </div>
@@ -245,7 +243,7 @@ function Footer({ path, settings }) {
     </footer>
     <div className="contact-subfooter home-subfooter">
       <Link className="wordmark" href="/">Sandun<span>Munasinghe<span className="brand-dot">.</span></span></Link>
-      <nav aria-label="Footer navigation">{pages.map(([label, href]) => <Link key={href} href={href} aria-current={path === href ? "page" : undefined}>{label}</Link>)}</nav>
+      <nav aria-label="Footer navigation">{visiblePages.map((page) => <Link key={page.href} href={page.href} aria-current={path === page.href ? "page" : undefined}>{page.label}</Link>)}</nav>
       <SocialLinks settings={settings} className="contact-subfooter-socials" />
       <p className="subfooter-copy">© 2026 Sandun Munasinghe.<br />All rights reserved.</p>
     </div>
@@ -272,7 +270,7 @@ export default function PortfolioPage({ children, settings }) {
   }, []);
   return <PortfolioSettingsProvider settings={settings}><div id="root" className="site-root home-footer">
     <StartupIntro />
-    <Header path={path} />
+    <Header path={path} settings={settings} />
     <div className="route-stage" key={path}><main id="main" tabIndex="-1" className="page-content">{children}</main></div>
     <Footer path={path} settings={settings} />
   </div></PortfolioSettingsProvider>;

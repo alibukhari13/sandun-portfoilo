@@ -6,5 +6,5 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const [projects, settings] = await Promise.all([getPortfolioProjects(), getPortfolioSettings()]);
-  return <PortfolioLayout settings={settings}><ProjectsPage projects={projects} /></PortfolioLayout>;
+  return <PortfolioLayout settings={settings} pageHref="/projects"><ProjectsPage projects={projects} /></PortfolioLayout>;
 }

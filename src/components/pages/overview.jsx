@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import SiteLink from "@/components/SiteLink";
 import NeuralNetwork from "@/components/NeuralNetwork";
 import ParticleWave from "@/components/ParticleWave";
 import { ProjectMark } from "@/components/ProjectGraphics";
@@ -26,7 +26,7 @@ export default function OverviewPage({ projects }) {
             {skills.map((skill) => <li key={skill}>{skill}</li>)}
           </ul>
           <div className="hero-buttons">
-            <Link className="button primary lime-button" href="/projects">Explore Projects <span>↗</span></Link>
+            <SiteLink className="button primary lime-button" href="/projects">Explore Projects <span>↗</span></SiteLink>
             <a className="button secondary dark-outline" href="/assets/Sandun_Munasinghe.pdf" target="_blank" rel="noreferrer">Download Resume <svg className="tray-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m-4.5-4.5 4.5 4.5 4.5-4.5M4 15.5v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" /></svg></a>
           </div>
         </div>
@@ -55,7 +55,7 @@ export default function OverviewPage({ projects }) {
         <span className="credential-copy"><strong>Rutgers University</strong><small>BS Chemical Engineering<br />Process Systems &amp; Engineering</small></span>
       </a>
     </div></div>
-    <section className="home-focus"><ParticleWave className="focus-wave" id="focus-wave" rows={22} phase={2.4} lift={-20} amplitude={38} /><div className="container focus-inner"><div><span className="section-kicker">TWO DISCIPLINES / ONE PERSPECTIVE</span><h2>Research-led.<br /><span>Engineering-grounded.</span></h2></div><div><p>My work connects large language models, interpretability, multi-agent systems, and domain-specific AI with a foundation in chemical engineering, process systems, and data-driven analysis. I focus on building and applying intelligent systems to solve complex, real-world challenges in engineering and industry.</p><div className="focus-links"><Link className="button lime-button" href="/projects">View My Work <span>↗</span></Link><Link className="button dark-outline" href="/contact">Contact Sandun <span>↗</span></Link></div></div></div></section>
-    <section className="home-featured"><div className="container"><div className="featured-heading featured-heading-row"><h2><i /> Featured Projects</h2><p>A collection of research projects, personal builds, and applied ML/AI solutions across natural language processing, multi-agent systems, and chemical engineering.</p><Link className="featured-all-link" href="/projects">View All Projects <span>↗</span></Link></div><div className="home-project-grid">{projects.map((project, index) => <ProjectCard key={project.id ?? project.title} project={project} index={index} />)}</div></div></section>
+    <section className="home-focus"><ParticleWave className="focus-wave" id="focus-wave" rows={22} phase={2.4} lift={-20} amplitude={38} /><div className="container focus-inner"><div><span className="section-kicker">TWO DISCIPLINES / ONE PERSPECTIVE</span><h2>Research-led.<br /><span>Engineering-grounded.</span></h2></div><div><p>My work connects large language models, interpretability, multi-agent systems, and domain-specific AI with a foundation in chemical engineering, process systems, and data-driven analysis. I focus on building and applying intelligent systems to solve complex, real-world challenges in engineering and industry.</p><div className="focus-links"><SiteLink className="button lime-button" href="/projects">View My Work <span>↗</span></SiteLink><SiteLink className="button dark-outline" href="/contact">Contact Sandun <span>↗</span></SiteLink></div></div></div></section>
+    <section className="home-featured"><div className="container"><div className="featured-heading featured-heading-row"><h2><i /> Featured Projects</h2><p>A collection of research projects, personal builds, and applied ML/AI solutions across natural language processing, multi-agent systems, and chemical engineering.</p><SiteLink className="featured-all-link" href="/projects">View All Projects <span>↗</span></SiteLink></div><div className="home-project-grid">{projects.map((project, index) => <ProjectCard key={project.id ?? project.title} project={project} index={index} />)}</div></div></section>
   </div>;
 }

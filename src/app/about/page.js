@@ -4,5 +4,5 @@ import AboutPage from "@/components/pages/about";
 export const dynamic = "force-dynamic";
 
 export default function Page() {
-  return <PortfolioLayout><AboutPage /></PortfolioLayout>;
+  return <PortfolioLayout pageHref="/about"><AboutPage /></PortfolioLayout>;
 }

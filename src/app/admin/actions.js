@@ -25,6 +25,7 @@ import {
   safeSupabaseRequest,
 } from "@/lib/supabase";
 import { defaultPortfolioSettings } from "@/lib/portfolio-content";
+import { sitePages } from "@/lib/site-pages";
 
 const postIdPattern =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -560,11 +561,14 @@ export async function deleteBlog(formData) {
 
   function readPortfolioSettings(formData) {
     const settings = Object.fromEntries(
-      Object.keys(defaultPortfolioSettings).map((key) => [
-        key,
-        String(formData.get(key) ?? "").trim(),
-      ]),
+      Object.keys(defaultPortfolioSettings)
+        .filter((key) => key !== "hidden_pages")
+        .map((key) => [key, String(formData.get(key) ?? "").trim()]),
     );
+    const visiblePages = new Set(formData.getAll("visible_pages").map(String));
+    settings.hidden_pages = sitePages
+      .filter((page) => !page.locked && !visiblePages.has(page.href))
+      .map((page) => page.href);
 
     const email = settings.contact_email;
     const emailValid =
@@ -615,7 +619,10 @@ export async function deleteBlog(formData) {
     );
     if (error) {
       console.error("Unable to save portfolio settings:", error.message);
-      return returnFormError(state, "save");
+      const missingTable =
+        error.code === "PGRST205" ||
+        /could not find the table .* in the schema cache/i.test(error.message ?? "");
+      return returnFormError(state, missingTable ? "database" : "save");
     }
     refreshPortfolio("settings-updated");
   }

@@ -1,6 +1,8 @@
 import "server-only";
 
+import { notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
+import { isPageVisible, normalizeHiddenPages } from "@/lib/site-pages";
 
 export const defaultProjects = [
   {
@@ -112,7 +114,20 @@ export const defaultPortfolioSettings = {
   footer_description:
     "Open to opportunities in machine learning, AI, and chemical engineering. Great ideas begin with a conversation.",
   contact_form_endpoint: "https://formspree.io/f/mrpejwge",
+  hidden_pages: ["/recommendations"],
 };
+
+export function mergePortfolioSettings(raw) {
+  const source = raw && typeof raw === "object" ? raw : {};
+  const hiddenPages = Object.prototype.hasOwnProperty.call(source, "hidden_pages")
+    ? source.hidden_pages
+    : defaultPortfolioSettings.hidden_pages;
+  return {
+    ...defaultPortfolioSettings,
+    ...source,
+    hidden_pages: normalizeHiddenPages(hiddenPages),
+  };
+}
 
 function hasPublicConfig() {
   return Boolean(
@@ -161,7 +176,7 @@ export async function getPortfolioProjects() {
 }
 
 export async function getPortfolioSettings() {
-  if (!hasPublicConfig()) return defaultPortfolioSettings;
+  if (!hasPublicConfig()) return mergePortfolioSettings(null);
 
   const { data, error } = await createPublicClient()
     .from("portfolio_settings")
@@ -177,7 +192,13 @@ export async function getPortfolioSettings() {
     } else {
       console.error("Unable to load portfolio settings:", error.message);
     }
-    return defaultPortfolioSettings;
+    return mergePortfolioSettings(null);
   }
-  return { ...defaultPortfolioSettings, ...(data?.settings ?? {}) };
+  return mergePortfolioSettings(data?.settings);
+}
+
+export async function guardPublicPage(href, settings) {
+  const resolved = settings ?? (await getPortfolioSettings());
+  if (!isPageVisible(resolved, href)) notFound();
+  return resolved;
 }

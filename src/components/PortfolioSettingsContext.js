@@ -19,3 +19,7 @@ export function usePortfolioSettings() {
   }
   return settings;
 }
+
+export function useOptionalPortfolioSettings() {
+  return useContext(PortfolioSettingsContext);
+}

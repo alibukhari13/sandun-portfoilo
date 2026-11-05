@@ -24,7 +24,7 @@ const tabs = [
   {
     id: "settings",
     label: "Site details",
-    description: "Contact and shared copy",
+    description: "Contact, copy, and menu pages",
   },
   {
     id: "blog",
@@ -208,18 +208,23 @@ function ProjectsPanel({
   );
 }
 
-function SettingsPanel({ settings }) {
+function SettingsPanel({ settings, portfolioError, databaseErrorMessage }) {
   return (
     <section className={styles.contentCard}>
       <div className={styles.contentHeader}>
         <div>
           <p className={styles.eyebrow}>Site details</p>
-          <h2>Contact & shared copy</h2>
+          <h2>Contact, copy, and menu</h2>
           <p className={styles.lede}>
-            These fields power contact CTAs, footer text, and social links.
+            Update contact details, footer text, and which pages appear in the site menu.
           </p>
         </div>
       </div>
+      {portfolioError && (
+        <p className={styles.alert} role="alert">
+          {databaseErrorMessage}
+        </p>
+      )}
       <PortfolioSettingsForm
         action={savePortfolioSettings}
         settings={settings}
@@ -438,7 +443,11 @@ export default function AdminDashboard({
           />
         )}
         {activeTab.id === "settings" && (
-          <SettingsPanel settings={portfolioSettings} />
+          <SettingsPanel
+            settings={portfolioSettings}
+            portfolioError={portfolioError}
+            databaseErrorMessage={databaseErrorMessage}
+          />
         )}
         {activeTab.id === "blog" && (
           <BlogPanel

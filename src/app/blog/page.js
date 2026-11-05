@@ -6,5 +6,5 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const posts = await getPublishedBlogs();
-  return <PortfolioLayout><BlogPage posts={posts} /></PortfolioLayout>;
+  return <PortfolioLayout pageHref="/blog"><BlogPage posts={posts} /></PortfolioLayout>;
 }

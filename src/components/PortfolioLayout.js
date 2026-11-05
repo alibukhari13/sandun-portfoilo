@@ -1,7 +1,9 @@
 import PortfolioPage from "@/components/PortfolioPage";
-import { getPortfolioSettings } from "@/lib/portfolio-content";
+import { getPortfolioSettings, guardPublicPage } from "@/lib/portfolio-content";
 
-export default async function PortfolioLayout({ children, settings: initialSettings }) {
-  const settings = initialSettings ?? await getPortfolioSettings();
+export default async function PortfolioLayout({ children, settings: initialSettings, pageHref }) {
+  const settings = pageHref
+    ? await guardPublicPage(pageHref, initialSettings)
+    : (initialSettings ?? await getPortfolioSettings());
   return <PortfolioPage settings={settings}>{children}</PortfolioPage>;
 }

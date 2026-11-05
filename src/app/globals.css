@@ -2379,14 +2379,15 @@ body, .subpage, .page-content { background-color: var(--surface); color: var(--i
 .about-page .about-intro { position: relative; isolation: isolate; padding-top: 30px; padding-bottom: 26px; border-bottom: 0; }
 .about-page .about-intro { display: block; border-bottom: 0 !important; }
 .about-page .about-intro > * { position: relative; z-index: 1; }
-.about-page .about-intro .page-intro-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 40px; width: 100%; margin-top: 12px; padding: 0; border: 0; }
+.about-page .about-intro .page-intro-row { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 18px 40px; width: 100%; margin-top: 12px; padding: 0; border: 0; }
+.about-page .about-intro-copy { flex: 1 1 16rem; min-width: min(100%, 16rem); }
 .about-page .about-intro .page-intro-row::after, .about-page .about-intro::after { display: none; }
 .about-page .about-intro .about-intro-waves { position: absolute; z-index: 0; top: 4px; right: -6%; width: 62%; height: 150px; pointer-events: none; -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%, #000 85%, transparent); mask-image: linear-gradient(90deg, transparent, #000 30%, #000 85%, transparent); filter: drop-shadow(0 0 6px #b6ff4a66); }
 .about-wave-drift { animation: about-wave-drift 14s linear infinite; }
 @keyframes about-wave-drift { from { transform: translateX(0); } to { transform: translateX(-600px); } }
-#main .about-page .about-intro h1 { font-size: clamp(44px, 4.6vw, 60px); font-weight: 700; letter-spacing: -2px; line-height: 1.05; }
+#main .about-page .about-intro h1 { font-size: clamp(44px, 4.6vw, 60px); font-weight: 700; letter-spacing: -2px; line-height: 1.05; overflow-wrap: normal; word-break: normal; hyphens: manual; }
 #main .about-page .about-intro p { margin-top: 8px; color: #c9d2d7; font-size: 17px; }
-.about-page .about-quote { align-self: start; flex: 0 0 auto; max-width: none; margin: 18px 6% 0 0; padding: 0; border: 0; white-space: nowrap; color: #e3eae6; font: 500 17px/1.5 Sora, sans-serif; text-align: left; }
+.about-page .about-quote { align-self: start; flex: 1 1 18rem; width: min(100%, 22rem); max-width: 22rem; margin: 18px 0 0 auto; padding: 0; border: 0; white-space: normal; color: #e3eae6; font: 500 17px/1.5 Sora, sans-serif; text-align: left; }
 .about-page .about-quote span { color: var(--lime); font-size: 24px; line-height: 0; margin: 0 4px; vertical-align: -4px; }
 
 .about-page .about-profile { display: grid; grid-template-columns: minmax(320px, .9fr) 1.1fr; align-items: center; gap: 40px; margin-top: 4px; padding-top: 0; padding-bottom: 28px; border: 0; background: none; }
@@ -6659,5 +6660,96 @@ img, video, canvas {
     height: 48px;
     max-width: none;
     object-fit: contain;
+  }
+}
+
+.unavailable-page {
+  min-height: 100vh;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 12px;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 64px 24px;
+  background: #07111b;
+  color: #f4f7f2;
+}
+.unavailable-page .section-kicker {
+  color: #9aa8a2;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+}
+.unavailable-page h1 {
+  margin: 0;
+  font-family: Sora, sans-serif;
+  font-size: clamp(36px, 6vw, 56px);
+  font-weight: 700;
+  letter-spacing: -1.6px;
+  line-height: 1.05;
+}
+.unavailable-page p {
+  margin: 0;
+  max-width: 36rem;
+  color: #c4cdd2;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.unavailable-page .button {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 10px;
+  min-height: 46px;
+  padding: 0 22px;
+  border-radius: 999px;
+  color: #07101b;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+@media (max-width: 760px) {
+  .about-page .about-intro .page-intro-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .about-page .about-intro-copy,
+  .about-page .about-quote {
+    flex: none;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+  }
+  #main .about-page .about-intro h1 {
+    font-size: clamp(42px, 12vw, 56px);
+    letter-spacing: -1.5px;
+    line-height: 0.95;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+  #main .about-page .about-intro p {
+    max-width: 20rem;
+    margin-top: 10px;
+    font-size: 16px;
+    line-height: 1.45;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+  .about-page .about-quote {
+    max-width: 17.5rem;
+    margin-top: 2px;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .about-page .about-intro .about-intro-waves {
+    top: auto;
+    bottom: 0;
+    right: -24%;
+    width: 120%;
+    height: 88px;
+    opacity: 0.35;
   }
 }

@@ -619,6 +619,42 @@
   accent-color: #6e9139;
 }
 
+.fieldHint {
+  margin: -4px 0 0;
+  color: #5d6b62;
+  font-size: 13px;
+  font-weight: 450;
+  line-height: 1.5;
+}
+
+.pageToggles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+.pageToggle {
+  width: 100%;
+  min-height: 62px;
+  align-items: flex-start;
+}
+
+.pageToggle span {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pageToggle small {
+  color: #66756c;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.pageToggleLocked {
+  background: #f3f6ef;
+}
+
 .formActions {
   display: flex;
   flex-wrap: wrap;

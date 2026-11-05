@@ -5,7 +5,7 @@ import {
 } from "@/lib/supabase";
 import { isAdminSessionValid } from "@/lib/admin-auth";
 import { listLocalPosts } from "@/lib/local-blog-store";
-import { defaultPortfolioSettings } from "@/lib/portfolio-content";
+import { mergePortfolioSettings } from "@/lib/portfolio-content";
 import AdminDashboard from "./AdminDashboard";
 import LoginForm from "./LoginForm";
 import styles from "./admin.module.css";
@@ -150,10 +150,7 @@ export default async function AdminPage({ searchParams }) {
       ];
 
   const projects = portfolioResult[0].data ?? [];
-  const portfolioSettings = {
-    ...defaultPortfolioSettings,
-    ...(portfolioResult[1].data?.settings ?? {}),
-  };
+  const portfolioSettings = mergePortfolioSettings(portfolioResult[1].data?.settings);
   const portfolioError =
     portfolioResult.find((item) => item.error)?.error ?? null;
   const publishedCount = posts.filter((post) => post.published).length;

@@ -159,7 +159,8 @@ values (
     "contact_lede": "I’m open to machine learning and AI opportunities, research collaborations, project discussions, and technical conversations at the intersection of computer science and chemical engineering.",
     "footer_heading": "Let’s build something meaningful.",
     "footer_description": "Open to opportunities in machine learning, AI, and chemical engineering. Great ideas begin with a conversation.",
-    "contact_form_endpoint": "https://formspree.io/f/mrpejwge"
+    "contact_form_endpoint": "https://formspree.io/f/mrpejwge",
+    "hidden_pages": ["/recommendations"]
   }'::jsonb
 )
 on conflict (id) do nothing;

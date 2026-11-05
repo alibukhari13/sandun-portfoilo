@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import SiteLink from "@/components/SiteLink";
 
 const groups = [
   {
@@ -495,9 +495,9 @@ export default function SkillsPage() {
           <h3>Skills in Action</h3>
           <p>These skills are applied in my research projects, from LLM evaluation to multi-agent systems.</p>
         </div>
-        <Link href="/projects">LLM Truthfulness Research ↗</Link>
-        <Link href="/projects">Multi-Agent Systems ↗</Link>
-        <Link href="/projects">Chemical Engineering LLM ↗</Link>
+        <SiteLink href="/projects">LLM Truthfulness Research ↗</SiteLink>
+        <SiteLink href="/projects">Multi-Agent Systems ↗</SiteLink>
+        <SiteLink href="/projects">Chemical Engineering LLM ↗</SiteLink>
       </section>
     </div>
   );

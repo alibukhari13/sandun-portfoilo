@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { sitePages } from "@/lib/site-pages";
 import styles from "./admin.module.css";
 
 const errorMessages = {
@@ -11,8 +12,42 @@ const errorMessages = {
 
 export default function PortfolioSettingsForm({ action, settings }) {
   const [state, formAction, pending] = useActionState(action, { error: null });
+  const hiddenPages = new Set(settings.hidden_pages ?? []);
   return (
     <form action={formAction} className={styles.form}>
+      <div className={styles.fieldGroup}>
+        <div>
+          <p className={styles.fieldGroupTitle}>Menu pages</p>
+          <p className={styles.fieldHint}>
+            Turn a page off to remove it from the header, mobile menu, and footer.
+            A hidden page also stops opening for visitors. Home always stays available.
+          </p>
+        </div>
+        <div className={styles.pageToggles}>
+          {sitePages.map((page) => {
+            const visible = page.locked || !hiddenPages.has(page.href);
+            return (
+              <label
+                key={page.href}
+                className={`${styles.checkboxLabel} ${styles.pageToggle}${page.locked ? ` ${styles.pageToggleLocked}` : ""}`}
+              >
+                <input
+                  type="checkbox"
+                  name="visible_pages"
+                  value={page.href}
+                  defaultChecked={visible}
+                  disabled={page.locked}
+                />
+                <span>
+                  {page.label}
+                  <small>{page.locked ? "Always visible" : page.href}</small>
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+
       <div className={styles.fieldGroup}>
         <p className={styles.fieldGroupTitle}>Contact & social</p>
         <div className={styles.formGrid}>
